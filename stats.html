@@ -235,21 +235,37 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-content">
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="菜单">
+                <i class="fas fa-bars"></i>
+            </button>
             <div class="logo">
                 <a href="/">
                     <img src="https://img.lunadeer.cn/i/2024/04/22/6625ce6c8ddc1.png" alt="白鹿原 Logo">
                 </a>
             </div>
-            <div class="nav-links">
+            <div class="nav-links desktop-only">
                 <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439">文档</a>
                 <a href="https://mcmap.lunadeer.cn/">地图</a>
                 <a href="https://mcphoto.lunadeer.cn/">相册</a>
                 <a href="https://qm.qq.com/q/9izlHDoef6">群聊</a>
                 <a href="/stats.html" style="opacity: 1; font-weight: 600;">数据</a>
+            </div>
+            <div class="nav-cta-container">
                 <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439/doc/5yqg5ywl5pyn5yqh5zmo-WE4jkTxRmM" class="nav-cta">加入游戏</a>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-links">
+            <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439">文档</a>
+            <a href="https://mcmap.lunadeer.cn/">地图</a>
+            <a href="https://mcphoto.lunadeer.cn/">相册</a>
+            <a href="https://qm.qq.com/q/9izlHDoef6">群聊</a>
+            <a href="/stats.html" style="font-weight: 600;">数据</a>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <header class="hero stats-hero" style="background-image: url('https://img.lunadeer.cn/i/2025/11/26/69267755e14e3.png');">
