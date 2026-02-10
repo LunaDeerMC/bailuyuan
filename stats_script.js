@@ -221,5 +221,5 @@ function openModal(player) {
     document.getElementById('modal-mined').innerText = player.stats.mined.toLocaleString();
     document.getElementById('modal-deaths').innerText = player.stats.deaths;
 
-    modal.style.display = "block";
+    modal.style.display = "flex";
 }
