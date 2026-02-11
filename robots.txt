@@ -1,0 +1,27 @@
+# robots.txt for 白鹿原 Minecraft 服务器
+
+User-agent: *
+Allow: /
+Disallow: /stats/*.json
+
+# Sitemap
+Sitemap: https://mcpure.lunadeer.cn/sitemap.xml
+
+# 主要搜索引擎爬虫
+User-agent: Googlebot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Sogou web spider
+Allow: /
+
+User-agent: 360Spider
+Allow: /
+
+# 爬取频率建议（仅供参考）
+Crawl-delay: 1
