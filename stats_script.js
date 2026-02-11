@@ -139,7 +139,7 @@ function renderLeaderboards() {
 
     // 4. Deaths (stats.deaths)
     const topDeaths = getTop('deaths');
-    renderCard('lb-deaths', topDeaths, p => p.stats.deaths);
+    renderCard('lb-deaths', topDeaths, p => p.stats.deaths.toLocaleString());
 
     // 5. Play Time (stats.play_time_raw)
     const topPlayTime = getTop('play_time_fmt'); // uses play_time_raw internally
@@ -147,7 +147,7 @@ function renderLeaderboards() {
 
     // 6. Kills (stats.kills)
     const topKills = getTop('kills');
-    renderCard('lb-kills', topKills, p => p.stats.kills);
+    renderCard('lb-kills', topKills, p => p.stats.kills.toLocaleString());
 }
 
 function renderPlayerGrid(reset = false) {
