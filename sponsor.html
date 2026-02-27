@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赞助榜 - 白鹿原 Minecraft 服务器</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .sponsor-hero {
+            padding: 120px 20px 60px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,113,227,0.05) 100%);
+        }
+        
+        .sponsor-hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #1d1d1f 0%, #434344 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .total-donations {
+            font-size: 24px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .sponsor-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* Timeline / Recent List Section */
+        .recent-section {
+            background: white;
+            border-radius: var(--radius-large);
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        .donation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .donation-card {
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: var(--radius-medium);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .donation-card:hover {
+            transform: scale(1.02);
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .donation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .donor-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .donation-amount {
+            color: var(--brand-green);
+            font-weight: 700;
+        }
+
+        .donation-purpose {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .donation-date {
+            font-size: 12px;
+            color: #999;
+            text-align: right;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sponsor-hero h1 { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="菜单">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="logo">
+                <a href="/">
+                    <img src="https://img.lunadeer.cn/i/2024/04/22/6625ce6c8ddc1.png" alt="白鹿原 Minecraft 服务器 Logo">
+                </a>
+            </div>
+            <div class="nav-links desktop-only">
+                <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439">文档</a>
+                <a href="https://mcmap.lunadeer.cn/">地图</a>
+                <a href="https://mcphoto.lunadeer.cn/">相册</a>
+                <a href="https://qm.qq.com/q/9izlHDoef6">群聊</a>
+                <a href="/stats.html">数据</a>
+                <a href="/sponsor.html" class="active" style="color: var(--text-primary); opacity: 1;">赞助</a>
+            </div>
+            <div class="nav-cta-container">
+                <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439/doc/5yqg5ywl5pyn5yqh5zmo-WE4jkTxRmM" class="nav-cta">加入游戏</a>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Overlay -->
+        <div class="mobile-menu" id="mobile-menu">
+            <div class="mobile-nav-links">
+                <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439">文档</a>
+                <a href="https://mcmap.lunadeer.cn/">地图</a>
+                <a href="https://mcphoto.lunadeer.cn/">相册</a>
+                <a href="https://qm.qq.com/q/9izlHDoef6">群聊</a>
+                <a href="/stats.html">数据</a>
+                <a href="/sponsor.html">赞助列表</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="sponsor-hero">
+        <h1>感谢每一位支持者</h1>
+        <div class="total-donations" id="total-amount-display">累计获得赞助: 计算中...</div>
+    </div>
+
+    <div class="sponsor-container">
+        
+        <!-- Recent Donations -->
+        <div class="recent-section">
+            <h2 class="section-title">❤️ 最近赞助</h2>
+            <div class="donation-grid" id="donation-list">
+                <!-- JS will inject cards here -->
+            </div>
+        </div>
+
+    </div>
+
+    <footer style="text-align: center; padding: 40px; color: var(--text-secondary); font-size: 12px; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 60px;">
+        <p>© 2026 白鹿原 Minecraft 服务器. All rights reserved.</p>
+    </footer>
+
+    <script src="sponsor_script.js"></script>
+    <script>
+        // Inline script for mobile menu toggling (copied from script.js)
+        // Since we are not using the full script.js which might have index-specific logic
+        document.addEventListener('DOMContentLoaded', () => {
+             const toggle = document.getElementById('mobile-toggle');
+            const menu = document.getElementById('mobile-menu');
+            
+            if (toggle && menu) {
+                const icon = toggle.querySelector('i');
+                toggle.addEventListener('click', () => {
+                    menu.classList.toggle('active');
+                    document.body.classList.toggle('menu-open');
+                    
+                    if (menu.classList.contains('active')) {
+                        if(icon) {
+                            icon.classList.remove('fa-bars');
+                            icon.classList.add('fa-times');
+                        }
+                    } else {
+                        if(icon) {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

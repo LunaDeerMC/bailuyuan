@@ -26,7 +26,7 @@ function copyIp() {
 document.addEventListener('DOMContentLoaded', () => {
     fetchSponsors();
     fetchCrowdfunding();
-    setupModal();
+    // setupModal(); // Removed, modal is gone
     fetchServerStatus();
     startRuntimeTimer();
     setupMobileMenu();
@@ -238,7 +238,7 @@ async function fetchSponsors() {
         })).sort((a, b) => b.total - a.total);
 
         renderTopSponsors(sortedUsers.slice(0, 3));
-        renderSponsorsTable(sponsors);
+        // renderSponsorsTable(sponsors); // Removed as table is now on sponsor.html
 
     } catch (error) {
         console.error('Error loading sponsors:', error);
@@ -258,38 +258,5 @@ function renderTopSponsors(topUsers) {
     `).join('');
 }
 
-function renderSponsorsTable(sponsors) {
-    const tbody = document.querySelector('#sponsors-table tbody');
-    // Sort by date descending (newest first) or keep original order? 
-    // Usually original order in file is chronological. Let's reverse it to show newest first.
-    const reversedSponsors = [...sponsors].reverse();
+/* Removed renderSponsorsTable and setupModal as they are no longer used on index page */
 
-    tbody.innerHTML = reversedSponsors.map(s => `
-        <tr>
-            <td>${s.name}</td>
-            <td>${s.project}</td>
-            <td>¥${s.amount.toFixed(2)}</td>
-            <td>${s.date}</td>
-        </tr>
-    `).join('');
-}
-
-function setupModal() {
-    const modal = document.getElementById('sponsors-modal');
-    const btn = document.getElementById('view-sponsors-btn');
-    const span = document.getElementsByClassName('close-modal')[0];
-
-    btn.onclick = function() {
-        modal.style.display = "flex";
-    }
-
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-}
