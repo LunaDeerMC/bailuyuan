@@ -5,7 +5,81 @@ let filterState = { search: '', project: 'all' };
 document.addEventListener('DOMContentLoaded', () => {
     fetchSponsorsData();
     setupListeners();
+    setupUI();
 });
+
+function setupUI() {
+    // Mobile menu toggle
+    const toggle = document.getElementById('mobile-toggle');
+    const menu = document.getElementById('mobile-menu');
+    
+    if (toggle && menu) {
+        const icon = toggle.querySelector('i');
+        toggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+            
+            if (menu.classList.contains('active')) {
+                if(icon) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                }
+            } else {
+                if(icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        });
+    }
+
+    // Modal Logic
+    const modal = document.getElementById('sponsor-modal');
+    const btn = document.getElementById('open-sponsor-modal');
+    const span = document.querySelector('.close-modal');
+    const desktopView = document.getElementById('desktop-qr-view');
+    const mobileView = document.getElementById('mobile-btn-view');
+
+    // Detect Mobile
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+
+    if (isMobile) {
+        if(desktopView) desktopView.style.display = 'none';
+        if(mobileView) mobileView.style.display = 'block';
+    } else {
+        if(desktopView) desktopView.style.display = 'block';
+        if(mobileView) mobileView.style.display = 'none';
+    }
+
+    if (modal && btn) {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent accidental form submission
+            modal.style.display = "flex";
+            // Trigger reflow
+            void modal.offsetWidth; 
+            modal.classList.add('show');
+        });
+    }
+
+    if (span && modal) {
+        span.addEventListener('click', () => {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 300);
+        });
+    }
+
+    window.addEventListener('click', (event) => {
+        if (modal && event.target == modal) {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 300);
+        }
+    });
+}
+
 
 function setupListeners() {
     const searchInput = document.getElementById('sponsor-search');
