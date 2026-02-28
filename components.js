@@ -12,12 +12,12 @@ const Components = {
                 </a>
             </div>
             <div class="nav-links desktop-only">
-                <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439" target="_blank">文档</a>
-                <a href="https://mcmap.lunadeer.cn/" target="_blank">地图</a>
-                <a href="https://mcphoto.lunadeer.cn/" target="_blank">相册</a>
-                <a href="https://qm.qq.com/q/9izlHDoef6" target="_blank">群聊</a>
+                <a href="/doc.html">文档</a>
+                <a href="/map.html">地图</a>
+                <a href="/photo.html">相册</a>
                 <a href="/stats.html">数据</a>
                 <a href="/sponsor.html">赞助</a>
+                <a href="https://qm.qq.com/q/9izlHDoef6" target="_blank">群聊</a>
             </div>
             <div class="nav-cta-container">
                 <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439/doc/5yqg5ywl5pyn5yqh5zmo-WE4jkTxRmM" class="nav-cta" target="_blank">加入游戏</a>
@@ -28,12 +28,12 @@ const Components = {
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobile-menu">
         <div class="mobile-menu-links">
-            <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439" target="_blank">文档</a>
-            <a href="https://mcmap.lunadeer.cn/" target="_blank">地图</a>
-            <a href="https://mcphoto.lunadeer.cn/" target="_blank">相册</a>
-            <a href="https://qm.qq.com/q/9izlHDoef6" target="_blank">群聊</a>
+            <a href="/doc.html">文档</a>
+            <a href="/map.html">地图</a>
+            <a href="/photo.html">相册</a>
             <a href="/stats.html">数据</a>
             <a href="/sponsor.html">赞助</a>
+            <a href="https://qm.qq.com/q/9izlHDoef6" target="_blank">群聊</a>
         </div>
     </div>
     `,
