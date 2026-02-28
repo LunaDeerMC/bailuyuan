@@ -13,29 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function setupUI() {
-    // Mobile menu toggle
-    const toggle = document.getElementById('mobile-toggle');
-    const menu = document.getElementById('mobile-menu');
-    
-    if (toggle && menu) {
-        const icon = toggle.querySelector('i');
-        toggle.addEventListener('click', () => {
-            menu.classList.toggle('active');
-            document.body.classList.toggle('menu-open');
-            
-            if (menu.classList.contains('active')) {
-                if(icon) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-times');
-                }
-            } else {
-                if(icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            }
-        });
-    }
+    // Mobile menu toggle handled by components.js
 
     // Modal Logic
     const modal = document.getElementById('sponsor-modal');

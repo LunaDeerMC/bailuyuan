@@ -29,44 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // setupModal(); // Removed, modal is gone
     fetchServerStatus();
     startRuntimeTimer();
-    setupMobileMenu();
 });
 
-function setupMobileMenu() {
-    const toggle = document.getElementById('mobile-toggle');
-    const menu = document.getElementById('mobile-menu');
-    
-    if (toggle && menu) {
-        const icon = toggle.querySelector('i');
-        toggle.addEventListener('click', () => {
-            menu.classList.toggle('active');
-            document.body.classList.toggle('menu-open');
-            
-            if (menu.classList.contains('active')) {
-                if(icon) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-times');
-                }
-            } else {
-                if(icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            }
-        });
-        
-        menu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.remove('active');
-                document.body.classList.remove('menu-open');
-                if(icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
-        });
-    }
-}
+
 
 function startRuntimeTimer() {
     const startTime = new Date("2021-09-14T09:57:59").getTime();

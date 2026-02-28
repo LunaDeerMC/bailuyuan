@@ -530,42 +530,7 @@
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-content">
-            <button class="mobile-toggle" id="mobile-toggle" aria-label="菜单">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="logo">
-                <a href="/">
-                    <img src="https://img.lunadeer.cn/i/2024/04/22/6625ce6c8ddc1.png" alt="白鹿原 Minecraft 服务器 Logo">
-                </a>
-            </div>
-            <div class="nav-links desktop-only">
-                <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439">文档</a>
-                <a href="https://mcmap.lunadeer.cn/">地图</a>
-                <a href="https://mcphoto.lunadeer.cn/">相册</a>
-                <a href="https://qm.qq.com/q/9izlHDoef6">群聊</a>
-                <a href="/stats.html">数据</a>
-                <a href="/sponsor.html" class="active" style="color: var(--text-primary); opacity: 1;">赞助</a>
-            </div>
-            <div class="nav-cta-container">
-                <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439/doc/5yqg5ywl5pyn5yqh5zmo-WE4jkTxRmM" class="nav-cta">加入游戏</a>
-            </div>
-        </div>
-        
-        <!-- Mobile Menu Overlay -->
-        <div class="mobile-menu" id="mobile-menu">
-            <div class="mobile-nav-links">
-                <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439">文档</a>
-                <a href="https://mcmap.lunadeer.cn/">地图</a>
-                <a href="https://mcphoto.lunadeer.cn/">相册</a>
-                <a href="https://qm.qq.com/q/9izlHDoef6">群聊</a>
-                <a href="/stats.html">数据</a>
-                <a href="/sponsor.html">赞助列表</a>
-            </div>
-        </div>
-    </nav>
+    <div id="navbar-component"></div>
 
     <div class="sponsor-hero">
         <h1>感谢每一位支持者</h1>
@@ -639,6 +604,8 @@
         </div>
     </div>
 
+    <div id="footer-component"></div>
+    <script src="components.js"></script>
     <script src="sponsor_script.js"></script>
 </body>
 </html>

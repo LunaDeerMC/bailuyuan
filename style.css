@@ -848,3 +848,11 @@ footer {
         overflow: hidden;
     }
 }
+
+/* Active State for Navbar Links */
+.nav-links a.active,
+.mobile-menu-links a.active {
+    opacity: 1;
+    font-weight: 600;
+    color: var(--text-primary);
+}
