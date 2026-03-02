@@ -81,27 +81,27 @@ async function fetchServerStatus() {
                     </div>
                 `).join('');
             } else {
-                listElement.innerHTML = '<div class="player-item" style="justify-content: center; color: #86868b;">暂无玩家在线</div>';
+                listElement.innerHTML = '<div class="player-item player-item-muted">暂无玩家在线</div>';
             }
         } else {
             countElement.innerText = '服务器离线';
             dotElement.classList.add('offline');
-            listElement.innerHTML = '<div class="player-item" style="justify-content: center; color: #ff3b30;">服务器离线</div>';
+            listElement.innerHTML = '<div class="player-item player-item-error">服务器离线</div>';
         }
     } catch (error) {
         console.error('Error fetching server status:', error);
         countElement.innerText = '无法获取状态';
         dotElement.classList.add('offline');
-        listElement.innerHTML = '<div class="player-item" style="justify-content: center; color: #ff3b30;">获取失败</div>';
+        listElement.innerHTML = '<div class="player-item player-item-error">获取失败</div>';
     }
 }
 
 async function fetchCrowdfunding() {
     try {
         console.log('Fetching crowdfunding data...');
-        const response = await fetch('fund_progress.txt');
+        const response = await fetch('data/fund_progress.txt');
         if (!response.ok) {
-            console.error('Failed to fetch fund_progress.txt:', response.status, response.statusText);
+            console.error('Failed to fetch data/fund_progress.txt:', response.status, response.statusText);
             return; 
         }
         
@@ -158,43 +158,25 @@ function renderCrowdfunding(funds) {
                 </div>
             </div>
             <div class="progress-bar-bg">
-                <div class="progress-bar-fill" style="width: ${percentage}%"></div>
+                <div class="progress-bar-fill" data-percentage="${percentage}"></div>
             </div>
             <div class="fund-percentage">${percentage.toFixed(1)}%</div>
         </div>
     `;
     }).join('');
+
+    container.querySelectorAll('.progress-bar-fill').forEach(bar => {
+        const percentage = bar.dataset.percentage || '0';
+        bar.style.width = `${percentage}%`;
+    });
 }
 
 async function fetchSponsors() {
     try {
-        const response = await fetch('sponsors.txt');
+        const response = await fetch('data/sponsors.txt');
         const text = await response.text();
-        const lines = text.trim().split('\n');
-        
-        const sponsors = [];
-        const userTotals = {};
-
-        lines.forEach(line => {
-            const parts = line.split(',');
-            if (parts.length >= 3) {
-                const name = parts[0].trim();
-                const project = parts[1].trim();
-                const amountStr = parts[2].trim().replace('￥', '');
-                const amount = parseFloat(amountStr);
-                const date = parts[3] ? parts[3].trim() : '';
-
-                if (!isNaN(amount)) {
-                    sponsors.push({ name, project, amount, date });
-
-                    if (userTotals[name]) {
-                        userTotals[name] += amount;
-                    } else {
-                        userTotals[name] = amount;
-                    }
-                }
-            }
-        });
+        const sponsors = DataUtils.parseSponsorsText(text);
+        const userTotals = DataUtils.buildSponsorTotals(sponsors);
 
         // Sort users by total amount for Top 3
         const sortedUsers = Object.keys(userTotals).map(name => ({

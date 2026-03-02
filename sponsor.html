@@ -5,520 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>赞助榜 - 白鹿原 Minecraft 服务器</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .sponsor-hero {
-            padding: 140px 20px 50px;
-            text-align: center;
-            background: radial-gradient(circle at center, rgba(0,113,227,0.08) 0%, rgba(255,255,255,0) 70%);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .sponsor-hero h1 {
-            font-size: 56px;
-            font-weight: 800;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, #1d1d1f 0%, #434344 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.02em;
-        }
-
-        .hero-subtitle {
-            font-size: 18px;
-            color: var(--text-secondary);
-            margin-top: 16px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .total-donations {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            padding: 20px 40px;
-            border-radius: var(--radius-large);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-            border: 1px solid rgba(255,255,255,0.6);
-            transform: translateY(0);
-            transition: transform 0.3s ease;
-        }
-        
-        .total-donations:hover {
-            transform: translateY(-5px);
-        }
-
-        .counter-label {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .counter-value {
-            font-size: 42px;
-            font-weight: 800;
-            color: var(--brand-green);
-            font-feature-settings: "tnum";
-            font-variant-numeric: tabular-nums;
-        }
-
-        .sponsor-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .section-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        /* Top Donors Podium */
-        .top-donors-section {
-            margin-bottom: 60px;
-        }
-
-        .podium-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 20px;
-            padding: 40px 0;
-            min-height: 300px;
-        }
-
-        .podium-spot {
-            background: white;
-            border-radius: var(--radius-medium);
-            padding: 20px;
-            width: 220px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            position: relative;
-            transition: transform 0.3s ease;
-            text-align: center;
-        }
-
-        .podium-spot:hover {
-            transform: translateY(-10px);
-            z-index: 2;
-        }
-
-        .podium-rank {
-            width: 40px;
-            height: 40px;
-            background: #f0f0f0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            margin-bottom: 12px;
-            position: absolute;
-            top: -20px;
-            border: 4px solid var(--bg-color);
-        }
-
-        /* Gold */
-        .podium-spot.rank-1 {
-            height: 260px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            background: linear-gradient(180deg, rgba(255,215,0,0.05) 0%, rgba(255,255,255,1) 100%);
-            order: 2; /* Center */
-        }
-        .podium-spot.rank-1 .podium-rank { background: #FFD700; color: #fff; box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4); }
-        .podium-spot.rank-1 .donor-avatar { border-color: #FFD700; width: 80px; height: 80px; }
-
-        /* Silver */
-        .podium-spot.rank-2 {
-            height: 220px;
-            border: 2px solid rgba(192, 192, 192, 0.3);
-            order: 1; /* Left */
-        }
-        .podium-spot.rank-2 .podium-rank { background: #C0C0C0; color: #fff; }
-        
-        /* Bronze */
-        .podium-spot.rank-3 {
-            height: 200px;
-            border: 2px solid rgba(205, 127, 50, 0.3);
-            order: 3; /* Right */
-        }
-        .podium-spot.rank-3 .podium-rank { background: #CD7F32; color: #fff; }
-
-        .donor-avatar {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            margin-bottom: 12px;
-            background-color: #f0f0f0;
-            object-fit: cover;
-        }
-
-        .podium-name {
-            font-weight: 700;
-            font-size: 18px;
-            margin-bottom: 4px;
-            word-break: break-all;
-        }
-
-        .podium-total {
-            color: var(--brand-green);
-            font-weight: 600;
-            font-size: 16px;
-        }
-        
-        /* Controls */
-        .controls-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 40px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .controls-header {
-            display: flex;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-        
-        /* Mobile adjustment for header */
-        @media (max-width: 600px) {
-            .controls-header {
-                flex-direction: column;
-            }
-        }
-
-        .cta-button {
-            height: 48px;  /* Match search input height */
-            padding: 0 24px;
-            background-color: var(--text-primary);
-            color: white;
-            border-radius: 99px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: 1px solid transparent;
-            white-space: nowrap;
-            box-sizing: border-box; 
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .cta-button.outline {
-            background-color: transparent;
-            color: var(--text-primary);
-            border: 1px solid rgba(0,0,0,0.1);
-        }
-
-        .cta-button.outline:hover {
-            border-color: var(--text-primary);
-            background-color: white;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal.show {
-            display: flex; /* Flex to center */
-            opacity: 1;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: auto;
-            padding: 40px;
-            border-radius: 24px;
-            width: 90%;
-            max-width: 400px;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            transform: scale(0.9);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
-        }
-
-        .modal.show .modal-content {
-            transform: scale(1);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: #aaa;
-            font-size: 24px;
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            background: #f5f5f7;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .close-modal:hover {
-            color: #000;
-            background: #e5e5e7;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .modal-subtitle {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-
-        .qr-placeholder {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 16px;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-
-        .qr-img {
-            width: 180px;
-            height: 180px;
-            display: block;
-        }
-
-        .alipay-btn {
-            background: #1677FF;
-            color: white;
-            display: inline-block;
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            margin-top: 10px;
-        }
-
-        .search-box {
-            position: relative;
-            flex-grow: 0; 
-            width: 100%;
-            max-width: 320px;
-        }
-
-        .search-box input {
-            width: 100%;
-            height: 48px; /* Fixed height to match button */
-            padding: 0 20px 0 44px;
-            border-radius: 99px;
-            border: 1px solid rgba(0,0,0,0.1);
-            background: white;
-            font-size: 15px;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        .search-box input:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-        }
-
-        .filter-tags {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .filter-tag {
-            padding: 8px 16px;
-            border-radius: 99px;
-            border: none;
-            background: white;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        }
-
-        .filter-tag:hover {
-            transform: translateY(-1px);
-            background: #fafafa;
-        }
-
-        .filter-tag.active {
-            background: var(--text-primary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .donation-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .donation-card {
-            background: white;
-            padding: 24px;
-            border-radius: var(--radius-medium);
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.03);
-            animation: fadeInUp 0.5s ease backwards;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .donation-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            border-color: transparent;
-        }
-
-        .donation-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
-        }
-        
-        .donor-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .mini-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #f0f0f0;
-        }
-
-        .donor-name {
-            font-weight: 700;
-            font-size: 16px;
-            line-height: 1.2;
-        }
-
-        .donation-amount {
-            color: var(--brand-green);
-            font-weight: 800;
-            font-size: 18px;
-            background: rgba(52, 199, 89, 0.1);
-            padding: 4px 10px;
-            border-radius: 8px;
-        }
-
-        .donation-purpose {
-            font-size: 13px;
-            color: var(--text-primary);
-            background: var(--bg-color);
-            padding: 6px 12px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-bottom: 12px;
-            align-self: flex-start;
-        }
-
-        .donation-date {
-            font-size: 12px;
-            color: #999;
-            text-align: right;
-            margin-top: auto;
-            border-top: 1px solid rgba(0,0,0,0.05);
-            padding-top: 12px;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .sponsor-hero h1 { font-size: 32px; }
-            .counter-value { font-size: 32px; }
-            .podium-container {
-                 flex-direction: column;
-                 align-items: center;
-                 gap: 30px;
-            }
-            .podium-spot {
-                width: 100%;
-                max-width: 300px;
-                order: initial !important; /* Reset order for mobile stack */
-                height: auto !important; /* Reset height */
-            }
-            .podium-rank {
-                position: relative;
-                top: 0;
-                margin-top: -30px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/pages/sponsor.css">
 </head>
 <body>
 
@@ -537,7 +29,7 @@
         
         <!-- Controls -->
         <div class="controls-section">
-            <h2 class="section-title" style="margin-bottom: 10px;">❤️ 赞助列表</h2>
+            <h2 class="section-title sponsor-list-title">❤️ 赞助列表</h2>
             
             <div class="controls-header">
                 <div class="search-box">
@@ -561,7 +53,7 @@
             <div class="donation-grid" id="donation-list">
                 <!-- JS will inject cards here -->
             </div>
-            <div id="no-results" style="display: none; text-align: center; color: var(--text-secondary); padding: 40px;">
+            <div id="no-results" class="no-results-message is-hidden">
                 没有找到匹配的记录
             </div>
         </div>
@@ -572,7 +64,7 @@
     <div id="sponsor-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <div style="width: 50px; height: 50px; background: rgba(52, 199, 89, 0.1); border-radius: 50%; color: var(--brand-green); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
+            <div class="modal-gift-icon">
                 <i class="fas fa-gift"></i>
             </div>
             <h3 class="modal-title">支持白鹿原服务器</h3>
@@ -583,21 +75,22 @@
                 <div class="qr-placeholder">
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Fqr.alipay.com%2F2cz0344fnaulnbybhp04" alt="支付宝二维码" class="qr-img">
                 </div>
-                <p style="font-size: 13px; color: #999;">推荐使用支付宝扫码</p>
+                <p class="desktop-qr-hint">推荐使用支付宝扫码</p>
             </div>
 
             <!-- Mobile Button (will be shown via CSS media query logic in JS or CSS) -->
-            <div class="mobile-only-block" id="mobile-btn-view" style="display: none;">
+            <div class="mobile-only-block" id="mobile-btn-view">
                 <a href="https://qr.alipay.com/2cz0344fnaulnbybhp04" class="alipay-btn" target="_blank">
                     <i class="fab fa-alipay"></i> 打开支付宝赞助
                 </a>
-                <p style="font-size: 12px; color: #999; margin-top: 16px;">点击按钮将直接跳转至支付宝转账页面</p>
+                <p class="mobile-pay-hint">点击按钮将直接跳转至支付宝转账页面</p>
             </div>
         </div>
     </div>
 
     <div id="footer-component"></div>
-    <script src="components.js"></script>
-    <script src="sponsor_script.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/data_utils.js"></script>
+    <script src="js/sponsor_script.js"></script>
 </body>
 </html>

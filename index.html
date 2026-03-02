@@ -33,7 +33,7 @@
     <meta property="twitter:image" content="https://img.lunadeer.cn/i/2024/04/22/6625ce6c8ddc1.png">
     
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://img.lunadeer.cn">
@@ -74,13 +74,13 @@
 </head>
 <body>
     <!-- Skip to main content for accessibility -->
-    <a href="#main-content" class="skip-to-main" style="position:absolute;left:-9999px;top:0;z-index:999;">跳转到主内容</a>
+    <a href="#main-content" class="skip-to-main">跳转到主内容</a>
 
     <!-- Navbar Component -->
     <div id="navbar-component"></div>
 
     <!-- Hero Section -->
-    <header id="main-content" class="hero" style="background-image: url('https://img.lunadeer.cn/i/2025/11/26/69267755e14e3.png');" role="banner">
+    <header id="main-content" class="hero home-hero" role="banner">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title">白鹿原 Minecraft</h1>
@@ -105,7 +105,7 @@
                         <span id="online-count">正在获取状态...</span>
                     </div>
                     <div class="players-tooltip" id="players-list">
-                        <div class="player-item" style="justify-content: center;">加载中...</div>
+                        <div class="player-item player-item-center">加载中...</div>
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
             
             <div class="bento-grid">
                 <!-- Large Feature: Pure -->
-                <div class="bento-item large-item feature-pure" style="background-image: url('https://img.lunadeer.cn/i/2024/02/21/65d592eb4afad.jpg');" role="article" aria-label="纯净原版特性">
+                <div class="bento-item large-item feature-pure" role="article" aria-label="纯净原版特性">
                     <div class="bento-overlay"></div>
                     <div class="bento-content">
                         <i class="fas fa-leaf icon"></i>
@@ -129,7 +129,7 @@
                 </div>
 
                 <!-- Medium Feature: Self-developed -->
-                <div class="bento-item medium-item feature-dev" style="background-image: url('https://img.lunadeer.cn/i/2025/11/26/6926982718ba8.png');" role="article" aria-label="深度自研特性">
+                <div class="bento-item medium-item feature-dev" role="article" aria-label="深度自研特性">
                     <div class="bento-overlay"></div>
                     <div class="bento-content">
                         <i class="fas fa-code icon"></i>
@@ -139,7 +139,7 @@
                 </div>
 
                 <!-- Medium Feature: No Params Modified -->
-                <div class="bento-item medium-item feature-params" style="background-image: url('https://img.lunadeer.cn/i/2025/11/26/6926775006dea.jpg');" role="article" aria-label="原汁原味特性">
+                <div class="bento-item medium-item feature-params" role="article" aria-label="原汁原味特性">
                     <div class="bento-overlay"></div>
                     <div class="bento-content">
                         <i class="fas fa-sliders-h icon"></i>
@@ -149,7 +149,7 @@
                 </div>
 
                 <!-- Small Features Grid -->
-                <div class="bento-item small-item" style="background-image: url('https://img.lunadeer.cn/i/2024/02/21/65d592ea6faa1.jpg');">
+                <div class="bento-item small-item feature-land">
                     <div class="bento-overlay"></div>
                     <div class="bento-content">
                         <i class="fas fa-home icon"></i>
@@ -157,7 +157,7 @@
                         <p>2048*2048 超大领地</p>
                     </div>
                 </div>
-                <div class="bento-item small-item" style="background-image: url('https://img.lunadeer.cn/i/2025/11/26/692677560db46.png');">
+                <div class="bento-item small-item feature-bedrock">
                     <div class="bento-overlay"></div>
                     <div class="bento-content">
                         <i class="fas fa-mobile-alt icon"></i>
@@ -165,7 +165,7 @@
                         <p>手机电脑随时畅玩</p>
                     </div>
                 </div>
-                <div class="bento-item small-item" style="background-image: url('https://img.lunadeer.cn/i/2024/02/21/65d592e248066.jpg');">
+                <div class="bento-item small-item feature-hardware">
                     <div class="bento-overlay"></div>
                     <div class="bento-content">
                         <i class="fas fa-server icon"></i>
@@ -173,7 +173,7 @@
                         <p>物理工作站，永不跑路</p>
                     </div>
                 </div>
-                <div class="bento-item small-item" style="background-image: url('https://img.lunadeer.cn/i/2025/11/26/692677566b07b.png');">
+                <div class="bento-item small-item feature-fun">
                     <div class="bento-overlay"></div>
                     <div class="bento-content">
                         <i class="fas fa-gamepad icon"></i>
@@ -183,7 +183,7 @@
                 </div>
 
                 <!-- Medium Feature: Update -->
-                <div class="bento-item medium-item" style="background-image: url('https://img.lunadeer.cn/i/2025/11/26/692697b71431b.png');">
+                <div class="bento-item medium-item feature-update">
                     <div class="bento-content">
                         <i class="fas fa-sync-alt icon"></i>
                         <h3>紧跟新版</h3>
@@ -192,7 +192,7 @@
                 </div>
 
                 <!-- Medium Feature: Guide -->
-                <div class="bento-item medium-item" style="background-image: url('https://img.lunadeer.cn/i/2025/11/26/692697b7376c7.png');">
+                <div class="bento-item medium-item feature-guide">
                     <div class="bento-content">
                         <i class="fas fa-book-open icon"></i>
                         <h3>新手指南</h3>
@@ -217,7 +217,7 @@
     </section>
 
     <!-- Crowdfunding Section -->
-    <section id="crowdfunding-section" class="crowdfunding-section" style="display: none;">
+    <section id="crowdfunding-section" class="crowdfunding-section home-hidden">
         <div class="container">
             <h2 class="section-header">众筹进度</h2>
             <div id="crowdfunding-grid" class="crowdfunding-grid">
@@ -228,7 +228,8 @@
 
     <div id="footer-component"></div>
 
-    <script src="components.js"></script>
-    <script src="script.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/data_utils.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

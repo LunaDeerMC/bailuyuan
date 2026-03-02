@@ -68,7 +68,7 @@ function renderLeaderboards() {
         let html = `
             <div class="lb-top-player">
                 <img src="${top1.avatar}" onerror="this.src='https://crafatar.com/avatars/${top1.uuid}?size=64&overlay'">
-                <div style="font-weight:700; margin-bottom:4px;">${top1.name}</div>
+                <div class="lb-top-name">${top1.name}</div>
                 <div class="lb-top-data">${valueFormatter(top1)}</div>
             </div>
             <div class="lb-list">
@@ -78,9 +78,9 @@ function renderLeaderboards() {
             const p = players[i];
             html += `
                 <div class="lb-item">
-                    <div style="display:flex; alignItems:center;">
+                    <div class="lb-item-main">
                         <span class="lb-rank">${i+1}</span>
-                        <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:100px;">${p.name}</span>
+                        <span class="lb-item-name">${p.name}</span>
                     </div>
                     <span>${valueFormatter(p)}</span>
                 </div>

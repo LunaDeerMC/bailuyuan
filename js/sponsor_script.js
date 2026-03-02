@@ -93,39 +93,18 @@ function setupListeners() {
 
 async function fetchSponsorsData() {
     try {
-        const response = await fetch('sponsors.txt');
+        const response = await fetch('data/sponsors.txt');
         if (!response.ok) {
-            throw new Error('Failed to fetch sponsors.txt');
+            throw new Error('Failed to fetch data/sponsors.txt');
         }
         const text = await response.text();
-        const lines = text.trim().split('\n');
-        
-        const sponsors = [];
-        const userTotals = {};
+        const sponsors = DataUtils.parseSponsorsText(text);
         const projects = new Set();
         grandTotal = 0;
 
-        lines.forEach(line => {
-            const parts = line.split(',');
-            if (parts.length >= 3) {
-                const name = parts[0].trim();
-                const project = parts[1].trim();
-                const amountStr = parts[2].trim().replace('￥', '');
-                const amount = parseFloat(amountStr);
-                const date = parts[3] ? parts[3].trim() : '';
-
-                if (!isNaN(amount)) {
-                    sponsors.push({ name, project, amount, date });
-                    grandTotal += amount; 
-                    projects.add(project);
-
-                    if (userTotals[name]) {
-                        userTotals[name] += amount;
-                    } else {
-                        userTotals[name] = amount;
-                    }
-                }
-            }
+        sponsors.forEach(item => {
+            grandTotal += item.amount;
+            projects.add(item.project);
         });
 
         allSponsors = [...sponsors].reverse(); // Start with newest
@@ -140,7 +119,7 @@ async function fetchSponsorsData() {
     } catch (error) {
         console.error('Error loading sponsors:', error);
         const grid = document.getElementById('donation-list');
-        if(grid) grid.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--text-secondary); grid-column: 1/-1;">加载数据失败，请刷新重试</div>';
+        if(grid) grid.innerHTML = '<div class="sponsor-load-error">加载数据失败，请刷新重试</div>';
     }
 }
 
@@ -231,10 +210,10 @@ function applyFilters() {
                 <div class="donation-amount">¥${item.amount}</div>
             </div>
             
-            <div style="flex-grow: 1; display: flex; flex-direction: column;">
+            <div class="donation-card-body">
                 <div class="donation-purpose">${item.project}</div>
                 <div class="donation-date">
-                    <i class="far fa-clock" style="margin-right: 4px;"></i>${item.date}
+                    <i class="far fa-clock donation-date-icon"></i>${item.date}
                 </div>
             </div>
         `;

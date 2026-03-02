@@ -23,6 +23,17 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+.skip-to-main {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 999;
+}
+
+.home-hidden {
+    display: none;
+}
+
 /* Navbar */
 .navbar {
     position: fixed;
@@ -112,6 +123,10 @@ body {
     background-position: center;
     position: relative;
     color: white;
+}
+
+.home-hero {
+    background-image: url('https://img.lunadeer.cn/i/2025/11/26/69267755e14e3.png');
 }
 
 .hero-overlay {
@@ -287,6 +302,20 @@ body {
     gap: 8px;
 }
 
+.player-item-center {
+    justify-content: center;
+}
+
+.player-item-muted {
+    justify-content: center;
+    color: #86868b;
+}
+
+.player-item-error {
+    justify-content: center;
+    color: #ff3b30;
+}
+
 .player-item:last-child {
     border-bottom: none;
 }
@@ -377,6 +406,42 @@ body {
 .small-item {
     grid-column: span 1;
     grid-row: span 1;
+}
+
+.feature-pure {
+    background-image: url('https://img.lunadeer.cn/i/2024/02/21/65d592eb4afad.jpg');
+}
+
+.feature-dev {
+    background-image: url('https://img.lunadeer.cn/i/2025/11/26/6926982718ba8.png');
+}
+
+.feature-params {
+    background-image: url('https://img.lunadeer.cn/i/2025/11/26/6926775006dea.jpg');
+}
+
+.feature-land {
+    background-image: url('https://img.lunadeer.cn/i/2024/02/21/65d592ea6faa1.jpg');
+}
+
+.feature-bedrock {
+    background-image: url('https://img.lunadeer.cn/i/2025/11/26/692677560db46.png');
+}
+
+.feature-hardware {
+    background-image: url('https://img.lunadeer.cn/i/2024/02/21/65d592e248066.jpg');
+}
+
+.feature-fun {
+    background-image: url('https://img.lunadeer.cn/i/2025/11/26/692677566b07b.png');
+}
+
+.feature-update {
+    background-image: url('https://img.lunadeer.cn/i/2025/11/26/692697b71431b.png');
+}
+
+.feature-guide {
+    background-image: url('https://img.lunadeer.cn/i/2025/11/26/692697b7376c7.png');
 }
 
 /* Hardware Card (No Image) */
