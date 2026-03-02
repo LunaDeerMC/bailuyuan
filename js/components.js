@@ -20,7 +20,7 @@ const Components = {
                 <a href="https://qm.qq.com/q/9izlHDoef6" target="_blank">群聊</a>
             </div>
             <div class="nav-cta-container">
-                <a href="https://outline.lunadeer.cn/s/447e5db6-8af4-468e-b7c5-cdb7b48aa439/doc/5yqg5ywl5pyn5yqh5zmo-WE4jkTxRmM" class="nav-cta" target="_blank">加入游戏</a>
+                <a href="join.html" class="nav-cta">加入游戏</a>
             </div>
         </div>
     </nav>
@@ -34,6 +34,7 @@ const Components = {
             <a href="/stats.html">数据</a>
             <a href="/sponsor.html">赞助</a>
             <a href="https://qm.qq.com/q/9izlHDoef6" target="_blank">群聊</a>
+            <a href="join.html">加入游戏</a>
         </div>
     </div>
     `,

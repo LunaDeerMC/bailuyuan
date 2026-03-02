@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加入游戏指引 - 白鹿原 Minecraft 服务器</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages/join.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Marked.js for Markdown parsing -->
+    <script src="js/marked.min.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div id="navbar-component"></div>
+
+    <div class="join-page-wrapper">
+        <div class="join-header-minimal">
+            <h1>开启您的冒险</h1>
+        </div>
+
+        <main class="wizard-container-modern">
+            
+            <div class="wizard-sidebar">
+                <div class="wizard-progress-vertical">
+                    <div class="progress-step active" data-step="1">
+                        <div class="step-dot"></div>
+                        <div class="step-text">
+                            <span class="step-title">公约</span>
+                            <span class="step-desc">阅读须知</span>
+                        </div>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="step-dot"></div>
+                        <div class="step-text">
+                            <span class="step-title">设备</span>
+                            <span class="step-desc">选择平台</span>
+                        </div>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="step-dot"></div>
+                        <div class="step-text">
+                            <span class="step-title">启动</span>
+                            <span class="step-desc">配置教程</span>
+                        </div>
+                    </div>
+                    <div class="progress-step" data-step="4">
+                        <div class="step-dot"></div>
+                        <div class="step-text">
+                            <span class="step-title">出发</span>
+                            <span class="step-desc">选择玩法</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wizard-content-area">
+                <!-- Step 1: Convention -->
+                <div id="step-1" class="step-content">
+                    <div class="content-header">
+                        <h2>服务器公约</h2>
+                        <p>为了维护良好的游戏环境，请务必阅读并遵守以下规则。</p>
+                    </div>
+                
+                <div class="convention-wrapper">
+                    <div class="markdown-content" id="convention-content">
+                        <!-- Content will be loaded from data/convention.md -->
+                        <div class="loading-state">
+                            <i class="fas fa-circle-notch fa-spin"></i>
+                            <span>正在加载公约内容...</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="agreement-area" onclick="document.getElementById('agree-checkbox').click()">
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="agree-checkbox">
+                        <span class="checkmark"><i class="fas fa-check"></i></span>
+                    </div>
+                    <label for="agree-checkbox" class="agreement-label">我已认真阅读并承诺遵守《服务器公约》</label>
+                </div>
+            </div>
+
+            <!-- Step 2: Device Selection -->
+            <div id="step-2" class="step-content">
+                <div class="content-header">
+                    <h2>选择您的设备</h2>
+                    <p>工欲善其事，必先利其器。</p>
+                </div>
+                
+                <div class="card-content">
+                    <div class="device-selection-grid">
+                        <div class="device-card" data-device="pc">
+                            <div class="icon-circle"><i class="fas fa-desktop"></i></div>
+                            <div class="device-info">
+                                <h3>电脑版</h3>
+                                <p>Win / Mac / Linux</p>
+                            </div>
+                            <div class="check-mark"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="device-card" data-device="ios">
+                            <div class="icon-circle"><i class="fab fa-apple"></i></div>
+                            <div class="device-info">
+                                <h3>iOS 设备</h3>
+                                <p>iPhone / iPad</p>
+                            </div>
+                            <div class="check-mark"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="device-card" data-device="android">
+                            <div class="icon-circle"><i class="fab fa-android"></i></div>
+                            <div class="device-info">
+                                <h3>安卓设备</h3>
+                                <p>Android 手机 / 平板</p>
+                            </div>
+                            <div class="check-mark"><i class="fas fa-check"></i></div>
+                        </div>
+                    </div>
+
+                    <div id="launcher-recommendation" class="launcher-box hidden">
+                        <div id="recommendation-content"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Tutorial -->
+            <div id="step-3" class="step-content">
+                <div class="content-header">
+                    <h2>配置与启动</h2>
+                    <p>只需几步简单操作即可进入游戏。</p>
+                </div>
+                <div class="card-content" id="tutorial-content">
+                    <!-- Content will be injected based on device selection -->
+                </div>
+            </div>
+
+            <!-- Step 4: Gameplay Guide -->
+            <div id="step-4" class="step-content">
+                <div class="content-header">
+                    <h2>选择您的玩法</h2>
+                    <p>这里有无限可能，你想成为什么样的玩家？(点击卡片查看详情)</p>
+                </div>
+                
+                <div class="card-content">
+                    <div class="playstyle-grid">
+                        <!-- Style 1: Large Towns -->
+                        <div class="playstyle-card" data-style="large-town">
+                            <div class="playstyle-visual town-bg">
+                                <i class="fas fa-city"></i>
+                            </div>
+                            <div class="playstyle-text">
+                                <h3>融入大型城镇</h3>
+                                <p>快速启航，共建繁华</p>
+                            </div>
+                        </div>
+
+                        <!-- Style 2: Small Towns -->
+                        <div class="playstyle-card" data-style="small-town">
+                            <div class="playstyle-visual village-bg">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="playstyle-text">
+                                <h3>加入小型城镇</h3>
+                                <p>共同成长，见证历史</p>
+                            </div>
+                        </div>
+
+                        <!-- Style 3: Friends -->
+                        <div class="playstyle-card" data-style="friends">
+                            <div class="playstyle-visual friends-bg">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="playstyle-text">
+                                <h3>与朋友共建</h3>
+                                <p>白手起家，开创时代</p>
+                            </div>
+                        </div>
+
+                        <!-- Style 4: Solo -->
+                        <div class="playstyle-card" data-style="solo">
+                            <div class="playstyle-visual solo-bg">
+                                <i class="fas fa-user-ninja"></i>
+                            </div>
+                            <div class="playstyle-text">
+                                <h3>独狼求生</h3>
+                                <p>自力更生，隐于山林</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Details Section (Initially Hidden) -->
+                    <div id="playstyle-details" class="playstyle-details-container">
+                        <div class="details-card">
+                            <div class="details-header">
+                                <h3 id="detail-title">玩法标题</h3>
+                                <span id="detail-subtitle" class="badge-subtitle">副标题</span>
+                            </div>
+                            <div class="details-body">
+                                <div class="detail-section">
+                                    <h4><i class="fas fa-user-tag"></i> 适合人群</h4>
+                                    <p id="detail-target">...</p>
+                                </div>
+                                <div class="detail-grid-row">
+                                    <div class="detail-section check-list">
+                                        <h4><i class="fas fa-thumbs-up"></i> 优势</h4>
+                                        <ul id="detail-pros"></ul>
+                                    </div>
+                                    <div class="detail-section warn-list">
+                                        <h4><i class="fas fa-exclamation-circle"></i> 注意事项</h4>
+                                        <ul id="detail-cons"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="final-message">
+                        <p>无论你选择哪条路，都别忘了多探索世界，结识他人。我们期待看到你的故事在这里展开！</p>
+                    </div>
+                </div>
+            </div>
+
+                <div class="step-footer">
+                    <button id="btn-prev" class="btn-clean" disabled>Back</button>
+                    <div class="step-action-group">
+                        <button id="btn-next" class="btn-primary-large">
+                            下一步 <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <div id="step4-buttons" class="hidden final-actions">
+                             <a href="doc.html" class="btn-clean"><i class="fas fa-book"></i> 查看文档</a>
+                             <a href="index.html" class="btn-primary-large"><i class="fas fa-home"></i> 回到首页</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-component"></div>
+
+    <script src="js/components.js"></script>
+    <script src="js/join_script.js"></script>
+</body>
+</html>
