@@ -14,7 +14,7 @@
   - `sponsor.html` + `sponsor_script.js`: donation total, sponsor list, search/filter, donation modal.
   - `stats.html` + `stats_script.js`: player leaderboard + searchable player cards + modal details.
 - Shared structure is injected by `components.js` into `#navbar-component` / `#footer-component` and handles mobile menu/current-link highlighting.
-- Shared visual system lives in `style.css`; `stats.html` and `sponsor.html` contain page-specific inline `<style>` overrides.
+- Shared visual system lives in `css/style.css`; page-specific styles live in `css/pages/` (for example `css/pages/sponsor.css`, `css/pages/stats.css`).
 - Data flow for stats:
   1. `statsprocess.py` fetches raw player JSON files and writes normalized outputs to `stats/`.
   2. It generates `stats/summary.json` consumed by `stats_script.js` via `fetch('stats/summary.json')`.
@@ -31,9 +31,9 @@
 
 ## Project Conventions
 - Prefer progressive enhancement with `DOMContentLoaded` initializers (all page scripts and `components.js`).
-- Keep network fetch paths relative for local assets (`fund_progress.txt`, `sponsors.txt`, `stats/summary.json`, `stats/{uuid}.json`).
+- Keep network fetch paths relative for local assets (`data/fund_progress.txt`, `data/sponsors.txt`, `stats/summary.json`, `stats/{uuid}.json`).
 - For unavailable remote APIs, follow existing behavior: log errors and render fallback text instead of throwing.
-- Preserve current text-data contracts: `sponsors.txt` is parsed as comma-separated fields (`name, project, amount, [date]`), and `fund_progress.txt` is line-parsed by frontend scripts.
+- Preserve current text-data contracts: `data/sponsors.txt` is parsed as comma-separated fields (`name, project, amount, [date]`), and `data/fund_progress.txt` is line-parsed by frontend scripts.
 - Do not introduce bundlers/framework migrations unless explicitly requested.
 
 ## Integration Points
