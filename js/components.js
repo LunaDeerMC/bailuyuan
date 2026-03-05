@@ -18,7 +18,7 @@ const Components = {
                 <a href="/photo.html">相册</a>
                 <a href="/stats.html">数据</a>
                 <a href="/sponsor.html">赞助</a>
-                <a href="https://qm.qq.com/q/9izlHDoef6" target="_blank">群聊</a>
+                <a href="https://qm.qq.com/q/9izlHDoef6" target="_blank" rel="noopener noreferrer">群聊</a>
             </div>
             <div class="nav-cta-container">
                 <a href="join.html" class="nav-cta">加入游戏</a>
@@ -35,7 +35,7 @@ const Components = {
             <a href="/photo.html">相册</a>
             <a href="/stats.html">数据</a>
             <a href="/sponsor.html">赞助</a>
-            <a href="https://qm.qq.com/q/9izlHDoef6" target="_blank">群聊</a>
+            <a href="https://qm.qq.com/q/9izlHDoef6" target="_blank" rel="noopener noreferrer">群聊</a>
             <a href="join.html">加入游戏</a>
         </div>
     </div>
