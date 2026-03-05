@@ -1,6 +1,5 @@
 [
     {
-        "id": "sand-duper",
         "title": "公共刷沙机",
         "intro": "位于末地的高效刷沙机，支持沙子、红沙、混凝土粉等重力方块的复制。",
         "type": "resource",
@@ -25,7 +24,6 @@
         ]
     },
     {
-        "id": "gold-farm",
         "title": "基岩层猪人塔",
         "intro": "位于下界基岩上层的高效金粒与经验获取设施。",
         "type": "xp",
@@ -47,7 +45,6 @@
         ]
     },
     {
-        "id": "iron-farm",
         "title": "堆叠式刷铁机",
         "intro": "主世界出生点附近的高效铁锭生产设施。",
         "type": "resource",
@@ -65,7 +62,6 @@
         "notes": []
     },
     {
-        "id": "nether-hub",
         "title": "地狱交通中心",
         "intro": "连接各个主要生物群系和资源点的冰道枢纽。",
         "type": "infrastructure",
@@ -86,7 +82,6 @@
         ]
     },
     {
-         "id": "broken-farm",
          "title": "旧版刷怪塔",
          "intro": "已废弃的旧版本刷怪设施，不再维护。",
          "type": "xp",
