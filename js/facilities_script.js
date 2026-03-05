@@ -298,6 +298,61 @@ document.addEventListener('DOMContentLoaded', () => {
     let editorInstructions = [];
     let editorNotes = [];
 
+    // Initialize custom selects
+    document.querySelectorAll('.custom-select').forEach(select => {
+        const trigger = select.querySelector('.custom-select-trigger');
+        const options = select.querySelectorAll('.custom-option');
+        const input = select.querySelector('input[type="hidden"]');
+        const text = select.querySelector('.custom-select-text');
+
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = select.classList.contains('open');
+            // Close all others
+            document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('open'));
+            if (!isOpen) {
+                select.classList.add('open');
+            }
+        });
+
+        options.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                
+                // Update selection visually
+                options.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                text.innerText = option.innerText;
+                
+                // Update hidden input and trigger change
+                input.value = option.dataset.value;
+                input.dispatchEvent(new Event('change'));
+                
+                // Close dropdown
+                select.classList.remove('open');
+            });
+        });
+    });
+
+    // Close custom selects on outside click
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('open'));
+    });
+
+    function setCustomSelectValue(id, value) {
+        const input = document.getElementById(id);
+        if (!input) return;
+        const select = input.closest('.custom-select');
+        const option = select.querySelector(`.custom-option[data-value="${value}"]`);
+        
+        if (option) {
+            input.value = value;
+            select.querySelector('.custom-select-text').innerText = option.innerText;
+            select.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+        }
+    }
+
     function openEditor(item) {
         // Reset state
         editorContributors = item ? [...item.contributors] : [];
@@ -307,9 +362,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Populate form fields
         document.getElementById('editor-title').value = item ? item.title : '';
         document.getElementById('editor-intro').value = item ? item.intro : '';
-        document.getElementById('editor-type').value = item ? item.type : 'resource';
-        document.getElementById('editor-status').value = item ? item.status : 'online';
-        document.getElementById('editor-dimension').value = item ? item.dimension : 'overworld';
+        
+        setCustomSelectValue('editor-type', item ? item.type : 'resource');
+        setCustomSelectValue('editor-status', item ? item.status : 'online');
+        setCustomSelectValue('editor-dimension', item ? item.dimension : 'overworld');
+        
         document.getElementById('editor-x').value = item ? item.coordinates.x : '';
         document.getElementById('editor-y').value = item ? item.coordinates.y : '';
         document.getElementById('editor-z').value = item ? item.coordinates.z : '';

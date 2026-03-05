@@ -76,14 +76,14 @@
         <div class="modal-content facility-modal-content">
             <span class="close-modal">&times;</span>
             <div class="modal-header">
-                <div class="modal-title-row">
-                    <h3 class="modal-title" id="modal-title">设施名称</h3>
+                <h3 class="modal-title" id="modal-title">设施名称</h3>
+                <div class="modal-badges-row">
+                    <div class="modal-badges" id="modal-badges">
+                        <!-- Badges injected by JS -->
+                    </div>
                     <button class="btn-edit-facility" id="btn-edit-facility" title="编辑此设施">
                         <i class="fas fa-pen"></i> 编辑
                     </button>
-                </div>
-                <div class="modal-badges" id="modal-badges">
-                    <!-- Badges injected by JS -->
                 </div>
             </div>
             
@@ -152,28 +152,49 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="editor-type">类型</label>
-                                <select id="editor-type">
-                                    <option value="resource">资源类</option>
-                                    <option value="xp">经验类</option>
-                                    <option value="infrastructure">基础设施</option>
-                                </select>
+                                <label>类型</label>
+                                <div class="custom-select">
+                                    <input type="hidden" id="editor-type" value="resource">
+                                    <div class="custom-select-trigger">
+                                        <span class="custom-select-text">资源类</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="custom-select-options">
+                                        <div class="custom-option selected" data-value="resource">资源类</div>
+                                        <div class="custom-option" data-value="xp">经验类</div>
+                                        <div class="custom-option" data-value="infrastructure">基础设施</div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label for="editor-status">状态</label>
-                                <select id="editor-status">
-                                    <option value="online">正常运行</option>
-                                    <option value="maintenance">维护中</option>
-                                    <option value="offline">暂时失效</option>
-                                </select>
+                                <label>状态</label>
+                                <div class="custom-select">
+                                    <input type="hidden" id="editor-status" value="online">
+                                    <div class="custom-select-trigger">
+                                        <span class="custom-select-text">正常运行</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="custom-select-options">
+                                        <div class="custom-option selected" data-value="online">正常运行</div>
+                                        <div class="custom-option" data-value="maintenance">维护中</div>
+                                        <div class="custom-option" data-value="offline">暂时失效</div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label for="editor-dimension">维度</label>
-                                <select id="editor-dimension">
-                                    <option value="overworld">主世界</option>
-                                    <option value="nether">下界</option>
-                                    <option value="end">末地</option>
-                                </select>
+                                <label>维度</label>
+                                <div class="custom-select">
+                                    <input type="hidden" id="editor-dimension" value="overworld">
+                                    <div class="custom-select-trigger">
+                                        <span class="custom-select-text">主世界</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="custom-select-options">
+                                        <div class="custom-option selected" data-value="overworld">主世界</div>
+                                        <div class="custom-option" data-value="nether">下界</div>
+                                        <div class="custom-option" data-value="end">末地</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-row coords-row">
