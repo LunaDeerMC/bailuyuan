@@ -1,101 +1,62 @@
 [
     {
-        "title": "公共刷沙机",
-        "intro": "位于末地的高效刷沙机，支持沙子、红沙、混凝土粉等重力方块的复制。",
-        "type": "resource",
-        "dimension": "end",
-        "status": "online",
-        "coordinates": {
-            "x": 1200,
-            "y": 64,
-            "z": -500
-        },
-        "contributors": ["Alice", "Bob"],
-        "instructions": [
-            {"type": "text", "content": "1. 携带需要复制的重力方块（沙子、红沙、混凝土粉等）。"},
-            {"type": "text", "content": "2. 前往末地主岛刷沙机位置。"},
-            {"type": "text", "content": "3. 按照指示牌站在指定AFK点位。"},
-            {"type": "text", "content": "4. 打开拉杆启动机器，确保不要移动。"},
-            {"type": "text", "content": "5. 收集掉落到末地传送门的物品。"}
-        ],
-        "notes": [
-            {"type": "text", "content": "请勿在服务器卡顿严重时使用。"},
-            {"type": "text", "content": "使用完毕后请务必关闭机器。"}
-        ]
-    },
-    {
-        "title": "基岩层猪人塔",
-        "intro": "位于下界基岩上层的高效金粒与经验获取设施。",
-        "type": "xp",
-        "dimension": "nether",
-        "status": "maintenance",
-        "coordinates": {
-            "x": 0,
-            "y": 250,
-            "z": 0
-        },
-        "contributors": ["Charlie", "David"],
-        "instructions": [
-            {"type": "text", "content": "1. 通过地狱交通前往0,0坐标并上到基岩层。"},
-            {"type": "text", "content": "2. 站在中心挂机点。"},
-            {"type": "text", "content": "3. 挥剑攻击猪人以获取经验。"}
-        ],
-        "notes": [
-            {"type": "text", "content": "目前收集系统正在改造中，只能获取经验，物品会丢失。"}
-        ]
-    },
-    {
-        "title": "堆叠式刷铁机",
-        "intro": "主世界出生点附近的高效铁锭生产设施。",
+        "title": "72K刷冰机",
+        "intro": "解决生电的冰需求及便携水需求。原视频BV1qPhWzdEwU",
         "type": "resource",
         "dimension": "overworld",
         "status": "online",
         "coordinates": {
-            "x": 100,
-            "y": 150,
-            "z": 100
+            "x": 8535,
+            "y": 195,
+            "z": 1643
         },
-        "contributors": ["Eve"],
+        "contributors": ["Aquaium", "jiajia_zZ"],
         "instructions": [
-            {"type": "text", "content": "直接从箱子中拿取铁锭即可。"}
-        ],
-        "notes": []
-    },
-    {
-        "title": "地狱交通中心",
-        "intro": "连接各个主要生物群系和资源点的冰道枢纽。",
-        "type": "infrastructure",
-        "dimension": "nether",
-        "status": "online",
-        "coordinates": {
-            "x": 0,
-            "y": 120,
-            "z": 0
-        },
-        "contributors": ["Frank", "Grace", "Heidi"],
-        "instructions": [
-            {"type": "text", "content": "请携带船只以便快速移动。"},
-            {"type": "text", "content": "请勿破坏冰道。"}
+            {
+                "type": "text",
+                "content": "开机后手持效率3钻石镐站在坑里挖冰。盒装冰在背后的箱子里。"
+            }
         ],
         "notes": [
-            {"type": "text", "content": "前往主岛的线路暂时封闭。"}
+            {
+                "type": "text",
+                "content": "使用前查看告示牌。指示灯熄灭前请勿离开。"
+            }
         ]
     },
     {
-         "title": "旧版刷怪塔",
-         "intro": "已废弃的旧版本刷怪设施，不再维护。",
-         "type": "xp",
-         "dimension": "overworld",
-         "status": "offline",
-         "coordinates": {
-             "x": -500,
-             "y": 64,
-             "z": -500
-         },
-         "contributors": ["OldPlayer"],
-         "instructions": [],
-         "notes": [
-             {"type": "text", "content": "该设施已损坏，请前往新的刷怪塔。"}
-         ]
+        "title": "60W鱼塔",
+        "intro": "本机器主要用来满足海晶灯需求。除海晶灯外本机器还收集海晶碎片。",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 13984,
+            "y": 162,
+            "z": 7296
+        },
+        "contributors": [
+            "Aquaium",
+            "jiajia_zZ"
+        ],
+        "instructions": [
+            {
+                "type": "text",
+                "content": "本机器只需要挂机即可。"
+            },
+            {
+                "type": "text",
+                "content": "主世界挂机点坐标为：13984,162,7296"
+            },
+            {
+                "type": "text",
+                "content": "下界挂机点坐标为：1745,~,896。"
+            },
+            {
+                "type": "text",
+                "content": "收集原视频BV1g142167tJ"
+            }
+        ],
+        "notes": []
     }
 ]
