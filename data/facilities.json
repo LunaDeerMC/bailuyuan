@@ -23,8 +23,8 @@
                 "content": "使用前请仔细阅读告示牌说明。指示灯熄灭前请勿离开。"
             },
             {
-                "type": "text",
-                "content": "参考视频：BV1qPhWzdEwU"
+                "type": "video",
+                "content": "BV1qPhWzdEwU"
             }
         ]
     },
@@ -59,8 +59,8 @@
         ],
         "notes": [
             {
-                "type": "text",
-                "content": "参考视频：BV1g142167tJ"
+                "type": "video",
+                "content": "BV1g142167tJ"
             }
         ]
     },

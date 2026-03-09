@@ -195,8 +195,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.src = block.content;
                 img.loading = 'lazy';
                 container.appendChild(img);
+            } else if (block.type === 'video') {
+                const bv = parseBVNumber(block.content);
+                if (bv) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'video-embed-wrapper';
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://player.bilibili.com/player.html?bvid=${bv}&autoplay=0&high_quality=1`;
+                    iframe.allowFullscreen = true;
+                    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups');
+                    iframe.loading = 'lazy';
+                    wrapper.appendChild(iframe);
+                    container.appendChild(wrapper);
+                } else {
+                    const p = document.createElement('p');
+                    p.className = 'text-secondary';
+                    p.innerText = '无效的视频 BV 号';
+                    container.appendChild(p);
+                }
             }
         });
+    }
+
+    function parseBVNumber(input) {
+        if (!input) return null;
+        input = input.trim();
+        // Match BV number directly (e.g. BV1qPhWzdEwU)
+        const bvPattern = /^(BV[A-Za-z0-9]+)$/;
+        const directMatch = input.match(bvPattern);
+        if (directMatch) return directMatch[1];
+        // Match from bilibili URL (e.g. https://www.bilibili.com/video/BV1qPhWzdEwU/...)
+        const urlPattern = /bilibili\.com\/video\/(BV[A-Za-z0-9]+)/;
+        const urlMatch = input.match(urlPattern);
+        if (urlMatch) return urlMatch[1];
+        // Match from b23.tv short URL or other formats containing BV
+        const generalPattern = /(BV[A-Za-z0-9]{10,})/;
+        const generalMatch = input.match(generalPattern);
+        if (generalMatch) return generalMatch[1];
+        return null;
     }
 
     // Helpers
@@ -433,14 +469,20 @@ document.addEventListener('DOMContentLoaded', () => {
             div.dataset.idx = idx;
             div.dataset.listId = listId;
 
-            const isText = item.type === 'text';
+            const typeBadgeClass = item.type === 'text' ? 'badge-text' : item.type === 'image' ? 'badge-image' : 'badge-video';
+            const typeBadgeLabel = item.type === 'text' ? '文字' : item.type === 'image' ? '图片' : '视频';
+            let contentHtml;
+            if (item.type === 'text') {
+                contentHtml = `<textarea class="item-content" rows="2" placeholder="输入文字内容...">${escapeHtml(item.content)}</textarea>`;
+            } else if (item.type === 'image') {
+                contentHtml = `<input type="text" class="item-content" placeholder="输入图片URL..." value="${escapeHtml(item.content)}">`;
+            } else {
+                contentHtml = `<input type="text" class="item-content" placeholder="BV1xxxxxxxxxx 或 bilibili 视频地址" value="${escapeHtml(item.content)}">`;
+            }
             div.innerHTML = `
                 <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
-                <span class="item-type-badge ${isText ? 'badge-text' : 'badge-image'}">${isText ? '文字' : '图片'}</span>
-                ${isText
-                    ? `<textarea class="item-content" rows="2" placeholder="输入文字内容...">${escapeHtml(item.content)}</textarea>`
-                    : `<input type="text" class="item-content" placeholder="输入图片URL..." value="${escapeHtml(item.content)}">`
-                }
+                <span class="item-type-badge ${typeBadgeClass}">${typeBadgeLabel}</span>
+                ${contentHtml}
                 <button type="button" class="remove-item-btn" title="删除"><i class="fas fa-trash-alt"></i></button>
             `;
             container.appendChild(div);
@@ -606,8 +648,10 @@ document.addEventListener('DOMContentLoaded', () => {
             editorInstructions.forEach(block => {
                 if (block.type === 'text') {
                     html += `<p>${escapeHtml(block.content) || '<span class=\"text-secondary\">空文字</span>'}</p>`;
-                } else {
+                } else if (block.type === 'image') {
                     html += block.content ? `<img src="${escapeHtml(block.content)}" loading="lazy">` : '<p class="text-secondary">空图片</p>';
+                } else if (block.type === 'video') {
+                    html += renderVideoPreviewHtml(block.content);
                 }
             });
         } else {
@@ -623,8 +667,10 @@ document.addEventListener('DOMContentLoaded', () => {
             editorNotes.forEach(block => {
                 if (block.type === 'text') {
                     html += `<p>${escapeHtml(block.content) || '<span class=\"text-secondary\">空文字</span>'}</p>`;
-                } else {
+                } else if (block.type === 'image') {
                     html += block.content ? `<img src="${escapeHtml(block.content)}" loading="lazy">` : '<p class="text-secondary">空图片</p>';
+                } else if (block.type === 'video') {
+                    html += renderVideoPreviewHtml(block.content);
                 }
             });
         } else {
@@ -657,8 +703,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 z: parseInt(document.getElementById('editor-z').value) || 0
             },
             contributors: [...editorContributors],
-            instructions: editorInstructions.filter(i => i.content.trim() !== ''),
-            notes: editorNotes.filter(n => n.content.trim() !== '')
+            instructions: editorInstructions.filter(i => i.content.trim() !== '').map(i => i.type === 'video' ? { type: 'video', content: parseBVNumber(i.content) || i.content } : {...i}),
+            notes: editorNotes.filter(n => n.content.trim() !== '').map(n => n.type === 'video' ? { type: 'video', content: parseBVNumber(n.content) || n.content } : {...n})
         };
 
         const jsonStr = JSON.stringify(facilityObj, null, 4);
@@ -688,6 +734,14 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('已复制到剪贴板');
         });
     });
+
+    function renderVideoPreviewHtml(content) {
+        const bv = parseBVNumber(content);
+        if (bv) {
+            return `<div class="video-embed-wrapper"><iframe src="https://player.bilibili.com/player.html?bvid=${bv}&autoplay=0&high_quality=1" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups" loading="lazy"></iframe></div>`;
+        }
+        return '<p class="text-secondary">请输入有效的 BV 号或 bilibili 视频地址</p>';
+    }
 
     // --- Utility ---
     function escapeHtml(text) {
