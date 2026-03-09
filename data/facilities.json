@@ -78,8 +78,7 @@
         "contributors": [
             "桥佳的一车面包人（可自来认领）",
             "Huakou",
-            "Clincded_Xsa",
-            "Thumper0327"
+            "Clincded_Xsa"
         ],
         "instructions": [
             {
@@ -114,8 +113,7 @@
             "z": 6112
         },
         "contributors": [
-            "Huakou",
-            "Thumper0327"
+            "Huakou"
         ],
         "instructions": [],
         "notes": [
@@ -141,8 +139,7 @@
             "z": -108
         },
         "contributors": [
-            "Huakou",
-            "Thumper0327"
+            "Huakou"
         ],
         "instructions": [
             {
@@ -154,6 +151,33 @@
             {
                 "type": "text",
                 "content": "火药、骨块、箭矢常年爆仓，萤石、红石存量充足。"
+            }
+        ]
+    },
+    {
+        "title": "简单恶魂塔",
+        "intro": "双维度，在下届基岩顶挂机即可，产物为恶魂之泪、岩浆膏、火药",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 1240,
+            "y": 126,
+            "z": -4002
+        },
+        "contributors": [
+            "Kun_Wu"
+        ],
+        "instructions": [
+            {
+                "type": "text",
+                "content": "本机器仅需挂机，无需其他操作。\n主世界挂机点：1240, 126, -4002\n下界挂机点：280,248,-527"
+            }
+        ],
+        "notes": [
+            {
+                "type": "text",
+                "content": "注：起初建造时并没有太高的需求，产量比较小。"
             }
         ]
     }
