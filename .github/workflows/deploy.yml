@@ -64,3 +64,38 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  notify-indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Submit URLs to IndexNow
+        if: ${{ env.INDEXNOW_KEY != '' }}
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: |
+          if [ -z "$INDEXNOW_KEY" ]; then
+            echo "INDEXNOW_KEY not set, skipping."
+            exit 0
+          fi
+          HOST="bailuyuan.lunadeer.cn"
+          curl -s -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"host\": \"${HOST}\",
+              \"key\": \"${INDEXNOW_KEY}\",
+              \"keyLocation\": \"https://${HOST}/${INDEXNOW_KEY}.txt\",
+              \"urlList\": [
+                \"https://${HOST}/\",
+                \"https://${HOST}/sponsor.html\",
+                \"https://${HOST}/stats.html\",
+                \"https://${HOST}/join.html\",
+                \"https://${HOST}/facilities.html\",
+                \"https://${HOST}/doc.html\",
+                \"https://${HOST}/map.html\",
+                \"https://${HOST}/photo.html\"
+              ]
+            }"
+          echo ""
+          echo "IndexNow notification sent."
