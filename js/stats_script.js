@@ -20,6 +20,11 @@ async function fetchStats() {
         const data = await response.json();
         allPlayers = data.players;
         
+        // Show update time
+        if (data.updated_at) {
+            document.getElementById('stats-updated-at').textContent = '数据更新于 ' + data.updated_at;
+        }
+        
         // Hide loading
         document.getElementById('loading-indicator').style.display = 'none';
         

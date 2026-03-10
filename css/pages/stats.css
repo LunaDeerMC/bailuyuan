@@ -12,6 +12,14 @@
     background: var(--bg-color);
 }
 
+.stats-updated-at {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-top: -45px;
+    margin-bottom: 40px;
+}
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

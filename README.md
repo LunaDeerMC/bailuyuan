@@ -159,6 +159,7 @@ pip install requests tqdm
 源接口需要配置认证，再设置环境变量：
 
 ```bash
+export STATS_BASE_URL=http://your-server/stats
 export STATS_USER=your_username
 export STATS_PASS=your_password
 ```
