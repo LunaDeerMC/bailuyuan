@@ -19,12 +19,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentDetailItem = null;
 
+    // Generate stable anchor ID for a facility
+    function generateFacilityId(item) {
+        var raw = (item.title || '');
+        var hash = 0;
+        for (var i = 0; i < raw.length; i++) {
+            hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+            hash |= 0;
+        }
+        return 'f' + Math.abs(hash).toString(36);
+    }
+
+    // Handle URL hash: auto-open facility modal
+    function handleHashNavigation() {
+        var hash = location.hash.replace('#', '');
+        if (!hash) return;
+        for (var i = 0; i < facilitiesData.length; i++) {
+            if (generateFacilityId(facilitiesData[i]) === hash) {
+                openModal(facilitiesData[i]);
+                return;
+            }
+        }
+    }
+
     // 1. Fetch Data
     fetch('data/facilities.json')
         .then(response => response.json())
         .then(data => {
             facilitiesData = data;
             renderGrid();
+            handleHashNavigation();
         })
         .catch(err => {
             console.error('Error loading facilities:', err);
@@ -66,12 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModal.addEventListener('click', () => {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto'; // Enable scrolling
+        history.replaceState(null, '', location.pathname + location.search);
     });
 
     window.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
+            history.replaceState(null, '', location.pathname + location.search);
         }
     });
 
@@ -177,6 +203,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden'; // Prevent scrolling background
+
+        // Update URL hash
+        var anchorId = generateFacilityId(item);
+        history.replaceState(null, '', '#' + anchorId);
     }
 
     function renderContentList(container, list) {
@@ -300,6 +330,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // Open empty editor for new facility
     document.getElementById('btn-add-facility').addEventListener('click', () => {
         openEditor(null);
+    });
+
+    // Share facility link
+    document.getElementById('btn-share-facility').addEventListener('click', () => {
+        if (!currentDetailItem) return;
+        var anchorId = generateFacilityId(currentDetailItem);
+        var url = location.origin + location.pathname + '#' + anchorId;
+        var btn = document.getElementById('btn-share-facility');
+        navigator.clipboard.writeText(url).then(() => {
+            btn.innerHTML = '<i class="fas fa-check"></i> 已复制链接';
+            btn.classList.add('shared');
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-share-alt"></i> 分享';
+                btn.classList.remove('shared');
+            }, 2000);
+        }).catch(() => {
+            var tmp = document.createElement('input');
+            tmp.value = url;
+            document.body.appendChild(tmp);
+            tmp.select();
+            document.execCommand('copy');
+            document.body.removeChild(tmp);
+            btn.innerHTML = '<i class="fas fa-check"></i> 已复制链接';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-share-alt"></i> 分享';
+            }, 2000);
+        });
     });
 
     // Open editor from detail modal

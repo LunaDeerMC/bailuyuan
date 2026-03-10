@@ -314,6 +314,13 @@
     flex-wrap: wrap;
 }
 
+.modal-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
 .large-badge {
     padding: 6px 14px;
     border-radius: 8px;
@@ -531,6 +538,35 @@
 .btn-add-facility:hover {
     background: #005bb5;
     transform: translateY(-1px);
+}
+
+.btn-share-facility {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1.5px solid rgba(0,0,0,0.12);
+    border-radius: 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.btn-share-facility:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    background: rgba(0,113,227,0.04);
+}
+
+.btn-share-facility.shared {
+    color: #15803d;
+    border-color: #34c759;
+    background: #e8fceb;
 }
 
 .btn-edit-facility {
