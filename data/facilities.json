@@ -10,7 +10,10 @@
             "y": 195,
             "z": 1643
         },
-        "contributors": ["Aquaium", "jiajia_zZ"],
+        "contributors": [
+            "Aquaium",
+            "jiajia_zZ"
+        ],
         "instructions": [
             {
                 "type": "text",
@@ -178,6 +181,34 @@
             {
                 "type": "text",
                 "content": "注：起初建造时并没有太高的需求，产量比较小。"
+            }
+        ]
+    },
+    {
+        "title": "凋灵骷髅刷怪塔",
+        "intro": "目标产物为凋灵骷髅头、煤炭、骨头的刷怪塔。",
+        "type": "resource",
+        "dimension": "nether",
+        "status": "maintenance",
+        "coordinates": {
+            "x": 15,
+            "y": 204,
+            "z": -3269
+        },
+        "contributors": [
+            "Kun_Wu",
+            "EVILGUDAKO"
+        ],
+        "instructions": [
+            {
+                "type": "text",
+                "content": "在下届基岩顶层挂机，收集部分需要使用附有抢夺III附魔的剑类武器进行攻击。"
+            }
+        ],
+        "notes": [
+            {
+                "type": "text",
+                "content": "刷怪塔建于早些年间，待新版本特性和功能优化改造，敬请等待。"
             }
         ]
     }
