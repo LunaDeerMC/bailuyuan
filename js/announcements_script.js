@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Sort by time descending (newest first)
             announcementsData.sort((a, b) => new Date(b.time) - new Date(a.time));
             renderTimeline();
+            handleHashNavigation();
         })
         .catch(err => {
             console.error('Error loading announcements:', err);
@@ -100,8 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         filtered.forEach((item, index) => {
+            const anchorId = generateAnchorId(item);
             const timelineItem = document.createElement('div');
             timelineItem.className = 'timeline-item category-' + item.category;
+            timelineItem.id = anchorId;
 
             const card = document.createElement('div');
             card.className = 'announcement-card';
@@ -148,20 +151,52 @@ document.addEventListener('DOMContentLoaded', () => {
             detailInner.className = 'detail-content';
             renderContentBlocks(detailInner, item.content);
 
-            // Edit button inside detail (hidden by default)
-            const editRow = document.createElement('div');
-            editRow.className = 'detail-edit-btn-row ' + (editModeEnabled ? 'edit-visible' : 'edit-hidden');
+            // Action buttons row inside detail
+            const actionRow = document.createElement('div');
+            actionRow.className = 'detail-action-btn-row';
+
+            // Share button
+            const shareBtn = document.createElement('button');
+            shareBtn.className = 'btn-share-announcement';
+            shareBtn.innerHTML = '<i class="fas fa-share-alt"></i> 分享';
+            shareBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                var url = location.origin + location.pathname + '#' + anchorId;
+                navigator.clipboard.writeText(url).then(() => {
+                    shareBtn.innerHTML = '<i class="fas fa-check"></i> 已复制链接';
+                    shareBtn.classList.add('shared');
+                    setTimeout(() => {
+                        shareBtn.innerHTML = '<i class="fas fa-share-alt"></i> 分享';
+                        shareBtn.classList.remove('shared');
+                    }, 2000);
+                }).catch(() => {
+                    // Fallback: use a temporary input
+                    var tmp = document.createElement('input');
+                    tmp.value = url;
+                    document.body.appendChild(tmp);
+                    tmp.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tmp);
+                    shareBtn.innerHTML = '<i class="fas fa-check"></i> 已复制链接';
+                    setTimeout(() => {
+                        shareBtn.innerHTML = '<i class="fas fa-share-alt"></i> 分享';
+                    }, 2000);
+                });
+            });
+            actionRow.appendChild(shareBtn);
+
+            // Edit button (hidden by default)
             const editBtn = document.createElement('button');
-            editBtn.className = 'btn-edit-announcement';
+            editBtn.className = 'btn-edit-announcement ' + (editModeEnabled ? 'edit-visible' : 'edit-hidden');
             editBtn.innerHTML = '<i class="fas fa-pen"></i> 编辑';
             editBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 openEditor(item);
             });
-            editRow.appendChild(editBtn);
+            actionRow.appendChild(editBtn);
 
             detail.appendChild(detailInner);
-            detail.appendChild(editRow);
+            detail.appendChild(actionRow);
 
             card.appendChild(summary);
             card.appendChild(detail);
@@ -206,6 +241,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+    }
+
+    // ========== Generate stable ID for announcement ==========
+    function generateAnchorId(item) {
+        // Use title + time to create a stable hash-friendly ID
+        var raw = (item.time || '') + '_' + (item.title || '');
+        var hash = 0;
+        for (var i = 0; i < raw.length; i++) {
+            hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+            hash |= 0;
+        }
+        return 'a' + Math.abs(hash).toString(36);
+    }
+
+    // ========== Handle URL hash on load ==========
+    function handleHashNavigation() {
+        var hash = location.hash.replace('#', '');
+        if (!hash) return;
+        var target = document.getElementById(hash);
+        if (!target) return;
+        // Expand this card
+        var card = target.querySelector('.announcement-card');
+        if (card) {
+            timeline.querySelectorAll('.announcement-card.expanded').forEach(function(c) { c.classList.remove('expanded'); });
+            card.classList.add('expanded');
+        }
+        // Scroll into view with a small delay for layout
+        setTimeout(function() {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
     }
 
     // ========== Helpers ==========
