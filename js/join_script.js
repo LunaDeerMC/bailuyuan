@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // State
     let currentStep = 1;
     let selectedDevice = null;
+    let selectedEdition = 'java';
     const totalSteps = 4;
 
     // Elements
@@ -24,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const tutorialContent = document.getElementById('tutorial-content');
     const step4Buttons = document.getElementById('step4-buttons');
     const mainWizardActions = document.querySelector('.wizard-actions');
+    const editionSelector = document.getElementById('edition-selector');
+    const editionBtns = document.querySelectorAll('.edition-btn');
 
     console.log('DOM Elements loaded. Step contents found:', stepContents.length);
     
@@ -237,6 +240,48 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const bedrockDeviceData = {
+        pc: {
+            title: "电脑版 (Bedrock Edition)",
+            recommendations: [
+                {
+                    name: "Minecraft 基岩版",
+                    icon: "fas fa-cube",
+                    desc: "从 Microsoft Store 获取 Minecraft（需 Windows 10/11）",
+                    url: "https://www.xbox.com/games/store/minecraft/9NBLGGH2JHXJ",
+                    primary: true
+                }
+            ],
+            note: "基岩版通过 Microsoft Store 购买，使用 Xbox / Microsoft 账号登录即可游玩。"
+        },
+        ios: {
+            title: "iOS 基岩版",
+            recommendations: [
+                {
+                    name: "Minecraft",
+                    icon: "fas fa-cube",
+                    desc: "从 App Store 购买并下载 Minecraft",
+                    url: "https://apps.apple.com/app/minecraft/id479516143",
+                    primary: true
+                }
+            ],
+            note: "基岩版是 iOS 上的原生 Minecraft，性能最佳、操作体验最好。"
+        },
+        android: {
+            title: "安卓基岩版",
+            recommendations: [
+                {
+                    name: "Minecraft",
+                    icon: "fas fa-cube",
+                    desc: "从 Google Play 购买并下载 Minecraft",
+                    url: "https://play.google.com/store/apps/details?id=com.mojang.minecraftpe",
+                    primary: true
+                }
+            ],
+            note: "基岩版是安卓上的原生 Minecraft，性能最佳、操作体验最好。"
+        }
+    };
+
     deviceCards.forEach(card => {
         card.addEventListener('click', () => {
             // UI Update
@@ -244,8 +289,17 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.add('selected');
 
             const deviceType = card.dataset.device;
-            selectedDevice = deviceType; // Correctly update state
-            
+            selectedDevice = deviceType;
+            selectedEdition = 'java';
+
+            // Show edition selector and reset to Java
+            if (editionSelector) {
+                editionSelector.classList.remove('hidden');
+                editionBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.edition === 'java');
+                });
+            }
+
             // Show Recommendation
             showRecommendation(deviceType);
             
@@ -254,8 +308,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Edition toggle handlers
+    editionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            editionBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedEdition = btn.dataset.edition;
+            if (selectedDevice) {
+                showRecommendation(selectedDevice);
+            }
+        });
+    });
+
     function showRecommendation(device) {
-        const data = deviceData[device];
+        const data = selectedEdition === 'bedrock' ? bedrockDeviceData[device] : deviceData[device];
         if (!data) return;
 
         if (recommendationSection) {
@@ -376,9 +442,104 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
     };
 
+    const bedrockTutorials = {
+        pc: [
+            {
+                title: '获取游戏',
+                desc: '从 <a href="https://www.xbox.com/games/store/minecraft/9NBLGGH2JHXJ" target="_blank">Microsoft Store</a> 购买并下载 Minecraft（基岩版/Bedrock Edition），需要 Windows 10 或 Windows 11。'
+            },
+            {
+                title: '登录账号',
+                desc: '打开 Minecraft，使用 Microsoft / Xbox 账号登录。'
+            },
+            {
+                title: '加入服务器',
+                desc: `点击"游戏" → 切换到"服务器"标签页 → 滚动到底部点击"添加服务器"。<br>
+                       服务器名称：<span class="highlight-text">白鹿原</span><br>
+                       填写以下服务器信息：
+                       <div class="server-address-box">
+                           <span>地址：</span><code>mcbe.lunadeer.cn</code>
+                           <button class="btn-copy" onclick="navigator.clipboard.writeText('mcbe.lunadeer.cn').then(() => { this.innerHTML = '<i class=\\'fas fa-check\\'></i> 已复制'; setTimeout(() => this.innerHTML = '<i class=\\'fas fa-copy\\'></i> 复制', 2000); })">
+                               <i class="fas fa-copy"></i> 复制
+                           </button>
+                       </div>
+                       <div class="server-address-box">
+                           <span>端口：</span><code>15337</code>
+                           <button class="btn-copy" onclick="navigator.clipboard.writeText('15337').then(() => { this.innerHTML = '<i class=\\'fas fa-check\\'></i> 已复制'; setTimeout(() => this.innerHTML = '<i class=\\'fas fa-copy\\'></i> 复制', 2000); })">
+                               <i class="fas fa-copy"></i> 复制
+                           </button>
+                       </div>
+                       填写完成后点击"保存"，然后选中该服务器加入即可。`
+            }
+        ],
+        ios: [
+            {
+                title: '获取游戏',
+                desc: '从 <a href="https://apps.apple.com/app/minecraft/id479516143" target="_blank">App Store</a> 购买并下载 Minecraft。'
+            },
+            {
+                title: '登录账号',
+                desc: '打开 Minecraft，使用 Microsoft / Xbox 账号登录。'
+            },
+            {
+                title: '加入服务器',
+                desc: `点击"游戏" → 切换到"服务器"标签页 → 滚动到底部点击"添加服务器"。<br>
+                       服务器名称：<span class="highlight-text">白鹿原</span><br>
+                       填写以下服务器信息：
+                       <div class="server-address-box">
+                           <span>地址：</span><code>mcbe.lunadeer.cn</code>
+                           <button class="btn-copy" onclick="navigator.clipboard.writeText('mcbe.lunadeer.cn').then(() => { this.innerHTML = '<i class=\\'fas fa-check\\'></i> 已复制'; setTimeout(() => this.innerHTML = '<i class=\\'fas fa-copy\\'></i> 复制', 2000); })">
+                               <i class="fas fa-copy"></i> 复制
+                           </button>
+                       </div>
+                       <div class="server-address-box">
+                           <span>端口：</span><code>15337</code>
+                           <button class="btn-copy" onclick="navigator.clipboard.writeText('15337').then(() => { this.innerHTML = '<i class=\\'fas fa-check\\'></i> 已复制'; setTimeout(() => this.innerHTML = '<i class=\\'fas fa-copy\\'></i> 复制', 2000); })">
+                               <i class="fas fa-copy"></i> 复制
+                           </button>
+                       </div>
+                       填写完成后点击"保存"，然后选中该服务器加入即可。`
+            }
+        ],
+        android: [
+            {
+                title: '获取游戏',
+                desc: '从 <a href="https://play.google.com/store/apps/details?id=com.mojang.minecraftpe" target="_blank">Google Play</a> 购买并下载 Minecraft。'
+            },
+            {
+                title: '登录账号',
+                desc: '打开 Minecraft，使用 Microsoft / Xbox 账号登录。'
+            },
+            {
+                title: '加入服务器',
+                desc: `点击"游戏" → 切换到"服务器"标签页 → 滚动到底部点击"添加服务器"。<br>
+                       服务器名称：<span class="highlight-text">白鹿原</span><br>
+                       填写以下服务器信息：
+                       <div class="server-address-box">
+                           <span>地址：</span><code>mcbe.lunadeer.cn</code>
+                           <button class="btn-copy" onclick="navigator.clipboard.writeText('mcbe.lunadeer.cn').then(() => { this.innerHTML = '<i class=\\'fas fa-check\\'></i> 已复制'; setTimeout(() => this.innerHTML = '<i class=\\'fas fa-copy\\'></i> 复制', 2000); })">
+                               <i class="fas fa-copy"></i> 复制
+                           </button>
+                       </div>
+                       <div class="server-address-box">
+                           <span>端口：</span><code>15337</code>
+                           <button class="btn-copy" onclick="navigator.clipboard.writeText('15337').then(() => { this.innerHTML = '<i class=\\'fas fa-check\\'></i> 已复制'; setTimeout(() => this.innerHTML = '<i class=\\'fas fa-copy\\'></i> 复制', 2000); })">
+                               <i class="fas fa-copy"></i> 复制
+                           </button>
+                       </div>
+                       填写完成后点击"保存"，然后选中该服务器加入即可。`
+            }
+        ]
+    };
+
     function renderTutorial() {
-        const device = selectedDevice || 'pc'; // default to pc if somehow null
-        const steps = deviceTutorials[device] || deviceTutorials['pc'];
+        const device = selectedDevice || 'pc';
+        let steps;
+        if (selectedEdition === 'bedrock') {
+            steps = bedrockTutorials[device] || bedrockTutorials['pc'];
+        } else {
+            steps = deviceTutorials[device] || deviceTutorials['pc'];
+        }
         
         let content = '<div class="tutorial-steps">';
 
