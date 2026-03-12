@@ -97,7 +97,15 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title">白鹿原</h1>
-            <p class="hero-subtitle">永不换档的纯净原版 Minecraft 服务器</p>
+            
+            <!-- Dynamic Subtitle with Rotating Descriptors -->
+            <div class="hero-subtitle-container">
+                <p class="hero-subtitle">
+                    <span class="subtitle-prefix">永不换档的</span>
+                    <span class="subtitle-dynamic" id="dynamic-subtitle"></span>
+                    <span class="subtitle-suffix">Minecraft 服务器</span>
+                </p>
+            </div>
             
             <div class="server-runtime">
                 已稳定运行 <span id="runtime-days">0</span> 天 <span id="runtime-hours">0</span> 小时 <span id="runtime-minutes">0</span> 分 <span id="runtime-seconds">0</span> 秒

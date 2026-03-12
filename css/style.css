@@ -172,6 +172,46 @@ body {
     text-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
+.hero-subtitle-container {
+    margin-bottom: 15px;
+}
+
+.subtitle-prefix, .subtitle-suffix {
+    white-space: nowrap;
+}
+
+.subtitle-dynamic {
+    white-space: nowrap;
+    margin: 0 8px;
+    position: relative;
+    display: inline-block;
+    min-width: 40px;
+    text-align: center;
+}
+
+/* Fade animation for dynamic subtitle */
+.fade-enter {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.fade-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fade-exit-active {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
 .server-runtime {
     font-size: 18px;
     color: rgba(255, 255, 255, 0.85);

@@ -22,8 +22,46 @@ function copyIp() {
     });
 }
 
+// Dynamic Subtitle Rotation
+const SUBTITLES = [
+    '纯净',
+    '原版',
+    '生存',
+    '养老',
+    '休闲'
+];
+
+let currentSubtitleIndex = 0;
+
+function initDynamicSubtitle() {
+    const dynamicElement = document.getElementById('dynamic-subtitle');
+    if (!dynamicElement) return;
+    
+    // Set initial subtitle
+    dynamicElement.textContent = SUBTITLES[0];
+    dynamicElement.classList.add('fade-enter-active');
+    
+    // Start rotation
+    setInterval(() => {
+        // Fade out
+        dynamicElement.classList.remove('fade-enter-active');
+        dynamicElement.classList.add('fade-exit-active');
+        
+        setTimeout(() => {
+            // Change text
+            currentSubtitleIndex = (currentSubtitleIndex + 1) % SUBTITLES.length;
+            dynamicElement.textContent = SUBTITLES[currentSubtitleIndex];
+            
+            // Fade in
+            dynamicElement.classList.remove('fade-exit-active');
+            dynamicElement.classList.add('fade-enter-active');
+        }, 500);
+    }, 4000); // Change every 4 seconds
+}
+
 // Sponsors Logic
 document.addEventListener('DOMContentLoaded', () => {
+    initDynamicSubtitle();
     fetchSponsors();
     fetchCrowdfunding();
     // setupModal(); // Removed, modal is gone
