@@ -1,3 +1,24 @@
 [
-
+    {
+        "title": "兔子洞",
+        "logo": "https://img.lunadeer.cn/i/2026/03/16/69b8279ce344f.png",
+        "gradient": {
+            "from": "#95ea66",
+            "to": "#4aa18b"
+        },
+        "coordinates": {
+            "x": 0,
+            "y": 64,
+            "z": 0
+        },
+        "scale": "small",
+        "townType": "building",
+        "recruitment": "closed",
+        "founders": [
+            "Thumper0327",
+            "Flower0632"
+        ],
+        "members": [],
+        "introduction": []
+    }
 ]
