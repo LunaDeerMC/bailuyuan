@@ -507,9 +507,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openEditor(item) {
         var gradient = getTownGradient(item || {});
-        editorFounders = item ? item.founders.slice() : [];
-        editorMembers = item ? item.members.slice() : [];
-        editorIntroduction = item ? item.introduction.map(function(i) { return {type: i.type, content: i.content}; }) : [];
+        var coordinates = item && item.coordinates ? item.coordinates : { x: '', y: '', z: '' };
+        editorFounders = item && Array.isArray(item.founders) ? item.founders.slice() : [];
+        editorMembers = item && Array.isArray(item.members) ? item.members.slice() : [];
+        editorIntroduction = item && Array.isArray(item.introduction) ? item.introduction.map(function(i) { return {type: i.type, content: i.content}; }) : [];
 
         document.getElementById('editor-town-title').value = item ? item.title : '';
         document.getElementById('editor-town-logo').value = item ? (item.logo || '') : '';
@@ -525,9 +526,9 @@ document.addEventListener('DOMContentLoaded', () => {
         secretCheckbox.checked = item ? (item.coordinatesSecret === true) : false;
         toggleCoordsRow();
 
-        document.getElementById('editor-town-x').value = item ? item.coordinates.x : '';
-        document.getElementById('editor-town-y').value = item ? item.coordinates.y : '';
-        document.getElementById('editor-town-z').value = item ? item.coordinates.z : '';
+        document.getElementById('editor-town-x').value = item ? coordinates.x : '';
+        document.getElementById('editor-town-y').value = item ? coordinates.y : '';
+        document.getElementById('editor-town-z').value = item ? coordinates.z : '';
 
         renderTagsList('editor-founders-tags', editorFounders);
         renderTagsList('editor-members-tags', editorMembers);
