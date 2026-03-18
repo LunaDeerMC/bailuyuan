@@ -84,6 +84,7 @@ const dimensionTextMap = { overworld: '主世界', nether: '下界', end: '末�
 const statusTextMap = { online: '运行中', maintenance: '维护中', offline: '已停用' };
 const statusToneMap = { online: 'success', maintenance: 'warning', offline: 'danger' };
 const statusIconMap = { online: 'fa-check-circle', maintenance: 'fa-wrench', offline: 'fa-times-circle' };
+const typeIconMap = { resource: 'fa-cube', xp: 'fa-star', infrastructure: 'fa-road' };
 
 const filtered = computed(() => {
   return facilities.value.filter(item => {
@@ -334,7 +335,7 @@ function generateJson() {
                 {{ statusTextMap[selectedFacility.status] }}
               </span>
               <span class="badge large-badge badge-type">
-                <i class="fas fa-cube"></i>
+                <i class="fas" :class="typeIconMap[selectedFacility.type]"></i>
                 {{ typeTextMap[selectedFacility.type] }}
               </span>
             </div>
@@ -426,7 +427,7 @@ function generateJson() {
             <div class="preview-title">{{ edTitle || '未命名设施' }}</div>
             <div class="modal-badges">
               <span :class="['badge', 'large-badge', 'badge-status-' + edStatus]"><i class="fas" :class="statusIconMap[edStatus]"></i> {{ statusTextMap[edStatus] }}</span>
-              <span class="badge large-badge badge-type"><i class="fas fa-cube"></i> {{ typeTextMap[edType] }}</span>
+              <span class="badge large-badge badge-type"><i class="fas" :class="typeIconMap[edType]"></i> {{ typeTextMap[edType] }}</span>
             </div>
           </div>
           <div class="preview-body">
