@@ -1,55 +1,76 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { routeSeo } from './utils/seo';
 
-const routes = [
+export const routes = [
   {
     path: '/',
+    alias: ['/index.html'],
     name: 'home',
     component: () => import('./pages/HomePage.vue'),
+    meta: { seo: routeSeo.home },
   },
   {
     path: '/announcements',
+    alias: ['/announcements.html'],
     name: 'announcements',
     component: () => import('./pages/AnnouncementsPage.vue'),
+    meta: { seo: routeSeo.announcements },
   },
   {
     path: '/facilities',
+    alias: ['/facilities.html'],
     name: 'facilities',
     component: () => import('./pages/FacilitiesPage.vue'),
+    meta: { seo: routeSeo.facilities },
   },
   {
     path: '/towns',
+    alias: ['/towns.html'],
     name: 'towns',
     component: () => import('./pages/TownsPage.vue'),
+    meta: { seo: routeSeo.towns },
   },
   {
     path: '/stats',
+    alias: ['/stats.html'],
     name: 'stats',
     component: () => import('./pages/StatsPage.vue'),
+    meta: { seo: routeSeo.stats },
   },
   {
     path: '/sponsor',
+    alias: ['/sponsor.html'],
     name: 'sponsor',
     component: () => import('./pages/SponsorPage.vue'),
+    meta: { seo: routeSeo.sponsor },
   },
   {
     path: '/join',
+    alias: ['/join.html'],
     name: 'join',
     component: () => import('./pages/JoinPage.vue'),
+    meta: { seo: routeSeo.join },
   },
   {
     path: '/doc',
+    alias: ['/doc.html'],
     name: 'doc',
     component: () => import('./pages/DocPage.vue'),
+    meta: { seo: routeSeo.doc },
   },
   {
     path: '/map',
+    alias: ['/map.html'],
     name: 'map',
     component: () => import('./pages/MapPage.vue'),
+    meta: { seo: routeSeo.map },
   },
   {
     path: '/photo',
+    alias: ['/photo.html'],
     name: 'photo',
     component: () => import('./pages/PhotoPage.vue'),
+    meta: { seo: routeSeo.photo },
   },
 ];
 
