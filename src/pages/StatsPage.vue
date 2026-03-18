@@ -75,12 +75,12 @@ const leaderboards = computed(() => {
   }
 
   return [
-    { title: '行走距离', icon: 'fa-walking', color: '#22c55e', top: getTop('walk_raw', p => p.stats.walk_fmt) },
-    { title: '放置方块', icon: 'fa-cube', color: '#3b82f6', top: getTop('placed', p => p.stats.placed.toLocaleString()) },
-    { title: '挖掘方块', icon: 'fa-hammer', color: '#f59e0b', top: getTop('mined', p => p.stats.mined.toLocaleString()) },
-    { title: '死亡次数', icon: 'fa-skull-crossbones', color: '#ef4444', top: getTop('deaths', p => p.stats.deaths.toLocaleString()) },
-    { title: '在线时长', icon: 'fa-clock', color: '#8b5cf6', top: getTop('play_time_raw', p => p.stats.play_time_fmt) },
-    { title: '击杀数', icon: 'fa-crosshairs', color: '#ec4899', top: getTop('kills', p => p.stats.kills.toLocaleString()) },
+    { title: '旅行者', icon: 'fa-walking', color: '#22c55e', top: getTop('walk_raw', p => p.stats.walk_fmt) },
+    { title: '搬石大师', icon: 'fa-cube', color: '#3b82f6', top: getTop('placed', p => p.stats.placed.toLocaleString()) },
+    { title: '挖挖机', icon: 'fa-hammer', color: '#f59e0b', top: getTop('mined', p => p.stats.mined.toLocaleString()) },
+    { title: '亡灵', icon: 'fa-skull-crossbones', color: '#ef4444', top: getTop('deaths', p => p.stats.deaths.toLocaleString()) },
+    { title: '尊者', icon: 'fa-clock', color: '#8b5cf6', top: getTop('play_time_raw', p => p.stats.play_time_fmt) },
+    { title: '屠夫', icon: 'fa-crosshairs', color: '#ec4899', top: getTop('kills', p => p.stats.kills.toLocaleString()) },
   ];
 });
 
@@ -204,7 +204,7 @@ function filteredItems(catKey) {
     <template v-else>
       <!-- Leaderboards -->
       <section class="leaderboards-section">
-        <h2 class="section-title">🏆 排行榜</h2>
+        <h2 class="section-title">排行榜</h2>
         <div class="leaderboards-grid">
           <div
             v-for="board in leaderboards"
@@ -250,7 +250,7 @@ function filteredItems(catKey) {
 
       <!-- Player Grid -->
       <section class="players-section">
-        <h2 class="section-title">👥 全部玩家</h2>
+        <h2 class="section-title">全部玩家</h2>
         <div class="player-search-box">
           <i class="fas fa-search"></i>
           <input
@@ -447,20 +447,22 @@ function filteredItems(catKey) {
 }
 
 .section-title {
-  font-size: 22px;
+  font-size: 36px;
   font-weight: 700;
-  margin: 0 0 24px;
+  margin: 0 0 34px;
 }
 
 /* Leaderboards */
 .leaderboards-section {
   margin-bottom: 60px;
+  text-align: center;
 }
 
 .leaderboards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
+  justify-content: center;
 }
 
 .lb-card {
@@ -496,7 +498,7 @@ function filteredItems(catKey) {
 .lb-top-player img {
   width: 56px;
   height: 56px;
-  border-radius: 50%;
+  border-radius: 12%;
   margin-bottom: 10px;
   background: #eee;
 }
@@ -521,7 +523,7 @@ function filteredItems(catKey) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
+  padding: 12px 0;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   font-size: 14px;
   cursor: pointer;
@@ -557,6 +559,7 @@ function filteredItems(catKey) {
 /* Player Grid */
 .players-section {
   margin-bottom: 40px;
+  text-align: center;
 }
 
 .player-search-box {
@@ -569,7 +572,7 @@ function filteredItems(catKey) {
   padding: 10px 16px;
   width: 100%;
   max-width: 400px;
-  margin-bottom: 24px;
+  margin: 0 auto 24px;
 }
 
 .player-search-box i {
@@ -614,7 +617,7 @@ function filteredItems(catKey) {
 .player-card img {
   width: 56px;
   height: 56px;
-  border-radius: 50%;
+  border-radius: 12%;
   margin-bottom: 10px;
   background: #eee;
 }
@@ -661,7 +664,7 @@ function filteredItems(catKey) {
 .modal-avatar {
   width: 56px;
   height: 56px;
-  border-radius: 50%;
+  border-radius: 12%;
   background: #eee;
 }
 
