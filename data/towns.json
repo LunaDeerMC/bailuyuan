@@ -17,5 +17,29 @@
         ],
         "members": [],
         "introduction": []
+    },
+    {
+        "title": "海沫",
+        "logo": "https://s41.ax1x.com/2026/03/18/peeMXvj.jpg",
+        "gradient": {
+            "from": "#667eea",
+            "to": "#764ba2"
+        },
+        "dimension": "overworld",
+        "coordinatesSecret": true,
+        "scale": "small",
+        "townType": "industry",
+        "recruitment": "maybe",
+        "founders": [
+            "jiajia_zZ",
+            "Aquaium"
+        ],
+        "members": [],
+        "introduction": [
+            {
+                "type": "text",
+                "content": "有意加入请联系Aquaium"
+            }
+        ]
     }
 ]
