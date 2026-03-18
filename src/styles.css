@@ -86,8 +86,9 @@ img {
 }
 
 .bl-shell {
-  width: min(var(--bl-content-width), calc(100% - 32px));
+  width: min(var(--bl-content-width), calc(100% - 40px));
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .bl-section-heading {

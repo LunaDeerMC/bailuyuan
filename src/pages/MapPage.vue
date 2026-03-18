@@ -1,7 +1,7 @@
 <template>
   <iframe
     class="iframe-fullpage"
-    src="https://mcmap.lunadeer.cn/"
+    src="https://mcmap.lunadeer.cn/#world:2710:0:-1575:2531:0:0:0:1:flat"
     frameborder="0"
     allowfullscreen
   ></iframe>

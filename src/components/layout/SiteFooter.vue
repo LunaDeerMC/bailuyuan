@@ -30,7 +30,7 @@ const friendLinks = [
 
 <template>
   <footer class="site-footer">
-    <div class="site-footer__inner">
+    <div class="bl-shell">
       <div class="footer-columns">
        <div class="footer-col">
           <div class="footer-logo">{{ brand }}</div>
@@ -69,12 +69,6 @@ const friendLinks = [
   border-top: 1px solid #e5e5e5;
   font-size: 12px;
   color: var(--bl-text-secondary, #6e6e73);
-}
-
-.site-footer__inner {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 20px;
 }
 
 .footer-columns {
