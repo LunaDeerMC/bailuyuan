@@ -1,1 +1,15 @@
-/stats
+node_modules/
+dist/
+.vite/
+coverage/
+old-html-ver/
+public/stats/*.json
+
+*.log
+*.local
+
+__pycache__/
+*.py[cod]
+
+.DS_Store
+Thumbs.db

@@ -4,8 +4,7 @@ on:
   push:
     branches: [main]
   schedule:
-    # Every days at 04:00 UTC
-    - cron: "0 4 */1 * *"
+    - cron: "0 4 * * *"
   workflow_dispatch:
 
 permissions:
@@ -24,35 +23,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
+      - name: Install frontend dependencies
+        run: npm ci
+
       - name: Install Python dependencies
         run: pip install requests tqdm
 
-      - name: Run statsprocess.py
+      - name: Update player stats
         env:
           STATS_BASE_URL: ${{ secrets.STATS_BASE_URL }}
           STATS_USER: ${{ secrets.STATS_USER }}
           STATS_PASS: ${{ secrets.STATS_PASS }}
-        run: python statsprocess.py
+        run: python scripts/statsprocess.py
 
-      - name: Prepare Pages artifact
-        run: |
-          mkdir -p _site
-          rsync -a --delete \
-            --exclude '.git/' \
-            --exclude '.github/' \
-            --exclude 'README.md' \
-            --exclude 'statsprocess.py' \
-            ./ ./_site/
+      - name: Build site
+        run: npm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./_site
+          path: ./dist
 
   deploy:
     needs: build
@@ -71,7 +72,6 @@ jobs:
     if: success()
     steps:
       - name: Submit URLs to IndexNow
-        if: ${{ env.INDEXNOW_KEY != '' }}
         env:
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
         run: |
@@ -79,6 +79,7 @@ jobs:
             echo "INDEXNOW_KEY not set, skipping."
             exit 0
           fi
+
           HOST="bailuyuan.lunadeer.cn"
           curl -s -X POST "https://api.indexnow.org/indexnow" \
             -H "Content-Type: application/json" \
@@ -87,14 +88,7 @@ jobs:
               \"key\": \"${INDEXNOW_KEY}\",
               \"keyLocation\": \"https://${HOST}/${INDEXNOW_KEY}.txt\",
               \"urlList\": [
-                \"https://${HOST}/\",
-                \"https://${HOST}/sponsor.html\",
-                \"https://${HOST}/stats.html\",
-                \"https://${HOST}/join.html\",
-                \"https://${HOST}/facilities.html\",
-                \"https://${HOST}/doc.html\",
-                \"https://${HOST}/map.html\",
-                \"https://${HOST}/photo.html\"
+                \"https://${HOST}/\"
               ]
             }"
           echo ""
