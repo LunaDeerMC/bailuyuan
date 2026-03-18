@@ -1,88 +1,50 @@
 <script setup>
-import { RouterLink } from 'vue-router';
-
-const props = defineProps({
+defineProps({
   brand: {
     type: String,
     default: '白鹿原',
   },
-  year: {
-    type: Number,
-    default: new Date().getFullYear(),
-  },
 });
-
-const footerLinks = [
-  { label: '文档', href: '/doc' },
-  { label: '地图', href: '/map' },
-  { label: '赞助', href: '/sponsor' },
-];
 </script>
 
 <template>
   <footer class="site-footer">
-    <div class="site-footer__inner bl-shell">
-      <div>
-        <p class="site-footer__brand">{{ brand }}</p>
-        <p class="site-footer__copy">© {{ year }} {{ brand }} Minecraft 服务器</p>
+    <div class="site-footer__inner">
+      <div class="footer-content">
+        <div class="footer-logo">{{ brand }}</div>
+        <p>&copy; 2026 {{ brand }} Minecraft 服务器.</p>
       </div>
-      <nav class="site-footer__links" aria-label="页脚导航">
-        <RouterLink v-for="link in footerLinks" :key="link.href" :to="link.href">{{ link.label }}</RouterLink>
-      </nav>
     </div>
   </footer>
 </template>
 
 <style scoped>
 .site-footer {
-  margin-top: 80px;
-  padding: 28px 0 36px;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(16px);
+  background: var(--bl-bg, #f5f5f7);
+  padding: 40px 0;
+  border-top: 1px solid #e5e5e5;
+  font-size: 12px;
+  color: var(--bl-text-secondary);
 }
 
 .site-footer__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  max-width: var(--bl-content-width, 1200px);
+  margin: 0 auto;
+  padding: 0 16px;
 }
 
-.site-footer__brand,
-.site-footer__copy {
-  margin: 0;
+.footer-content {
+  text-align: center;
 }
 
-.site-footer__brand {
+.footer-logo {
   font-size: 1.1rem;
   font-weight: 700;
-}
-
-.site-footer__copy {
-  margin-top: 6px;
-  color: var(--bl-text-secondary);
-}
-
-.site-footer__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-}
-
-.site-footer__links a {
-  color: var(--bl-text-secondary);
-  text-decoration: none;
-}
-
-.site-footer__links a:hover {
+  margin-bottom: 6px;
   color: var(--bl-text);
 }
 
-@media (max-width: 720px) {
-  .site-footer__inner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.footer-content p {
+  margin: 0;
 }
 </style>

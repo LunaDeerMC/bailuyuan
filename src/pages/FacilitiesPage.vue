@@ -2,7 +2,6 @@
 import { ref, computed, onMounted, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import FilterPanel from '../components/shared/FilterPanel.vue';
-import BaseBadge from '../components/base/BaseBadge.vue';
 import BaseModal from '../components/base/BaseModal.vue';
 import ModalSection from '../components/detail/ModalSection.vue';
 import EmptyState from '../components/base/EmptyState.vue';
@@ -84,6 +83,7 @@ const typeTextMap = { resource: '资源', xp: '经验', infrastructure: '基建'
 const dimensionTextMap = { overworld: '主世界', nether: '下界', end: '末地' };
 const statusTextMap = { online: '运行中', maintenance: '维护中', offline: '已停用' };
 const statusToneMap = { online: 'success', maintenance: 'warning', offline: 'danger' };
+const statusIconMap = { online: 'fa-check-circle', maintenance: 'fa-wrench', offline: 'fa-times-circle' };
 
 const filtered = computed(() => {
   return facilities.value.filter(item => {
@@ -306,9 +306,10 @@ function generateJson() {
       >
         <div class="card-header">
           <h3 class="card-title">{{ item.title }}</h3>
-          <BaseBadge :tone="statusToneMap[item.status] || 'neutral'">
-            {{ statusTextMap[item.status] || item.status }}
-          </BaseBadge>
+          <div :class="['status-indicator-badge', 'status-' + item.status]">
+            <div class="status-dot"></div>
+            <span>{{ statusTextMap[item.status] || item.status }}</span>
+          </div>
         </div>
         <p class="card-intro">{{ item.intro }}</p>
         <div class="card-meta">
@@ -329,9 +330,11 @@ function generateJson() {
           <div class="modal-badges-row">
             <div class="modal-badges">
               <span :class="['badge', 'large-badge', 'badge-status-' + selectedFacility.status]">
+                <i class="fas" :class="statusIconMap[selectedFacility.status]"></i>
                 {{ statusTextMap[selectedFacility.status] }}
               </span>
               <span class="badge large-badge badge-type">
+                <i class="fas fa-cube"></i>
                 {{ typeTextMap[selectedFacility.type] }}
               </span>
             </div>
@@ -352,7 +355,7 @@ function generateJson() {
       </template>
 
       <template v-if="selectedFacility">
-        <ModalSection title="位置信息">
+        <ModalSection title="位置信息" icon="fas fa-map-marker-alt">
           <p>
             {{ dimensionTextMap[selectedFacility.dimension] }}
             <template v-if="selectedFacility.coordinates">
@@ -370,7 +373,7 @@ function generateJson() {
           </p>
         </ModalSection>
 
-        <ModalSection v-if="selectedFacility.contributors?.length" title="贡献 / 维护人员">
+        <ModalSection v-if="selectedFacility.contributors?.length" title="贡献 / 维护人员" icon="fas fa-users-cog">
           <div class="contributors-list">
             <span v-for="name in selectedFacility.contributors" :key="name" class="contributor-tag">
               <img :src="`https://minotar.net/avatar/${name}/20`" :alt="name" loading="lazy">
@@ -379,7 +382,7 @@ function generateJson() {
           </div>
         </ModalSection>
 
-        <ModalSection v-if="selectedFacility.instructions?.length" title="使用说明">
+        <ModalSection v-if="selectedFacility.instructions?.length" title="使用说明" icon="fas fa-book-open">
           <div class="content-blocks">
             <template v-for="(block, bi) in selectedFacility.instructions" :key="bi">
               <p v-if="block.type === 'text'">{{ block.content }}</p>
@@ -396,7 +399,7 @@ function generateJson() {
           </div>
         </ModalSection>
 
-        <ModalSection v-if="selectedFacility.notes?.length" title="注意事项">
+        <ModalSection v-if="selectedFacility.notes?.length" title="注意事项" icon="fas fa-exclamation-triangle">
           <div class="content-blocks">
             <template v-for="(block, bi) in selectedFacility.notes" :key="bi">
               <p v-if="block.type === 'text'">{{ block.content }}</p>
@@ -422,8 +425,8 @@ function generateJson() {
           <div class="preview-header">
             <div class="preview-title">{{ edTitle || '未命名设施' }}</div>
             <div class="modal-badges">
-              <span :class="['badge', 'large-badge', 'badge-status-' + edStatus]">{{ statusTextMap[edStatus] }}</span>
-              <span class="badge large-badge badge-type">{{ typeTextMap[edType] }}</span>
+              <span :class="['badge', 'large-badge', 'badge-status-' + edStatus]"><i class="fas" :class="statusIconMap[edStatus]"></i> {{ statusTextMap[edStatus] }}</span>
+              <span class="badge large-badge badge-type"><i class="fas fa-cube"></i> {{ typeTextMap[edType] }}</span>
             </div>
           </div>
           <div class="preview-body">
@@ -686,6 +689,29 @@ function generateJson() {
   margin-right: 10px;
   line-height: 1.3;
 }
+
+.status-indicator-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+.status-indicator-badge.status-online { background-color: #e8fceb; color: #15803d; }
+.status-indicator-badge.status-maintenance { background-color: #fff8d6; color: #b45309; }
+.status-indicator-badge.status-offline { background-color: #feebeb; color: #b91c1c; }
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.status-online .status-dot { background-color: #22c55e; }
+.status-maintenance .status-dot { background-color: #f59e0b; }
+.status-offline .status-dot { background-color: #ef4444; }
 
 .card-intro {
   font-size: 14px;

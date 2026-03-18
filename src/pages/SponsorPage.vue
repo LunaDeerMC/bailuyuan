@@ -11,6 +11,7 @@ const projectFilter = ref('all');
 const modalOpen = ref(false);
 
 const isMobile = ref(false);
+const qrLoaded = ref(false);
 
 onMounted(() => {
   isMobile.value = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
@@ -167,10 +168,16 @@ function setProject(p) {
       <!-- Desktop QR -->
       <div v-if="!isMobile" class="desktop-qr-view">
         <div class="qr-placeholder">
+          <div v-if="!qrLoaded" class="qr-loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>加载中…</span>
+          </div>
           <img
             src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Fqr.alipay.com%2F2cz0344fnaulnbybhp04"
             alt="支付宝二维码"
             class="qr-img"
+            :style="{ display: qrLoaded ? 'block' : 'none' }"
+            @load="qrLoaded = true"
           >
         </div>
         <p class="desktop-qr-hint">推荐使用支付宝扫码</p>
@@ -549,6 +556,25 @@ function setProject(p) {
   background: #fff;
   border-radius: 16px;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  min-width: 232px;
+  min-height: 232px;
+}
+
+.qr-loading {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--bl-text-secondary);
+  font-size: 14px;
+}
+
+.qr-loading i {
+  font-size: 24px;
+  color: var(--bl-accent);
 }
 
 .qr-img {

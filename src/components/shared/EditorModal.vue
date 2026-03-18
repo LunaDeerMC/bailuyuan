@@ -53,7 +53,7 @@ function onOverlayClick(e) {
 .editor-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: 2000;
   background: rgba(0,0,0,0.5);
   backdrop-filter: blur(5px);
   display: flex;

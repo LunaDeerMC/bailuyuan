@@ -443,7 +443,7 @@ function generateJson() {
 
       <template v-if="selectedTown">
         <!-- Location -->
-        <ModalSection title="位置信息">
+        <ModalSection title="位置信息" icon="fas fa-map-marker-alt">
           <p v-if="selectedTown.coordinatesSecret">保密</p>
           <p v-else>
             {{ dimensionTextMap[selectedTown.dimension] || '主世界' }}
@@ -463,7 +463,7 @@ function generateJson() {
         </ModalSection>
 
         <!-- Founders -->
-        <ModalSection title="创始人">
+        <ModalSection title="创始人" icon="fas fa-crown">
           <div v-if="selectedTown.founders?.length" class="contributors-list">
             <span v-for="name in selectedTown.founders" :key="name" class="contributor-tag">
               <img :src="`https://minotar.net/avatar/${encodeURIComponent(name)}/20`" :alt="name" loading="lazy">
@@ -474,7 +474,7 @@ function generateJson() {
         </ModalSection>
 
         <!-- Members -->
-        <ModalSection title="成员">
+        <ModalSection title="成员" icon="fas fa-users">
           <div v-if="selectedTown.members?.length" class="contributors-list">
             <span v-for="name in selectedTown.members" :key="name" class="contributor-tag">
               <img :src="`https://minotar.net/avatar/${encodeURIComponent(name)}/20`" :alt="name" loading="lazy">
@@ -485,7 +485,7 @@ function generateJson() {
         </ModalSection>
 
         <!-- Introduction -->
-        <ModalSection v-if="selectedTown.introduction?.length" title="城镇介绍">
+        <ModalSection v-if="selectedTown.introduction?.length" title="城镇介绍" icon="fas fa-scroll">
           <div class="content-blocks">
             <template v-for="(block, bi) in selectedTown.introduction" :key="bi">
               <p v-if="block.type === 'text'">{{ block.content }}</p>
@@ -623,10 +623,13 @@ function generateJson() {
           </div>
           <div class="form-group">
             <label class="toggle-label">
-              <input type="checkbox" v-model="edSecret" class="toggle-checkbox">
-              <span class="toggle-switch"></span>
-              坐标保密
+              <span>坐标保密</span>
+              <div class="toggle-switch">
+                <input type="checkbox" v-model="edSecret">
+                <span class="toggle-slider"></span>
+              </div>
             </label>
+            <p class="field-hint">开启后将隐藏坐标信息，适用于不希望公开位置的城镇。</p>
           </div>
           <template v-if="!edSecret">
             <div class="form-group">
@@ -782,13 +785,22 @@ function generateJson() {
 }
 
 .town-card-bg {
-  height: 180px;
+  height: 140px;
   background-size: cover;
   background-position: center;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #e8ecf1;
+}
+
+.town-card-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.28), transparent 55%);
+  pointer-events: none;
 }
 
 .town-card-bg.no-logo {
@@ -802,27 +814,40 @@ function generateJson() {
 
 .town-card-icons {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  bottom: -14px;
+  left: 16px;
   display: flex;
-  gap: 6px;
+  gap: 8px;
+  z-index: 2;
 }
 
 .town-icon-badge {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.45);
   color: #fff;
-  font-size: 13px;
-  backdrop-filter: blur(4px);
+  font-size: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border: 2px solid #fff;
 }
 
+.icon-scale-small { background: #60a5fa; }
+.icon-scale-medium { background: #f59e0b; }
+.icon-scale-large { background: #ef4444; }
+
+.icon-type-building { background: #8b5cf6; }
+.icon-type-adventure { background: #10b981; }
+.icon-type-industry { background: #f97316; }
+
+.icon-recruit-welcome { background: #22c55e; }
+.icon-recruit-closed { background: #ef4444; }
+.icon-recruit-maybe { background: #eab308; }
+
 .town-card-body {
-  padding: 18px 20px;
+  padding: 24px 20px 20px;
 }
 
 .town-card-title {
@@ -835,6 +860,9 @@ function generateJson() {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
 }
 
 .town-meta-tag {
@@ -1106,49 +1134,67 @@ function generateJson() {
   box-sizing: border-box;
 }
 
-.toggle-label {
+.form-group .toggle-label {
   display: flex;
   align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  font-size: 14px;
+  justify-content: space-between;
   font-weight: 600;
+  font-size: 14px;
   color: var(--bl-text);
-  user-select: none;
-}
-
-.toggle-checkbox {
-  display: none;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: normal;
+  margin-bottom: 0;
 }
 
 .toggle-switch {
   position: relative;
   width: 44px;
   height: 24px;
-  background: #ccc;
-  border-radius: 12px;
-  transition: 0.3s;
   flex-shrink: 0;
 }
 
-.toggle-switch::after {
-  content: '';
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 20px;
-  height: 20px;
+}
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: #ccc;
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  bottom: 3px;
   background: #fff;
   border-radius: 50%;
-  transition: 0.3s;
+  transition: 0.25s;
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
-.toggle-checkbox:checked + .toggle-switch {
+.toggle-switch input:checked + .toggle-slider {
   background: var(--bl-accent);
 }
 
-.toggle-checkbox:checked + .toggle-switch::after {
+.toggle-switch input:checked + .toggle-slider::before {
   transform: translateX(20px);
+}
+
+.field-hint {
+  font-size: 12px;
+  color: var(--bl-text-secondary);
+  margin-top: 6px;
+  line-height: 1.4;
 }
 </style>

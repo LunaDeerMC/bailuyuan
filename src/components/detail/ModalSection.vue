@@ -4,6 +4,10 @@ defineProps({
     type: String,
     required: true,
   },
+  icon: {
+    type: String,
+    default: '',
+  },
   subtitle: {
     type: String,
     default: '',
@@ -13,10 +17,10 @@ defineProps({
 
 <template>
   <section class="modal-section">
-    <div class="modal-section__head">
-      <h4>{{ title }}</h4>
-      <p v-if="subtitle">{{ subtitle }}</p>
-    </div>
+    <h4 class="modal-section-title">
+      <i v-if="icon" :class="icon"></i>
+      {{ title }}
+    </h4>
     <div class="modal-section__body">
       <slot />
     </div>
@@ -25,23 +29,28 @@ defineProps({
 
 <style scoped>
 .modal-section {
-  padding: 18px 20px;
-  border-radius: 18px;
-  background: rgba(245, 245, 247, 0.8);
+  margin-top: 32px;
 }
 
-.modal-section__head h4,
-.modal-section__head p {
-  margin: 0;
+.modal-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: var(--bl-text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 4px solid var(--bl-accent, #0071e3);
+  padding-left: 12px;
 }
 
-.modal-section__head p {
-  margin-top: 6px;
-  color: var(--bl-text-secondary);
-  font-size: 0.85rem;
+.modal-section-title i {
+  color: var(--bl-accent, #0071e3);
+  width: 20px;
+  text-align: center;
 }
 
 .modal-section__body {
-  margin-top: 14px;
+  margin-top: 0;
 }
 </style>
