@@ -50,5 +50,98 @@
             "y": 64,
             "z": 10000
         }
+    },
+    {
+        "title": "桥佳市",
+        "logo": "https://mcphoto.lunadeer.cn/uploads/c44a14a2-9a73-49c9-bdf1-558caf73e318.png",
+        "gradient": {
+            "from": "#ffa8db",
+            "to": "#00e1ff"
+        },
+        "dimension": "overworld",
+        "coordinatesSecret": false,
+        "scale": "large",
+        "townType": "building",
+        "recruitment": "maybe",
+        "founders": [
+            "Moon_Bridge"
+        ],
+        "members": [
+            "Director_HOU",
+            "Steamed_wood",
+            "zhaixizhi",
+            "AnAnAwA",
+            "WatEr_TeaCup",
+            "xiami_mi",
+            "OGTrouble",
+            "MXKio",
+            "zgy_114514",
+            "C0ldWood",
+            "xiaomo198080",
+            "Su_Leaves",
+            "UMEH_",
+            "072020",
+            "Mihai0724",
+            "songqwer",
+            "StarHearing",
+            "sakura7403",
+            "youshandebo",
+            "280zhy",
+            "SPGM10_",
+            "Aholickg",
+            "dghyuiok",
+            "Lpotato1010",
+            "foliage_re",
+            "BE.Fenxi1",
+            "BE.showarose",
+            "BE.camellia0827",
+            "BE.MEGA47552",
+            "Rainycheng",
+            "_Miss_U",
+            "tingyuanx",
+            "OldPeach",
+            "galdexplay",
+            "With_mua",
+            "Zi_yang23",
+            "33zi",
+            "ShenCh_JoNai",
+            "La_V_Xiang_Chang",
+            "Godhorizen",
+            "HK_G36C",
+            "mooyua_",
+            "Moyannnn_",
+            "Junze001",
+            "_Arona_sensei_",
+            "1guiwow",
+            "365KW",
+            "RouBao114514",
+            "LF_XD",
+            "Sagiri_Mayi",
+            "awsl",
+            "givetaps",
+            "SuiSuix87",
+            "Max101647",
+            "Priestis",
+            "Kim_jing",
+            "yiyanowo",
+            "erhjhgf",
+            "gu_xinghe",
+            "haileyhan8201",
+            "Horologize",
+            "BE.ItsLuinil",
+            "TowardsCommunism",
+            "old_flowers"
+        ],
+        "introduction": [
+            {
+                "type": "text",
+                "content": "来了桥佳就是一家人了！\n玩的开心！"
+            }
+        ],
+        "coordinates": {
+            "x": 2688,
+            "y": 66,
+            "z": -1219
+        }
     }
 ]

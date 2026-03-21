@@ -51,7 +51,7 @@ function copyJson() {
 .json-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1100;
+  z-index: 2100;
   background: rgba(0,0,0,0.5);
   backdrop-filter: blur(5px);
   display: flex;
