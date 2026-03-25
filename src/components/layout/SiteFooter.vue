@@ -26,6 +26,11 @@ const friendLinks = [
   { label: 'MCList', href: 'https://www.mclists.cn/server/7653.html' },
   { label: 'mcgodx', href: 'https://mcgodx.com/servers/212/' },
 ];
+
+const anoutThisSite = [
+  { label: 'GitHub', href: 'https://github.com/LunaDeerMC/bailuyuan' },
+  { label: 'SiteMap', href: '/sitemap.xml' },
+];
 </script>
 
 <template>
@@ -54,6 +59,14 @@ const friendLinks = [
           <ul class="footer-link-list">
             <li v-for="item in siteNav" :key="item.href">
               <RouterLink :to="item.href">{{ item.label }}</RouterLink>
+            </li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">本站信息</div>
+          <ul class="footer-link-list">
+            <li v-for="item in anoutThisSite" :key="item.href">
+              <a :href="item.href" target="_blank" rel="noopener noreferrer">{{ item.label }}</a>
             </li>
           </ul>
         </div>

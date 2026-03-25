@@ -220,7 +220,7 @@ def main():
 
     results.sort(key=lambda item: item["name"])
     summary = {
-        "updated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "updated_at": datetime.now().astimezone().isoformat(timespec="seconds"),
         "players": results,
     }
 

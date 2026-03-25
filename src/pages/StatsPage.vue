@@ -21,6 +21,40 @@ const openSections = ref(new Set());
 // Per-section search queries
 const sectionSearches = ref({});
 
+function parseTimestamp(value) {
+  if (!value || typeof value !== 'string') return null;
+
+  const hasExplicitTimezone = /(?:Z|[+-]\d{2}:\d{2})$/i.test(value);
+  if (!hasExplicitTimezone) return null;
+
+  const parsed = new Date(value);
+  if (!Number.isNaN(parsed.getTime())) return parsed;
+
+  const normalized = value.includes('T') ? value : value.replace(' ', 'T');
+  const retry = new Date(normalized);
+  if (!Number.isNaN(retry.getTime())) return retry;
+
+  return null;
+}
+
+const localizedUpdatedAt = computed(() => {
+  if (!updatedAt.value) return '';
+
+  const parsed = parseTimestamp(updatedAt.value);
+  if (!parsed) return updatedAt.value;
+
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    timeZoneName: 'short',
+  }).format(parsed);
+});
+
 onMounted(() => {
   fetch('/stats/summary.json')
     .then(r => r.json())
@@ -194,7 +228,7 @@ function filteredItems(catKey) {
     <div class="hero-content">
       <h1 class="hero-title">玩家统计</h1>
       <p class="hero-subtitle">探索白鹿原的冒险记录</p>
-      <p v-if="updatedAt" class="hero-updated">数据更新于 {{ updatedAt }}</p>
+      <p v-if="localizedUpdatedAt" class="hero-updated">数据更新于 {{ localizedUpdatedAt }}</p>
     </div>
   </section>
 
