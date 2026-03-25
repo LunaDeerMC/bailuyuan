@@ -12,6 +12,11 @@ const modalOpen = ref(false);
 
 const isMobile = ref(false);
 const qrLoaded = ref(false);
+const activePaymentChannel = ref('alipay');
+
+const alipayQrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Fqr.alipay.com%2F2cz0344fnaulnbybhp04';
+const alipayLink = 'https://qr.alipay.com/2cz0344fnaulnbybhp04';
+const wechatQrImageUrl = 'https://img.lunadeer.cn/i/2026/03/25/69c3ef5fa7c36.jpg';
 
 function detectMobileSponsorView() {
   if (typeof window === 'undefined' || typeof navigator === 'undefined') {
@@ -53,12 +58,25 @@ onBeforeUnmount(() => {
 
 watch(modalOpen, (open) => {
   if (open) {
+    activePaymentChannel.value = 'alipay';
     updateMobileState();
     return;
   }
 
   qrLoaded.value = false;
 });
+
+function setPaymentChannel(channel) {
+  if (channel === activePaymentChannel.value) {
+    return;
+  }
+
+  activePaymentChannel.value = channel;
+
+  if (channel === 'alipay') {
+    qrLoaded.value = false;
+  }
+}
 
 function parseSponsors(text) {
   if (!text) return [];
@@ -196,37 +214,82 @@ function setProject(p) {
         </div>
         <h3 class="modal-title">支持白鹿原服务器</h3>
         <p class="modal-subtitle">您的每一次支持，都将帮助我们提升服务器性能，维持更长久的运营。</p>
+
+        <div class="payment-switcher-wrap">
+          <div class="payment-switcher" role="tablist" aria-label="选择赞助方式">
+            <button
+              type="button"
+              :class="['payment-switcher-btn', 'payment-switcher-btn-alipay', { active: activePaymentChannel === 'alipay' }]"
+              :aria-selected="activePaymentChannel === 'alipay'"
+              @click="setPaymentChannel('alipay')"
+            >支付宝</button>
+            <button
+              type="button"
+              :class="['payment-switcher-btn', 'payment-switcher-btn-wechat', { active: activePaymentChannel === 'wechat' }]"
+              :aria-selected="activePaymentChannel === 'wechat'"
+              @click="setPaymentChannel('wechat')"
+            >微信</button>
+          </div>
+        </div>
       </template>
 
       <!-- Desktop QR -->
       <div v-if="!isMobile" class="desktop-qr-view">
-        <div class="qr-placeholder">
-          <div v-if="!qrLoaded" class="qr-loading">
-            <i class="fas fa-spinner fa-spin"></i>
-            <span>加载中…</span>
+        <section v-if="activePaymentChannel === 'alipay'" class="payment-channel-card">
+          <!-- <h4 class="payment-channel-title">支付宝</h4> -->
+          <div class="qr-placeholder">
+            <div v-if="!qrLoaded" class="qr-loading">
+              <i class="fas fa-spinner fa-spin"></i>
+              <span>加载中…</span>
+            </div>
+            <img
+              :src="alipayQrUrl"
+              alt="支付宝二维码"
+              class="qr-img"
+              :style="{ display: qrLoaded ? 'block' : 'none' }"
+              @load="qrLoaded = true"
+            >
           </div>
-          <img
-            src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Fqr.alipay.com%2F2cz0344fnaulnbybhp04"
-            alt="支付宝二维码"
-            class="qr-img"
-            :style="{ display: qrLoaded ? 'block' : 'none' }"
-            @load="qrLoaded = true"
-          >
-        </div>
-        <p class="desktop-qr-hint">推荐使用支付宝扫码</p>
+          <p class="desktop-qr-hint">推荐使用支付宝扫码</p>
+        </section>
+
+        <section v-else class="payment-channel-card">
+          <!-- <h4 class="payment-channel-title">微信</h4> -->
+          <div class="qr-placeholder">
+            <img
+              :src="wechatQrImageUrl"
+              alt="微信赞助二维码"
+              class="qr-img"
+            >
+          </div>
+          <p class="desktop-qr-hint">使用微信扫码赞助</p>
+        </section>
       </div>
 
       <!-- Mobile Button -->
       <div v-else class="mobile-btn-view">
-        <a
-          href="https://qr.alipay.com/2cz0344fnaulnbybhp04"
-          class="alipay-btn"
-          target="_blank"
-          rel="noopener"
-        >
-          <i class="fab fa-alipay"></i> 打开支付宝赞助
-        </a>
-        <p class="mobile-pay-hint">点击按钮将直接跳转至支付宝转账页面</p>
+        <template v-if="activePaymentChannel === 'alipay'">
+          <a
+            :href="alipayLink"
+            class="alipay-btn"
+            target="_blank"
+            rel="noopener"
+          >
+            <i class="fab fa-alipay"></i> 打开支付宝赞助
+          </a>
+          <p class="mobile-pay-hint">点击按钮将直接跳转至支付宝转账页面</p>
+        </template>
+
+        <section v-else class="mobile-wechat-channel">
+          <div class="qr-placeholder wechat-qr-placeholder">
+            <img
+              :src="wechatQrImageUrl"
+              alt="微信赞助二维码"
+              class="qr-img"
+            >
+          </div>
+          <p class="mobile-pay-hint">截图前往微信扫一扫，选择相册中的二维码进行赞助</p>
+        </section>
       </div>
     </BaseModal>
   </main>
@@ -245,7 +308,7 @@ function setProject(p) {
 .sponsor-hero h1 {
   font-size: 56px;
   font-weight: 800;
-  margin: 0 0 24px;
+  margin: 0px;
   background: linear-gradient(135deg, #1d1d1f 0%, #434344 100%);
   background-clip: text;
   -webkit-background-clip: text;
@@ -577,10 +640,78 @@ function setProject(p) {
   line-height: 1.5;
 }
 
+.payment-switcher-wrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.payment-switcher {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  min-width: 236px;
+  padding: 5px;
+  gap: 6px;
+  background: linear-gradient(180deg, rgba(247, 247, 249, 0.98) 0%, rgba(239, 240, 244, 0.98) 100%);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.payment-switcher-btn {
+  border: none;
+  background: transparent;
+  color: var(--bl-text-secondary);
+  min-width: 108px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  font-family: inherit;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+}
+
+.payment-switcher-btn.active {
+  transform: translateY(-1px);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+
+.payment-switcher-btn-alipay.active {
+  background: linear-gradient(135deg, #1d8cff 0%, #1677ff 100%);
+}
+
+.payment-switcher-btn-wechat.active {
+  background: linear-gradient(135deg, #4fd36a 0%, #2dbb49 100%);
+}
+
+.payment-switcher-btn:not(.active):hover {
+  color: var(--bl-text);
+  background: rgba(255, 255, 255, 0.72);
+}
+
 .desktop-qr-view,
 .mobile-btn-view {
   text-align: center;
-  padding: 24px 0 0;
+}
+
+.payment-channel-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment-channel-title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--bl-text);
 }
 
 .qr-placeholder {
@@ -647,10 +778,19 @@ function setProject(p) {
   margin-top: 12px;
 }
 
+.mobile-wechat-channel {
+  margin-top: 8px;
+}
+
+.wechat-qr-placeholder {
+  margin-top: 4px;
+}
+
 @media (max-width: 768px) {
   .sponsor-hero h1 { font-size: 32px; }
   .counter-value { font-size: 32px; }
   .donation-grid { grid-template-columns: 1fr; }
   .controls-header { flex-direction: column; }
+  .payment-switcher-wrap { margin-top: 20px; }
 }
 </style>
