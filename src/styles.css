@@ -36,6 +36,8 @@
   --bl-transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
   --bl-content-width: 1200px;
   --bl-header-height: 44px;
+  --bl-banner-height: 0px;
+  --bl-topbar-offset: calc(var(--bl-header-height) + var(--bl-banner-height));
 }
 
 * {

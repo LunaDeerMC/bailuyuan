@@ -10,10 +10,10 @@
 <style scoped>
 .iframe-fullpage {
   position: fixed;
-  top: var(--bl-header-height);
+  top: var(--bl-topbar-offset);
   left: 0;
   width: 100%;
-  height: calc(100vh - var(--bl-header-height));
+  height: calc(100vh - var(--bl-topbar-offset));
   border: none;
 }
 </style>

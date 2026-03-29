@@ -44,7 +44,7 @@ defineProps({
 <style scoped>
 .page-hero {
   min-height: 42vh;
-  padding-top: calc(var(--bl-header-height) + 40px);
+  padding-top: calc(var(--bl-topbar-offset) + 40px);
   padding-bottom: 56px;
   display: flex;
   align-items: flex-end;

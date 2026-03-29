@@ -390,7 +390,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
 <style scoped>
 /* Header */
 .join-header {
-  padding: calc(var(--bl-header-height) + 48px) 20px 48px;
+  padding: calc(var(--bl-topbar-offset) + 48px) 20px 48px;
   text-align: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #fff;
@@ -423,7 +423,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
   flex-shrink: 0;
   width: 200px;
   position: sticky;
-  top: calc(var(--bl-header-height) + 20px);
+  top: calc(var(--bl-topbar-offset) + 20px);
 }
 
 .progress-steps {

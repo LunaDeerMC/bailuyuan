@@ -5,6 +5,7 @@ import FilterPanel from '../components/shared/FilterPanel.vue';
 import EmptyState from '../components/base/EmptyState.vue';
 import EditorModal from '../components/shared/EditorModal.vue';
 import JsonOutputModal from '../components/shared/JsonOutputModal.vue';
+import { fetchAnnouncementsData } from '../composables/useAnnouncementsData.js';
 import { useSortableList } from '../composables/useEditorHelpers.js';
 
 const route = useRoute();
@@ -42,16 +43,18 @@ function onSecretKey(e) {
 
 onMounted(() => {
   document.addEventListener('keydown', onSecretKey);
-  fetch('/data/announcements.json')
-    .then(r => r.json())
-    .then(data => {
-      data.sort((a, b) => new Date(b.time) - new Date(a.time));
-      announcements.value = data;
+  fetchAnnouncementsData()
+    .then(({ announcements: data }) => {
+      const sortedAnnouncements = [...data].sort((a, b) => new Date(b.time) - new Date(a.time));
+      announcements.value = sortedAnnouncements;
       // Expand first item by default
-      if (data.length > 0) {
-        expandedId.value = generateAnchorId(data[0]);
+      if (sortedAnnouncements.length > 0) {
+        expandedId.value = generateAnchorId(sortedAnnouncements[0]);
       }
       nextTick(() => handleHash());
+    })
+    .catch((error) => {
+      console.error('Error loading announcements:', error);
     });
 });
 
@@ -399,7 +402,7 @@ function generateJson() {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding-top: var(--bl-header-height);
+  padding-top: var(--bl-topbar-offset);
   background: url('https://img.lunadeer.cn/i/2025/11/26/69267755e14e3.png') center/cover no-repeat;
   position: relative;
   color: #fff;

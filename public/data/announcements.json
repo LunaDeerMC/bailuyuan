@@ -1,86 +1,92 @@
-[
-    {
-        "title": "【26Q2Q3】官网首页封面图片投稿",
-        "intro": "服务器官方网站首页封面图片征集投稿活动。",
-        "time": "2026-03-10",
-        "category": "activity",
-        "content": [
-            {
-                "type": "text",
-                "content": "▸参与投稿"
-            },
-            {
-                "type": "text",
-                "content": "1. 打开服务器官网相册：https://bailuyuan.lunadeer.cn/photo.html"
-            },
-            {
-                "type": "text",
-                "content": "2. 注册或登录账号；"
-            },
-            {
-                "type": "text",
-                "content": "3. 上传图片，在标签处选择或输入：#26Q2Q3官网封面活动；"
-            },
-            {
-                "type": "text",
-                "content": "4. 回车确认标签被添加，最后点击上传图片；"
-            },
-            {
-                "type": "text",
-                "content": "---------------------------------"
-            },
-            {
-                "type": "text",
-                "content": "▸参与投票"
-            },
-            {
-                "type": "text",
-                "content": "1. 打开服务器官网相册：https://bailuyuan.lunadeer.cn/photo.html"
-            },
-            {
-                "type": "text",
-                "content": "2. 注册或登录账号；"
-            },
-            {
-                "type": "text",
-                "content": "3. 筛选图片，选择：#26Q2Q3官网封面活动；"
-            },
-            {
-                "type": "text",
-                "content": "4. 为你喜爱的图片点赞；"
-            },
-            {
-                "type": "text",
-                "content": "---------------------------------"
-            },
-            {
-                "type": "text",
-                "content": "▸活动截止日期"
-            },
-            {
-                "type": "text",
-                "content": "2026年3月31日"
-            }
-        ]
-    },
-    {
-        "title": "服务器新增假人、无限末地门结构",
-        "intro": "服务器维护更新。",
-        "time": "2026-03-10",
-        "category": "maintenance",
-        "content": [
-            {
-                "type": "text",
-                "content": "服务器更新维护，本次维护新增如下内容："
-            },
-            {
-                "type": "text",
-                "content": "1. 服务器新人假人系统（Bot/FakePlayer），详情参考文档里对假人的说明：https://bailuyuan.lunadeer.cn/doc.html"
-            },
-            {
-                "type": "text",
-                "content": "2. 服务器重写了末地传送门结构生成规则，重写后与基岩版一致，为不限数量随机生成，便于生活在新出生点的玩家有便捷的末地传送门可用；"
-            }
-        ]
-    }
-]
+{
+    
+    "important": [
+        "当前服务器正在进行重大变更，部分服务可能暂时无法使用，预计将在4月1日前完成，感谢您的耐心等待。"
+    ],
+    "announcements": [
+        {
+            "title": "【26Q2Q3】官网首页封面图片投稿",
+            "intro": "服务器官方网站首页封面图片征集投稿活动。",
+            "time": "2026-03-10",
+            "category": "activity",
+            "content": [
+                {
+                    "type": "text",
+                    "content": "▸参与投稿"
+                },
+                {
+                    "type": "text",
+                    "content": "1. 打开服务器官网相册：https://bailuyuan.lunadeer.cn/photo.html"
+                },
+                {
+                    "type": "text",
+                    "content": "2. 注册或登录账号；"
+                },
+                {
+                    "type": "text",
+                    "content": "3. 上传图片，在标签处选择或输入：#26Q2Q3官网封面活动；"
+                },
+                {
+                    "type": "text",
+                    "content": "4. 回车确认标签被添加，最后点击上传图片；"
+                },
+                {
+                    "type": "text",
+                    "content": "---------------------------------"
+                },
+                {
+                    "type": "text",
+                    "content": "▸参与投票"
+                },
+                {
+                    "type": "text",
+                    "content": "1. 打开服务器官网相册：https://bailuyuan.lunadeer.cn/photo.html"
+                },
+                {
+                    "type": "text",
+                    "content": "2. 注册或登录账号；"
+                },
+                {
+                    "type": "text",
+                    "content": "3. 筛选图片，选择：#26Q2Q3官网封面活动；"
+                },
+                {
+                    "type": "text",
+                    "content": "4. 为你喜爱的图片点赞；"
+                },
+                {
+                    "type": "text",
+                    "content": "---------------------------------"
+                },
+                {
+                    "type": "text",
+                    "content": "▸活动截止日期"
+                },
+                {
+                    "type": "text",
+                    "content": "2026年3月31日"
+                }
+            ]
+        },
+        {
+            "title": "服务器新增假人、无限末地门结构",
+            "intro": "服务器维护更新。",
+            "time": "2026-03-10",
+            "category": "maintenance",
+            "content": [
+                {
+                    "type": "text",
+                    "content": "服务器更新维护，本次维护新增如下内容："
+                },
+                {
+                    "type": "text",
+                    "content": "1. 服务器新人假人系统（Bot/FakePlayer），详情参考文档里对假人的说明：https://bailuyuan.lunadeer.cn/doc.html"
+                },
+                {
+                    "type": "text",
+                    "content": "2. 服务器重写了末地传送门结构生成规则，重写后与基岩版一致，为不限数量随机生成，便于生活在新出生点的玩家有便捷的末地传送门可用；"
+                }
+            ]
+        }
+    ]
+}

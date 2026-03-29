@@ -298,7 +298,7 @@ function setProject(p) {
 <style scoped>
 /* Hero */
 .sponsor-hero {
-  padding: calc(var(--bl-header-height) + 60px) 20px 50px;
+  padding: calc(var(--bl-topbar-offset) + 60px) 20px 50px;
   text-align: center;
   background: radial-gradient(circle at center, rgba(0,113,227,0.08) 0%, rgba(255,255,255,0) 70%);
   position: relative;

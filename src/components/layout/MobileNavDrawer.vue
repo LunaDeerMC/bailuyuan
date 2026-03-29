@@ -48,7 +48,7 @@ const emit = defineEmits(['close']);
 <style scoped>
 .mobile-menu {
   position: fixed;
-  top: var(--bl-header-height);
+  top: var(--bl-topbar-offset);
   left: 0;
   width: 100%;
   height: 0;
@@ -63,7 +63,7 @@ const emit = defineEmits(['close']);
 }
 
 .mobile-menu.active {
-  height: calc(100vh - var(--bl-header-height));
+  height: calc(100vh - var(--bl-topbar-offset));
   opacity: 1;
   visibility: visible;
 }
