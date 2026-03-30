@@ -1,6 +1,45 @@
+# === AI Search Crawlers (允许索引以提升 AI 搜索可见性) ===
+User-agent: GPTBot
+Allow: /
+Disallow: /stats/*.json
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /stats/*.json
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /stats/*.json
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /stats/*.json
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /stats/*.json
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /stats/*.json
+
+User-agent: Bytespider
+Allow: /
+Disallow: /stats/*.json
+
+User-agent: cohere-ai
+Allow: /
+Disallow: /stats/*.json
+
+# === Training-Only Crawlers (仅训练用途，可选择屏蔽) ===
+User-agent: CCBot
+Disallow: /
+
+# === Default ===
 User-agent: *
 Allow: /
 Disallow: /stats/*.json
 Disallow: /stats/*.json$
 
 Sitemap: https://bailuyuan.lunadeer.cn/sitemap.xml
+LLMs.txt: https://bailuyuan.lunadeer.cn/llms.txt

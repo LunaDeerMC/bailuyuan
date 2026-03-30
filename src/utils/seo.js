@@ -68,6 +68,21 @@ function createCollectionPageSchema(name, description, path) {
   return createWebPageSchema('CollectionPage', name, description, path);
 }
 
+function createFaqSchema(faqItems) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.a,
+      },
+    })),
+  };
+}
+
 function createBaseStructuredData() {
   return [
     {
@@ -139,6 +154,12 @@ export const routeSeo = {
           availability: 'https://schema.org/InStock',
         },
       },
+      createFaqSchema([
+        { q: '白鹿原Minecraft服务器是什么？', a: '白鹿原是一个永不换档的纯净原版生存 Minecraft 服务器，自 2021 年 9 月 14 日开服至今从未重置存档。支持 Java 版与基岩版互通，提供免费圈地保护和自研管理插件，紧跟最新游戏版本更新。物理工作站保障 7×24 小时稳定运行，所有玩家均可免费加入。服务器地址为 mcpure.lunadeer.cn。' },
+        { q: '白鹿原服务器地址是多少？', a: '白鹿原 Minecraft 服务器地址为 mcpure.lunadeer.cn。Java 版使用默认端口 25565，基岩版使用端口 19132。官方网站为 https://bailuyuan.lunadeer.cn。' },
+        { q: '白鹿原服务器支持哪些版本和平台？', a: '白鹿原同时支持 Minecraft Java Edition 和 Bedrock Edition（基岩版），包括 Windows、macOS、Linux 电脑端，以及 iOS、Android 手机和平板设备。Java 版和基岩版玩家可在同一服务器中共同游玩，实现真正的跨平台互通。' },
+        { q: '白鹿原服务器是免费的吗？', a: '是的，白鹿原服务器完全免费加入，没有任何付费门槛。服务器运营费用由玩家自愿众筹支持，所有游戏功能和公共设施对全体玩家免费开放。' },
+      ]),
     ],
   },
   announcements: {
@@ -170,6 +191,10 @@ export const routeSeo = {
       return [
         createCollectionPageSchema(name, description, '/facilities'),
         createBreadcrumbList(name, '/facilities'),
+        createFaqSchema([
+          { q: '白鹿原服务器有哪些公共设施？', a: '白鹿原服务器拥有丰富的全服共享公共设施，由玩家共同建设、共同分享。包含各类自动化农场（刷冰机、铁轨机、甘蔗机等）、刷怪塔、交易所、公共仓库等实用设施。每个设施都提供详细的坐标位置和使用说明，所有玩家均可免费使用。' },
+          { q: '如何查看白鹿原服务器设施的坐标和使用方法？', a: '访问白鹿原官网的「共享资源」页面即可查看所有公共设施的详细信息，包括坐标位置（支持跳转在线地图）、使用说明、贡献者名单和视频教程。支持按设施类型和所在维度筛选，也可通过关键词搜索快速找到目标设施。' },
+        ]),
       ].filter(Boolean);
     },
   },
@@ -202,6 +227,10 @@ export const routeSeo = {
       return [
         createCollectionPageSchema(name, description, '/stats'),
         createBreadcrumbList(name, '/stats'),
+        createFaqSchema([
+          { q: '白鹿原服务器有哪些玩家排行榜？', a: '白鹿原提供六大排行榜：旅行者（行走距离最远）、搬石大师（放置方块最多）、挖挖机（破坏方块最多）、亡灵（死亡次数最多）、尊者（游戏时长最长）、屠夫（击杀生物最多）。每个排行榜展示前四名玩家。' },
+          { q: '如何查看白鹿原服务器的个人游戏数据？', a: '访问白鹿原官网的「玩家数据统计」页面，通过搜索框输入玩家名进行搜索，点击玩家卡片即可查看详细统计信息，包括总游戏时长、方块操作数、击杀与死亡数据、合成与使用物品记录等多个分类的完整数据。' },
+        ]),
       ].filter(Boolean);
     },
   },
@@ -271,6 +300,11 @@ export const routeSeo = {
             url: SITE_URL,
           },
         },
+        createFaqSchema([
+          { q: '如何加入白鹿原Minecraft服务器？', a: '加入白鹿原只需四步：1. 阅读并同意服务器公约；2. 选择你的设备（电脑、手机或平板）；3. 在游戏中添加服务器地址 mcpure.lunadeer.cn（Java 版端口 25565，基岩版端口 19132）；4. 连接服务器开始冒险。详细图文教程请访问官网「加入游戏」页面。' },
+          { q: '白鹿原服务器支持手机和平板加入吗？', a: '是的，白鹿原支持基岩版（Bedrock Edition），包括 iOS 和 Android 设备。手机和平板用户可通过 Minecraft 基岩版添加服务器地址 mcpure.lunadeer.cn、端口 19132 加入游戏，与电脑端 Java 版玩家在同一世界中共同游玩。' },
+          { q: '白鹿原服务器有哪些规则？', a: '白鹿原要求玩家遵守服务器公约，核心规则包括：禁止使用外挂作弊、禁止恶意破坏他人建筑、禁止偷窃盗取他人物品、尊重其他玩家。违规将根据情节轻重处以警告、临时禁入或永久封禁。完整公约内容可在加入游戏页面查看。' },
+        ]),
       ].filter(Boolean);
     },
   },
