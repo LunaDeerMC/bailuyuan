@@ -405,5 +405,34 @@
                 "content": "总共需要两人挂机，主世界手砍或假人挂机需装备抢夺Ⅲ附魔武器。效率约为16头/min"
             }
         ]
+    },
+    {
+        "title": "180W船吸",
+        "intro": "本设施不提供开机方法。\n仅产出骨块，火药，红石块。\n如有需求可以来取。",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 18921,
+            "y": 64,
+            "z": -1693
+        },
+        "contributors": [
+            "jiajia_zZ",
+            "Aquaium",
+            "Kun_Wu"
+        ],
+        "instructions": [
+            {
+                "type": "text",
+                "content": "无。直接来大宗下取就行。"
+            }
+        ],
+        "notes": [
+            {
+                "type": "text",
+                "content": "无。"
+            }
+        ]
     }
 ]
