@@ -71,4 +71,11 @@ export const routes = [
     component: () => import('./pages/PhotoPage.vue'),
     meta: { seo: routeSeo.photo },
   },
+  {
+    path: '/backup',
+    alias: ['/backup.html'],
+    name: 'backup',
+    component: () => import('./pages/BackupPage.vue'),
+    meta: { seo: routeSeo.backup },
+  },
 ];

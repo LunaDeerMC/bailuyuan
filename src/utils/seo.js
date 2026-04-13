@@ -20,6 +20,7 @@ const siteNavigation = [
   { name: '文档', path: '/doc' },
   { name: '在线地图', path: '/map' },
   { name: '服务器相册', path: '/photo' },
+  { name: '备份与容灾', path: '/backup' },
 ];
 
 function toAbsoluteUrl(path = '/') {
@@ -341,6 +342,22 @@ export const routeSeo = {
       return [
         createWebPageSchema('WebPage', '白鹿原服务器在线地图', description, '/map'),
         createBreadcrumbList(name, '/map'),
+      ].filter(Boolean);
+    },
+  },
+  backup: {
+    path: '/backup',
+    title: '备份与容灾 - 白鹿原 Minecraft 服务器',
+    description: '白鹿原Minecraft服务器备份与容灾信息，查看3-2-1备份策略执行状况、容灾评分、备份策略详情、存储容量与可用备份列表，全方位保障每一位玩家的数据安全。',
+    keywords: '白鹿原备份,Minecraft服务器备份,数据安全,容灾恢复,服务器存档,3-2-1备份',
+    ogImageAlt: '白鹿原 Minecraft 服务器备份与容灾页面',
+    type: 'website',
+    structuredData: () => {
+      const name = '备份与容灾';
+      const description = '白鹿原Minecraft服务器备份与容灾信息页面，展示备份策略、容灾评分与备份列表。';
+      return [
+        createWebPageSchema('WebPage', '白鹿原服务器备份与容灾', description, '/backup'),
+        createBreadcrumbList(name, '/backup'),
       ].filter(Boolean);
     },
   },
