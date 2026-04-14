@@ -197,5 +197,33 @@
             "y": 89,
             "z": 492536
         }
+    },
+    {
+        "title": "咸鱼镇",
+        "logo": "",
+        "gradient": {
+            "from": "#00ffc1",
+            "to": "#0091ff"
+        },
+        "dimension": "overworld",
+        "coordinatesSecret": false,
+        "scale": "small",
+        "townType": "adventure",
+        "recruitment": "welcome",
+        "founders": [
+            "ZhuTiZi_y"
+        ],
+        "members": [],
+        "introduction": [
+            {
+                "type": "text",
+                "content": "没资源，没机器，每天上线就是为了占用服务器资源挂机，纯咸鱼"
+            }
+        ],
+        "coordinates": {
+            "x": -509413,
+            "y": 0,
+            "z": -505651
+        }
     }
 ]
