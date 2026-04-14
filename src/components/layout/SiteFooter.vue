@@ -25,6 +25,8 @@ const friendLinks = [
   { label: 'MineBBS', href: 'https://www.minebbs.com/threads/x.25611/' },
   { label: 'MCList', href: 'https://www.mclists.cn/server/7653.html' },
   { label: 'mcgodx', href: 'https://mcgodx.com/servers/212/' },
+  { label: '小红书', href: 'https://xhslink.com/m/7pG6axuqPT0' },
+  { label: 'BiliBili', href: 'https://space.bilibili.com/691690967' },
 ];
 
 const anoutThisSite = [
