@@ -521,6 +521,9 @@ export function useRouteSeo() {
       { property: 'twitter:description', content: computed(() => seo.value.description) },
       { property: 'twitter:image', content: ogImage },
       { property: 'twitter:image:alt', content: ogImageAlt },
+      { itemprop: 'name', content: computed(() => seo.value.title) },
+      { itemprop: 'Description', content: computed(() => seo.value.description) },
+      { itemprop: 'image', content: ogImage },
     ],
     link: [{ rel: 'canonical', href: canonicalUrl }],
     script: [
