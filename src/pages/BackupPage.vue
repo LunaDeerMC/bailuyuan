@@ -34,6 +34,68 @@ const policyLatestBackup = computed(() => {
 });
 
 const stats = computed(() => overview.value?.stats || null);
+const availableBackupCount = computed(() => {
+  const count = stats.value?.available_backup_count;
+  return Number.isFinite(count) ? count : backupTotal.value;
+});
+const backupExecutionCount = computed(() => Number(stats.value?.backup_count) || 0);
+const successfulExecutionCount = computed(() => Number(stats.value?.success_backup_count) || 0);
+const failedExecutionCount = computed(() => Number(stats.value?.failure_backup_count) || 0);
+const backupSuccessRate = computed(() => {
+  if (!backupExecutionCount.value) return 0;
+  return successfulExecutionCount.value / backupExecutionCount.value;
+});
+const backupFailureRate = computed(() => {
+  if (!backupExecutionCount.value) return 0;
+  return failedExecutionCount.value / backupExecutionCount.value;
+});
+const BACKUP_RING_RADIUS = 45;
+const backupSuccessEndAngle = computed(() => backupSuccessRate.value * 360);
+const backupFailureEndAngle = computed(() => (backupSuccessRate.value + backupFailureRate.value) * 360);
+const backupTooltip = ref(null);
+
+const showFullSuccessCircle = computed(() => backupSuccessRate.value >= 0.9999);
+const showFullFailureCircle = computed(() => backupFailureRate.value >= 0.9999);
+
+function polarToCartesian(angle) {
+  const radians = (angle - 90) * Math.PI / 180;
+  return {
+    x: 60 + BACKUP_RING_RADIUS * Math.cos(radians),
+    y: 60 + BACKUP_RING_RADIUS * Math.sin(radians),
+  };
+}
+
+function describeRingArc(startAngle, endAngle) {
+  if (endAngle <= startAngle) return '';
+  const sweep = endAngle - startAngle;
+  if (sweep >= 359.999) return '';
+
+  const start = polarToCartesian(startAngle);
+  const end = polarToCartesian(endAngle);
+  const largeArcFlag = sweep > 180 ? 1 : 0;
+
+  return `M ${start.x} ${start.y} A ${BACKUP_RING_RADIUS} ${BACKUP_RING_RADIUS} 0 ${largeArcFlag} 1 ${end.x} ${end.y}`;
+}
+
+const backupSuccessArcPath = computed(() => describeRingArc(0, backupSuccessEndAngle.value));
+const backupFailureArcPath = computed(() => describeRingArc(backupSuccessEndAngle.value, backupFailureEndAngle.value));
+
+function showBackupTooltip(kind, event) {
+  const svgRect = event.currentTarget.ownerSVGElement?.getBoundingClientRect();
+  if (!svgRect) return;
+
+  backupTooltip.value = {
+    kind,
+    label: kind === 'success' ? '成功执行' : '失败执行',
+    value: kind === 'success' ? successfulExecutionCount.value : failedExecutionCount.value,
+    left: event.clientX - svgRect.left,
+    top: event.clientY - svgRect.top - 10,
+  };
+}
+
+function hideBackupTooltip() {
+  backupTooltip.value = null;
+}
 
 onMounted(async () => {
   try {
@@ -352,18 +414,18 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
         </div>
       </section>
 
-      <!-- Row 3: Storage & Upcoming Tasks -->
+      <!-- Row 3: Storage, Totals & Upcoming Tasks -->
       <section class="backup-section row-two-col">
         <div class="storage-card">
           <h3><i class="fas fa-hdd"></i> 存储容量</h3>
           <div v-if="stats" class="storage-metrics">
             <div class="storage-metric">
               <span class="storage-number">{{ formatBytes(stats.total_backup_size_bytes) }}</span>
-              <span class="storage-label">累计备份数据量</span>
+              <span class="storage-label">可用备份总量</span>
             </div>
             <div class="storage-metric">
               <span class="storage-number">{{ formatBytes(stats.total_backup_disk_bytes) }}</span>
-              <span class="storage-label">实际占用存储</span>
+              <span class="storage-label">可用备份占用存储</span>
             </div>
             <div v-if="stats.total_backup_size_bytes && stats.total_backup_disk_bytes" class="storage-metric">
               <span class="storage-number">
@@ -387,6 +449,84 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
           </div>
           <div v-else class="empty-hint">暂无计划任务</div>
         </div>
+
+        <div class="backup-stats-card">
+          <h3><i class="fas fa-chart-pie"></i> 备份总数</h3>
+          <div v-if="stats" class="backup-stats-body">
+            <div class="backup-stats-ring">
+              <svg viewBox="0 0 120 120" class="backup-stats-ring-svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="backupSuccessGradient" x1="15" y1="15" x2="105" y2="105" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#6ee7a8" />
+                    <stop offset="100%" stop-color="#22c55e" />
+                  </linearGradient>
+                  <linearGradient id="backupFailureGradient" x1="20" y1="100" x2="105" y2="20" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#fb7185" />
+                    <stop offset="100%" stop-color="#ef4444" />
+                  </linearGradient>
+                </defs>
+                <circle class="backup-stats-ring-track" cx="60" cy="60" r="45" />
+                <circle v-if="showFullFailureCircle" class="backup-stats-ring-fill fail" cx="60" cy="60" r="45" />
+                <circle v-else-if="showFullSuccessCircle" class="backup-stats-ring-fill success" cx="60" cy="60" r="45" />
+                <template v-else>
+                  <path v-if="backupFailureRate > 0" class="backup-stats-ring-fill fail" :d="backupFailureArcPath" />
+                  <path v-if="backupSuccessRate > 0" class="backup-stats-ring-fill success" :d="backupSuccessArcPath" />
+                </template>
+
+                <circle
+                  v-if="showFullSuccessCircle"
+                  class="backup-stats-ring-hitbox"
+                  cx="60"
+                  cy="60"
+                  r="45"
+                  @mouseenter="showBackupTooltip('success', $event)"
+                  @mousemove="showBackupTooltip('success', $event)"
+                  @mouseleave="hideBackupTooltip"
+                />
+                <circle
+                  v-else-if="showFullFailureCircle"
+                  class="backup-stats-ring-hitbox"
+                  cx="60"
+                  cy="60"
+                  r="45"
+                  @mouseenter="showBackupTooltip('fail', $event)"
+                  @mousemove="showBackupTooltip('fail', $event)"
+                  @mouseleave="hideBackupTooltip"
+                />
+                <path
+                  v-if="!showFullSuccessCircle && backupSuccessRate > 0"
+                  class="backup-stats-ring-hitbox"
+                  :d="backupSuccessArcPath"
+                  @mouseenter="showBackupTooltip('success', $event)"
+                  @mousemove="showBackupTooltip('success', $event)"
+                  @mouseleave="hideBackupTooltip"
+                />
+                <path
+                  v-if="!showFullFailureCircle && backupFailureRate > 0"
+                  class="backup-stats-ring-hitbox"
+                  :d="backupFailureArcPath"
+                  @mouseenter="showBackupTooltip('fail', $event)"
+                  @mousemove="showBackupTooltip('fail', $event)"
+                  @mouseleave="hideBackupTooltip"
+                />
+              </svg>
+              <div
+                v-if="backupTooltip"
+                class="backup-stats-tooltip"
+                :class="`tooltip-${backupTooltip.kind}`"
+                :style="{ left: `${backupTooltip.left}px`, top: `${backupTooltip.top}px` }"
+              >
+                <span class="backup-stats-tooltip-label">{{ backupTooltip.label }}</span>
+                <span class="backup-stats-tooltip-value">{{ backupTooltip.value }} 次</span>
+              </div>
+              <div class="backup-stats-ring-center">
+                <span class="backup-stats-total">{{ backupExecutionCount }}</span>
+                <span class="backup-stats-total-label">累计备份</span>
+              </div>
+            </div>
+          </div>
+          <div v-else class="empty-hint">暂无统计数据</div>
+        </div>
       </section>
 
       <!-- Row 4: Backups List -->
@@ -397,9 +537,7 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
               <h3 class="bkh-title">
                 <i class="fas fa-history"></i> 备份记录
                 <span class="bkh-chips">
-                  <span class="bkh-chip"><i class="fas fa-box"></i> {{ backupTotal }} 份可用</span>
-                  <span v-if="stats" class="bkh-chip chip-success"><i class="fas fa-check"></i> {{ stats.success_backup_count }} 成功</span>
-                  <span v-if="stats && stats.failure_backup_count" class="bkh-chip chip-fail"><i class="fas fa-times"></i> {{ stats.failure_backup_count }} 失败</span>
+                  <span class="bkh-chip"><i class="fas fa-box"></i> {{ availableBackupCount }} 份可用</span>
                 </span>
               </h3>
             </div>
@@ -936,11 +1074,11 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
 /* Row 3 Storage & Upcoming */
 .row-two-col {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 2fr);
   gap: 20px;
 }
 
-.storage-card, .upcoming-card {
+.storage-card, .backup-stats-card, .upcoming-card {
   background: var(--bl-surface-strong);
   border-radius: var(--bl-radius-lg);
   box-shadow: var(--bl-shadow-soft);
@@ -949,12 +1087,12 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.storage-card:hover, .upcoming-card:hover {
+.storage-card:hover, .backup-stats-card:hover, .upcoming-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--bl-shadow-card);
 }
 
-.storage-card h3, .upcoming-card h3 {
+.storage-card h3, .backup-stats-card h3, .upcoming-card h3 {
   font-size: 18px;
   font-weight: 700;
   margin: 0 0 20px;
@@ -964,7 +1102,159 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
 }
 
 .storage-card h3 i { color: var(--bl-accent); }
+.backup-stats-card h3 i { color: var(--bl-green); }
 .upcoming-card h3 i { color: var(--bl-purple); }
+
+.backup-stats-card {
+  position: relative;
+  overflow: hidden;
+  padding: 20px 18px;
+}
+
+.backup-stats-card::before {
+  content: '';
+  position: absolute;
+  inset: auto -40px -70px auto;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(15, 23, 42, 0.05) 0%, rgba(15, 23, 42, 0) 72%);
+  pointer-events: none;
+}
+
+.backup-stats-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.backup-stats-ring {
+  width: 108px;
+  height: 108px;
+  position: relative;
+  border-radius: 50%;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+}
+
+.backup-stats-ring-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.backup-stats-ring-track,
+.backup-stats-ring-fill,
+.backup-stats-ring-hitbox {
+  fill: none;
+  stroke-width: 12;
+}
+
+.backup-stats-ring-track {
+  stroke: rgba(15, 23, 42, 0.08);
+}
+
+.backup-stats-ring-fill {
+  stroke-linecap: butt;
+  filter: drop-shadow(0 2px 6px rgba(15, 23, 42, 0.12));
+}
+
+.backup-stats-ring-fill.success {
+  stroke: url(#backupSuccessGradient);
+}
+
+.backup-stats-ring-fill.fail {
+  stroke: url(#backupFailureGradient);
+}
+
+.backup-stats-ring-hitbox {
+  stroke: transparent;
+  stroke-width: 18;
+  stroke-linecap: round;
+  cursor: pointer;
+}
+
+.backup-stats-tooltip {
+  position: absolute;
+  z-index: 3;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
+  backdrop-filter: blur(12px);
+  transform: translate(-50%, calc(-100% - 8px));
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.backup-stats-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  background: inherit;
+  border-right: 1px solid rgba(15, 23, 42, 0.08);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.backup-stats-tooltip-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--bl-text-secondary);
+}
+
+.backup-stats-tooltip-value {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--bl-text);
+}
+
+.backup-stats-tooltip.tooltip-success {
+  background: rgba(248, 255, 251, 0.94);
+}
+
+.backup-stats-tooltip.tooltip-fail {
+  background: rgba(255, 248, 249, 0.94);
+}
+
+.backup-stats-ring-center {
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 247, 250, 0.96) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.04),
+    inset 0 8px 20px rgba(255, 255, 255, 0.55);
+}
+
+.backup-stats-total {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--bl-text);
+}
+
+.backup-stats-total-label {
+  margin-top: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--bl-text-secondary);
+}
 
 .storage-metrics {
   display: flex;
@@ -1295,9 +1585,15 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   .bkh-left { width: 100%; }
 }
 
+@media (min-width: 901px) and (max-width: 1180px) {
+  .row-two-col { grid-template-columns: 1fr 1fr; }
+  .backup-stats-card { grid-column: 1 / -1; }
+}
+
 @media (max-width: 600px) {
   .hero-title { font-size: 36px; }
   .storage-metrics { flex-direction: column; }
+  .backup-stats-breakdown { grid-template-columns: 1fr; }
   .latest-detail-grid { grid-template-columns: 1fr; }
 }
 </style>
