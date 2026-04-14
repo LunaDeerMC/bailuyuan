@@ -33,6 +33,14 @@ const policyLatestBackup = computed(() => {
   return map;
 });
 
+const policyMap = computed(() => {
+  const map = {};
+  for (const policy of policies.value) {
+    map[policy.id] = policy;
+  }
+  return map;
+});
+
 const stats = computed(() => overview.value?.stats || null);
 const availableBackupCount = computed(() => {
   const count = stats.value?.available_backup_count;
@@ -207,6 +215,20 @@ function typeIcon(type) {
     rolling: 'fa-sync-alt',
   };
   return map[type] || 'fa-copy';
+}
+
+function backupSourceName(backup) {
+  const policy = policyMap.value[backup.policy_id];
+  return policy?.name || backup.policy_name || (backup.policy_id ? `策略 #${backup.policy_id}` : '未知来源');
+}
+
+function backupSourceType(backup) {
+  return policyMap.value[backup.policy_id]?.type || backup.type;
+}
+
+function backupSourceMuted(backup) {
+  const policy = policyMap.value[backup.policy_id];
+  return Boolean(policy) && !policy.enabled;
 }
 
 function scheduleLabel(type, value) {
@@ -552,7 +574,7 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
                 <tr>
                   <th>ID</th>
                   <th>类型</th>
-                  <th>状态</th>
+                  <th>来源</th>
                   <th>备份大小</th>
                   <th>实际大小</th>
                   <th>耗时</th>
@@ -563,7 +585,12 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
                 <tr v-for="b in backups" :key="b.id">
                   <td class="td-id">#{{ b.id }}</td>
                   <td><span class="type-badge" :class="typeClass(b.type)"><i class="fas" :class="typeIcon(b.type)"></i> {{ typeLabel(b.type) }}</span></td>
-                  <td><span class="status-dot" :class="statusClass(b.status)">{{ statusLabel(b.status) }}</span></td>
+                  <td>
+                    <span class="source-badge" :class="[typeClass(backupSourceType(b)), { 'source-badge-muted': backupSourceMuted(b) }]">
+                      <i class="fas" :class="typeIcon(backupSourceType(b))"></i>
+                      <span class="source-badge-label">{{ backupSourceName(b) }}</span>
+                    </span>
+                  </td>
                   <td>{{ formatBytes(b.backup_size_bytes) }}</td>
                   <td>{{ formatBytes(b.actual_size_bytes) }}</td>
                   <td>{{ formatDuration(b.duration_seconds) }}</td>
@@ -1489,7 +1516,8 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   color: var(--bl-text-secondary);
 }
 
-.type-badge {
+.type-badge,
+.source-badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -1504,18 +1532,34 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
-.type-badge i {
+.type-badge i,
+.source-badge i {
   font-size: 10px;
   line-height: 1;
 }
 
-.type-badge.type-cold {
+.source-badge {
+  max-width: 220px;
+}
+
+.source-badge-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.source-badge-muted {
+  opacity: 0.68;
+}
+
+.type-badge.type-cold,
+.source-badge.type-cold {
   background: rgba(88, 86, 214, 0.08);
   color: #5856d6;
   border-color: rgba(88, 86, 214, 0.15);
 }
 
-.type-badge.type-rolling {
+.type-badge.type-rolling,
+.source-badge.type-rolling {
   background: rgba(50, 173, 230, 0.08);
   color: #32ade6;
   border-color: rgba(50, 173, 230, 0.15);
