@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import SiteNavbar from './components/layout/SiteNavbar.vue';
 import AnnouncementMarquee from './components/layout/AnnouncementMarquee.vue';
@@ -12,6 +12,7 @@ useRouteSeo();
 
 const route = useRoute();
 const announcements = ref([]);
+const isMarqueeDismissed = ref(false);
 
 const navItems = [
   { label: '文档', href: '/doc' },
@@ -29,13 +30,25 @@ const navItems = [
 const activePath = computed(() => route.path);
 const marqueeGroups = computed(() => groupAnnouncementMarquees(announcements.value));
 const hasMarqueeAnnouncements = computed(() => marqueeGroups.value.length > 0);
+const isMarqueeVisible = computed(() => hasMarqueeAnnouncements.value && !isMarqueeDismissed.value);
 const appShellStyle = computed(() => ({
-  '--bl-banner-height': getAnnouncementMarqueeHeight(marqueeGroups.value.length),
+  '--bl-banner-height': getAnnouncementMarqueeHeight(isMarqueeVisible.value ? marqueeGroups.value.length : 0),
 }));
 
 // iframe pages don't show footer; they fill the viewport
 const isIframePage = computed(() =>
   ['/doc', '/map', '/photo'].includes(route.path)
+);
+
+function dismissMarquee() {
+  isMarqueeDismissed.value = true;
+}
+
+watch(
+  () => route.path,
+  () => {
+    isMarqueeDismissed.value = false;
+  }
 );
 
 onMounted(() => {
@@ -53,7 +66,7 @@ onMounted(() => {
 <template>
   <div class="app-shell" :style="appShellStyle">
     <SiteNavbar :items="navItems" :active-path="activePath" />
-    <AnnouncementMarquee v-if="hasMarqueeAnnouncements" :groups="marqueeGroups" />
+    <AnnouncementMarquee v-if="isMarqueeVisible" :groups="marqueeGroups" @close="dismissMarquee" />
     <router-view />
     <SiteFooter v-if="!isIframePage" />
   </div>

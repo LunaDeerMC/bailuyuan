@@ -14,6 +14,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(['close']);
+
 const route = useRoute();
 const router = useRouter();
 const MARQUEE_REPEAT_COUNT = 12;
@@ -72,7 +74,7 @@ function openAnnouncement(anchorId) {
 <template>
   <div v-if="marqueeGroups.length" class="announcement-marquees" aria-label="公告滚动横幅">
     <section
-      v-for="group in marqueeGroups"
+      v-for="(group, groupIndex) in marqueeGroups"
       :key="group.category"
       :class="['announcement-marquee', `announcement-marquee--${group.category}`]"
       :aria-label="`${group.label}滚动横幅`"
@@ -105,6 +107,16 @@ function openAnnouncement(anchorId) {
             </div>
           </div>
         </div>
+
+        <button
+          v-if="groupIndex === 0"
+          type="button"
+          class="announcement-marquee__dismiss"
+          aria-label="关闭公告横幅"
+          @click="emit('close')"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
       </div>
     </section>
   </div>
@@ -196,6 +208,34 @@ function openAnnouncement(anchorId) {
   flex: 1;
   overflow: hidden;
   mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+}
+
+.announcement-marquee__dismiss {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgba(55, 65, 81, 0.72);
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.announcement-marquee__dismiss:hover,
+.announcement-marquee__dismiss:focus-visible {
+  color: inherit;
+  transform: scale(1.06);
+}
+
+.announcement-marquee__dismiss:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.45);
+  outline-offset: 2px;
 }
 
 .announcement-marquee__track {
