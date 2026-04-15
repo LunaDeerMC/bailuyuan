@@ -132,7 +132,23 @@ def process_player(filename, name_cache):
 
     stats = data.get("stats", {})
     custom = stats.get("minecraft:custom", {})
+    
     walk_cm = custom.get("minecraft:walk_one_cm", 0)
+    avuate_cm = custom.get("minecraft:aviate_one_cm", 0)
+    fly_cm = custom.get("minecraft:fly_one_cm", 0)
+    sprint_cm = custom.get("minecraft:sprint_one_cm", 0)
+    minecart_cm = custom.get("minecraft:minecart_one_cm", 0)
+    fall_cm = custom.get("minecraft:fall_one_cm", 0)
+    walk_under_water_cm = custom.get("minecraft:walk_under_water_one_cm", 0)
+    walk_on_water_cm = custom.get("minecraft:walk_on_water_one_cm", 0)
+    boat_cm = custom.get("minecraft:boat_one_cm", 0)
+    climb_cm = custom.get("minecraft:climb_one_cm", 0)
+    swim_cm = custom.get("minecraft:swim_one_cm", 0)
+    horse_cm = custom.get("minecraft:horse_one_cm", 0)
+    happy_cm = custom.get("minecraft:happy_ghast_one_cm", 0)
+    crouch_cm = custom.get("minecraft:crouch_one_cm", 0)
+    travel_cm = walk_cm + avuate_cm + fly_cm + sprint_cm + minecart_cm + fall_cm + walk_under_water_cm + walk_on_water_cm + boat_cm + climb_cm + swim_cm + horse_cm + happy_cm + crouch_cm
+    
     play_time_ticks = custom.get("minecraft:play_time", 0)
     total_mined = sum(stats.get("minecraft:mined", {}).values())
     total_placed = sum(stats.get("minecraft:used", {}).values())
@@ -141,8 +157,8 @@ def process_player(filename, name_cache):
 
     data["extra"] = {
         "player_name": player_name,
-        "formatted_walk": format_dist(walk_cm),
-        "walk_cm": walk_cm,
+        "formatted_travel": format_dist(travel_cm),
+        "travel_cm": travel_cm,
         "total_mined": total_mined,
         "total_placed": total_placed,
         "total_deaths": total_deaths,
@@ -161,8 +177,8 @@ def process_player(filename, name_cache):
         if player_name != "Unknown"
         else f"https://minotar.net/avatar/{uuid}/64",
         "stats": {
-            "walk_fmt": format_dist(walk_cm),
-            "walk_raw": walk_cm,
+            "travel_fmt": format_dist(travel_cm),
+            "travel_raw": travel_cm,
             "mined": total_mined,
             "placed": total_placed,
             "deaths": total_deaths,

@@ -109,7 +109,7 @@ const leaderboards = computed(() => {
   }
 
   return [
-    { title: '旅行者', icon: 'fa-walking', color: '#22c55e', top: getTop('walk_raw', p => p.stats.walk_fmt) },
+    { title: '旅行者', icon: 'fa-walking', color: '#22c55e', top: getTop('travel_raw', p => p.stats.travel_fmt) },
     { title: '搬石大师', icon: 'fa-cube', color: '#3b82f6', top: getTop('placed', p => p.stats.placed.toLocaleString()) },
     { title: '挖挖机', icon: 'fa-hammer', color: '#f59e0b', top: getTop('mined', p => p.stats.mined.toLocaleString()) },
     { title: '亡灵', icon: 'fa-skull-crossbones', color: '#ef4444', top: getTop('deaths', p => p.stats.deaths.toLocaleString()) },
@@ -342,7 +342,7 @@ function filteredItems(catKey) {
         <div class="summary-stats-grid">
           <div class="summary-stat-item">
             <span class="summary-stat-label">行走距离</span>
-            <span class="summary-stat-value">{{ selectedPlayer.stats.walk_fmt }}</span>
+            <span class="summary-stat-value">{{ selectedPlayer.stats.travel_fmt }}</span>
           </div>
           <div class="summary-stat-item">
             <span class="summary-stat-label">放置方块</span>
