@@ -146,29 +146,30 @@
     },
     {
         "title": "经济开发区",
-        "logo": "",
+        "logo": "https://mcphoto.lunadeer.cn/uploads/0940c4b0-8a36-48f2-b33a-5e9d1e409b9c.png",
         "gradient": {
             "from": "#667eea",
             "to": "#764ba2"
         },
         "dimension": "overworld",
         "coordinatesSecret": false,
-        "scale": "small",
+        "scale": "medium",
         "townType": "building",
         "recruitment": "welcome",
         "founders": [
-            "Max_Verstappen3"
+            "MaxVerstappen30",
+            "Reyna_Krowitz"
         ],
         "members": [
-            "swininggoffish",
             "KKKara",
             "BE.Zhou_Guanyu8",
-            "LiuGanYi"
+            "LiuGanYi",
+            "KMME25"
         ],
         "introduction": [
             {
-                "type": "image",
-                "content": "http://i0.hdslb.com/bfs/new_dyn/802a2cbe0aa93a8db045e0208921531d441905970.png"
+                "type": "text",
+                "content": "一个休闲为主的小镇 想干啥就干啥"
             }
         ],
         "coordinates": {
