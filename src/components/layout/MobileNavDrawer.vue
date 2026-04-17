@@ -1,5 +1,6 @@
 <script setup>
-import { RouterLink, useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
 
 const props = defineProps({
   open: {
@@ -21,6 +22,11 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['close']);
+const expandedGroup = ref(null);
+
+function toggleGroup(href) {
+  expandedGroup.value = expandedGroup.value === href ? null : href;
+}
 </script>
 
 <template>
@@ -34,6 +40,20 @@ const emit = defineEmits(['close']);
           rel="noopener noreferrer"
           @click="emit('close')"
         >{{ item.label }}</a>
+        <div v-else-if="item.children" class="mobile-menu-group">
+          <button class="mobile-menu-group__toggle" @click="toggleGroup(item.href)">
+            {{ item.label }}
+            <i :class="expandedGroup === item.href ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" class="mobile-menu-group__icon"></i>
+          </button>
+          <div v-show="expandedGroup === item.href" class="mobile-menu-group__items">
+            <RouterLink
+              v-for="child in item.children"
+              :key="child.href"
+              :to="child.href"
+              @click="emit('close')"
+            >{{ child.label }}</RouterLink>
+          </div>
+        </div>
         <RouterLink
           v-else
           :to="item.href"
@@ -103,4 +123,54 @@ const emit = defineEmits(['close']);
 .mobile-menu.active .mobile-menu-links a:nth-child(5) { transition-delay: 0.3s; }
 .mobile-menu.active .mobile-menu-links a:nth-child(6) { transition-delay: 0.35s; }
 .mobile-menu.active .mobile-menu-links a:nth-child(7) { transition-delay: 0.4s; }
+
+.mobile-menu-group {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.4s ease;
+}
+
+.mobile-menu.active .mobile-menu-group {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-menu-group__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--bl-text);
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+.mobile-menu-group__icon {
+  font-size: 14px;
+  opacity: 0.4;
+  transition: transform 0.2s;
+}
+
+.mobile-menu-group__items {
+  padding-left: 20px;
+}
+
+.mobile-menu-group__items a {
+  display: block;
+  font-size: 20px;
+  font-weight: 500;
+  text-decoration: none;
+  color: rgba(29, 29, 31, 0.7);
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.mobile-menu-group__items a:hover {
+  color: var(--bl-text);
+}
 </style>

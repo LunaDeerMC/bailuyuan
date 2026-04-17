@@ -16,7 +16,14 @@ const isMarqueeDismissed = ref(false);
 
 const navItems = [
   { label: '文档', href: '/doc' },
-  { label: '地图', href: '/map' },
+  {
+    label: '地图',
+    href: '/map',
+    children: [
+      { label: '旧出生点', href: '/map#world:2710:0:-1575:2531:0:0:0:1:flat' },
+      { label: '新出生点', href: '/map#world:500000:0:500000:2531:0:0:0:1:flat' },
+    ],
+  },
   { label: '设施', href: '/facilities' },
   { label: '城镇', href: '/towns' },
   { label: '公告', href: '/announcements' },

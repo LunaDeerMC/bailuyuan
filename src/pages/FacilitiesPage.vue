@@ -121,7 +121,7 @@ function getMapUrl(item) {
   if (!item.coordinates) return '#';
   const c = item.coordinates;
   const world = item.dimension === 'nether' ? 'world_nether' : item.dimension === 'end' ? 'world_the_end' : 'world';
-  return `https://mcmap.lunadeer.cn/#${world}:${c.x}:${c.y}:${c.z}:500:0:0:0:1:flat`;
+  return `https://bailuyuan.lunadeer.cn/map/#${world}:${c.x}:${c.y}:${c.z}:500:0:0:0:1:flat`;
 }
 
 function parseBV(input) {

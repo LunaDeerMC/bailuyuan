@@ -1,7 +1,20 @@
+<script setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const defaultHash = '#world:2710:0:-1575:2531:0:0:0:1:flat';
+
+const iframeSrc = computed(() => {
+  const hash = route.hash || defaultHash;
+  return `https://mcmap.lunadeer.cn/${hash}`;
+});
+</script>
+
 <template>
   <iframe
     class="iframe-fullpage"
-    src="https://mcmap.lunadeer.cn/#world:2710:0:-1575:2531:0:0:0:1:flat"
+    :src="iframeSrc"
     frameborder="0"
     allowfullscreen
   ></iframe>

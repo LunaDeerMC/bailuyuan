@@ -31,6 +31,7 @@ const props = defineProps({
 });
 
 const mobileOpen = ref(false);
+const openDropdown = ref(null);
 
 const isActive = (href) => href === props.activePath;
 </script>
@@ -53,8 +54,27 @@ const isActive = (href) => href === props.activePath;
 
       <nav class="site-navbar__links" aria-label="主导航">
         <template v-for="item in items" :key="item.href">
+          <div
+            v-if="item.children"
+            class="site-navbar__dropdown"
+            @mouseenter="openDropdown = item.href"
+            @mouseleave="openDropdown = null"
+          >
+            <RouterLink
+              :to="item.href"
+              :class="['site-navbar__link', { 'is-active': isActive(item.href) }]"
+            >{{ item.label }}</RouterLink>
+            <div v-show="openDropdown === item.href" class="site-navbar__dropdown-menu">
+              <RouterLink
+                v-for="child in item.children"
+                :key="child.href"
+                :to="child.href"
+                class="site-navbar__dropdown-item"
+              >{{ child.label }}</RouterLink>
+            </div>
+          </div>
           <a
-            v-if="item.external"
+            v-else-if="item.external"
             :href="item.href"
             target="_blank"
             rel="noopener noreferrer"
@@ -154,6 +174,50 @@ const isActive = (href) => href === props.activePath;
   height: 2px;
   border-radius: 999px;
   background: var(--bl-text);
+}
+
+.site-navbar__dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.site-navbar__dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 120px;
+  padding: 6px 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 10px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.site-navbar__dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  height: 12px;
+}
+
+.site-navbar__dropdown-item {
+  display: block;
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  color: rgba(29, 29, 31, 0.82);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.site-navbar__dropdown-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--bl-text);
 }
 
 .site-navbar__cta {
