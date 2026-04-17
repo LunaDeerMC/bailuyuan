@@ -1,81 +1,36 @@
 import { routeSeo } from './utils/seo';
 
-export const routes = [
-  {
-    path: '/',
-    alias: ['/index.html'],
-    name: 'home',
-    component: () => import('./pages/HomePage.vue'),
-    meta: { seo: routeSeo.home },
-  },
-  {
-    path: '/announcements',
-    alias: ['/announcements.html'],
-    name: 'announcements',
-    component: () => import('./pages/AnnouncementsPage.vue'),
-    meta: { seo: routeSeo.announcements },
-  },
-  {
-    path: '/facilities',
-    alias: ['/facilities.html'],
-    name: 'facilities',
-    component: () => import('./pages/FacilitiesPage.vue'),
-    meta: { seo: routeSeo.facilities },
-  },
-  {
-    path: '/towns',
-    alias: ['/towns.html'],
-    name: 'towns',
-    component: () => import('./pages/TownsPage.vue'),
-    meta: { seo: routeSeo.towns },
-  },
-  {
-    path: '/stats',
-    alias: ['/stats.html'],
-    name: 'stats',
-    component: () => import('./pages/StatsPage.vue'),
-    meta: { seo: routeSeo.stats },
-  },
-  {
-    path: '/sponsor',
-    alias: ['/sponsor.html'],
-    name: 'sponsor',
-    component: () => import('./pages/SponsorPage.vue'),
-    meta: { seo: routeSeo.sponsor },
-  },
-  {
-    path: '/join',
-    alias: ['/join.html'],
-    name: 'join',
-    component: () => import('./pages/JoinPage.vue'),
-    meta: { seo: routeSeo.join },
-  },
-  {
-    path: '/doc',
-    alias: ['/doc.html'],
-    name: 'doc',
-    component: () => import('./pages/DocPage.vue'),
-    meta: { seo: routeSeo.doc },
-  },
-  {
-    path: '/map',
-    alias: ['/map.html'],
-    name: 'map',
-    component: () => import('./pages/MapPage.vue'),
-    meta: { seo: routeSeo.map },
-  },
-  {
-    path: '/photo',
-    alias: ['/photo.html'],
-    name: 'photo',
-    component: () => import('./pages/PhotoPage.vue'),
-    meta: { seo: routeSeo.photo },
-  },
-  {
-    path: '/backup',
-    alias: ['/backup.html'],
-    name: 'backup',
-    component: () => import('./pages/BackupPage.vue'),
-    meta: { seo: routeSeo.backup },
-  },
+const pages = [
+  { path: '/', name: 'home', loader: () => import('./pages/HomePage.vue'), seo: routeSeo.home },
+  { path: '/announcements', name: 'announcements', loader: () => import('./pages/AnnouncementsPage.vue'), seo: routeSeo.announcements },
+  { path: '/facilities', name: 'facilities', loader: () => import('./pages/FacilitiesPage.vue'), seo: routeSeo.facilities },
+  { path: '/towns', name: 'towns', loader: () => import('./pages/TownsPage.vue'), seo: routeSeo.towns },
+  { path: '/stats', name: 'stats', loader: () => import('./pages/StatsPage.vue'), seo: routeSeo.stats },
+  { path: '/sponsor', name: 'sponsor', loader: () => import('./pages/SponsorPage.vue'), seo: routeSeo.sponsor },
+  { path: '/join', name: 'join', loader: () => import('./pages/JoinPage.vue'), seo: routeSeo.join },
+  { path: '/doc', name: 'doc', loader: () => import('./pages/DocPage.vue'), seo: routeSeo.doc },
+  { path: '/map', name: 'map', loader: () => import('./pages/MapPage.vue'), seo: routeSeo.map },
+  { path: '/photo', name: 'photo', loader: () => import('./pages/PhotoPage.vue'), seo: routeSeo.photo },
+  { path: '/backup', name: 'backup', loader: () => import('./pages/BackupPage.vue'), seo: routeSeo.backup },
 ];
+
+export const routes = pages.map((p) => ({
+  path: p.path,
+  alias: [p.path === '/' ? '/index.html' : `${p.path}.html`],
+  name: p.name,
+  component: p.loader,
+  meta: { seo: p.seo },
+}));
+
+const prefetched = new Set();
+
+export function prefetchRoute(rawPath) {
+  if (!rawPath || typeof rawPath !== 'string') return;
+  if (/^https?:/i.test(rawPath)) return;
+  const path = rawPath.split(/[?#]/)[0].replace(/\.html$/, '') || '/';
+  if (prefetched.has(path)) return;
+  const page = pages.find((p) => p.path === path);
+  if (!page) return;
+  prefetched.add(path);
+  page.loader();
+}

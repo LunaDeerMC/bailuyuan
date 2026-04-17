@@ -1,9 +1,10 @@
 <script setup>
-import { computed, ref, onMounted, watch } from 'vue';
+import { computed, ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import SiteNavbar from './components/layout/SiteNavbar.vue';
 import AnnouncementMarquee from './components/layout/AnnouncementMarquee.vue';
 import SiteFooter from './components/layout/SiteFooter.vue';
+import CustomScrollbar from './components/layout/CustomScrollbar.vue';
 import { fetchAnnouncementsData } from './composables/useAnnouncementsData.js';
 import { getAnnouncementMarqueeHeight, groupAnnouncementMarquees } from './utils/announcements.js';
 import { useRouteSeo } from './utils/seo';
@@ -38,9 +39,9 @@ const activePath = computed(() => route.path);
 const marqueeGroups = computed(() => groupAnnouncementMarquees(announcements.value));
 const hasMarqueeAnnouncements = computed(() => marqueeGroups.value.length > 0);
 const isMarqueeVisible = computed(() => hasMarqueeAnnouncements.value && !isMarqueeDismissed.value);
-const appShellStyle = computed(() => ({
-  '--bl-banner-height': getAnnouncementMarqueeHeight(isMarqueeVisible.value ? marqueeGroups.value.length : 0),
-}));
+const bannerHeight = computed(() =>
+  getAnnouncementMarqueeHeight(isMarqueeVisible.value ? marqueeGroups.value.length : 0)
+);
 
 // iframe pages don't show footer; they fill the viewport
 const isIframePage = computed(() =>
@@ -51,6 +52,14 @@ function dismissMarquee() {
   isMarqueeDismissed.value = true;
 }
 
+function applyBannerHeight(value) {
+  if (typeof document !== 'undefined') {
+    document.documentElement.style.setProperty('--bl-banner-height', value);
+  }
+}
+
+watch(bannerHeight, applyBannerHeight, { immediate: true });
+
 watch(
   () => route.path,
   () => {
@@ -59,6 +68,7 @@ watch(
 );
 
 onMounted(() => {
+  applyBannerHeight(bannerHeight.value);
   fetchAnnouncementsData()
     .then(({ announcements: data }) => {
       announcements.value = data;
@@ -68,14 +78,19 @@ onMounted(() => {
     });
 });
 
+onUnmounted(() => {
+  applyBannerHeight('0px');
+});
+
 </script>
 
 <template>
-  <div class="app-shell" :style="appShellStyle">
+  <div class="app-shell">
     <SiteNavbar :items="navItems" :active-path="activePath" />
     <AnnouncementMarquee v-if="isMarqueeVisible" :groups="marqueeGroups" @close="dismissMarquee" />
     <router-view />
     <SiteFooter v-if="!isIframePage" />
+    <CustomScrollbar />
   </div>
 </template>
 

@@ -87,13 +87,15 @@ const statusIconMap = { online: 'fa-check-circle', maintenance: 'fa-wrench', off
 const typeIconMap = { resource: 'fa-cube', xp: 'fa-star', infrastructure: 'fa-road' };
 
 const filtered = computed(() => {
-  return facilities.value.filter(item => {
+  const list = facilities.value.filter(item => {
     const matchType = typeFilter.value === 'all' || item.type === typeFilter.value;
     const matchDim = dimensionFilter.value === 'all' || item.dimension === dimensionFilter.value;
     const q = searchQuery.value.toLowerCase().trim();
     const matchSearch = !q || item.title.toLowerCase().includes(q) || item.intro.toLowerCase().includes(q);
     return matchType && matchDim && matchSearch;
   });
+  const statusOrder = { online: 0, offline: 1, maintenance: 2 };
+  return [...list].sort((a, b) => (statusOrder[a.status] ?? 0) - (statusOrder[b.status] ?? 0));
 });
 
 function openModal(item) {

@@ -20,6 +20,7 @@
 - 文档 `/doc`
 - 在线地图 `/map`
 - 服务器相册 `/photo`
+- 存档备份 `/backup`
 
 路由同时兼容旧站的 `.html` 入口，例如 `/announcements.html`、`/stats.html`，便于静态托管环境中的旧链接继续访问。
 
@@ -28,7 +29,9 @@
 - Vue 3
 - Vue Router 4
 - Vite 5
-- marked
+- vite-ssg（生产构建使用静态站点生成）
+- @unhead/vue（页面级 SEO / meta 管理）
+- marked（Markdown 渲染）
 - Python 脚本用于生成玩家统计摘要
 
 ## 目录结构
@@ -37,8 +40,13 @@
 .
 ├─ src/                    # Vue 应用源码
 │  ├─ components/          # 复用组件
+│  │  ├─ layout/           # 站点布局（导航、侧边抽屉等）
+│  │  ├─ shared/           # 跨页面共享组件（筛选、编辑器等）
+│  │  └─ base/             # 基础原子组件
 │  ├─ pages/               # 页面级组件
-│  ├─ utils/seo.js         # 页面 SEO 与结构化数据
+│  ├─ composables/         # 组合式工具（数据获取、编辑器状态等）
+│  ├─ styles/              # 共享样式
+│  ├─ utils/               # 工具函数（SEO、公告、数据解析等）
 │  ├─ router.js            # 路由与旧 .html 兼容别名
 │  └─ main.js              # 应用入口
 ├─ public/                 # 站点运行期静态资源与数据
@@ -52,6 +60,8 @@
 ```
 
 ## 本地开发
+
+项目依赖管理兼容 `npm` 与 `bun`，以下示例均使用 npm。
 
 ### 1. 安装依赖
 
@@ -70,6 +80,8 @@ npm run dev
 ```bash
 npm run build
 ```
+
+生产构建基于 `vite-ssg`，会在构建时静态渲染各路由页面，以保留首屏与 SEO。
 
 ### 4. 本地预览构建结果
 
