@@ -149,6 +149,25 @@ function parseBV(input) {
   return m ? m[1] : null;
 }
 
+const MONTH_LABELS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+function toDate(v) {
+  if (!v) return null;
+  const d = new Date(v);
+  return isNaN(d.getTime()) ? null : d;
+}
+function formatMonth(v) {
+  const d = toDate(v);
+  return d ? MONTH_LABELS[d.getMonth()] : '';
+}
+function formatDay(v) {
+  const d = toDate(v);
+  return d ? String(d.getDate()).padStart(2, '0') : '';
+}
+function formatYear(v) {
+  const d = toDate(v);
+  return d ? d.getFullYear() : '';
+}
+
 function onFilterChange({ key, value }) {
   if (key === 'category') categoryFilter.value = value;
 }
@@ -266,12 +285,20 @@ function generateJson() {
 
     <!-- Timeline -->
     <div v-if="filtered.length" class="timeline">
-      <div
+      <article
         v-for="(item, index) in filtered"
         :key="getAnnouncementId(item)"
         :id="getAnnouncementId(item)"
-        :class="['timeline-item', `category-${item.category}`]"
+        :class="['tl-entry', `category-${item.category}`]"
       >
+        <aside class="tl-date">
+          <span class="tl-date-month">{{ formatMonth(item.time) }}</span>
+          <span class="tl-date-day">{{ formatDay(item.time) }}</span>
+          <span class="tl-date-year">{{ formatYear(item.time) }}</span>
+        </aside>
+        <div class="tl-rail">
+          <span class="tl-dot"><i :class="categoryIconMap[item.category]"></i></span>
+        </div>
         <div :class="['announcement-card', { expanded: expandedId === getAnnouncementId(item) }]">
           <!-- Summary -->
           <button type="button" class="card-summary" @click="toggleItem(getAnnouncementId(item))">
@@ -285,7 +312,6 @@ function generateJson() {
               </div>
               <p class="announcement-intro">{{ item.intro }}</p>
             </div>
-            <span class="card-summary-time"><i class="far fa-clock"></i> {{ item.time }}</span>
             <span class="expand-icon">▾</span>
           </button>
 
@@ -319,7 +345,7 @@ function generateJson() {
             </div>
           </div>
         </div>
-      </div>
+      </article>
     </div>
 
     <!-- Empty -->
@@ -474,50 +500,116 @@ function generateJson() {
 /* Timeline */
 .timeline {
   position: relative;
-  padding-left: 32px;
   margin-top: 40px;
+  margin-left: -140px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 7px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(to bottom, var(--bl-accent), rgba(0, 113, 227, 0.1));
-  border-radius: 2px;
-}
-
-.timeline-item {
+.tl-entry {
+  display: grid;
+  grid-template-columns: 72px 28px 1fr;
+  gap: 20px;
+  align-items: stretch;
   position: relative;
-  margin-bottom: 24px;
 }
 
-.timeline-item::before {
+.tl-date {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding-top: 20px;
+  gap: 2px;
+  user-select: none;
+}
+
+.tl-date-month {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--bl-accent);
+}
+
+.tl-entry.category-activity .tl-date-month { color: var(--bl-green); }
+.tl-entry.category-maintenance .tl-date-month { color: var(--bl-warning); }
+.tl-entry.category-other .tl-date-month { color: var(--bl-purple); }
+
+.tl-date-day {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--bl-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.tl-date-year {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--bl-text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.tl-rail {
+  position: relative;
+}
+
+.tl-rail::before {
   content: '';
   position: absolute;
-  left: -32px;
+  left: 50%;
+  top: 0;
+  bottom: -28px;
+  width: 1px;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.tl-entry:last-child .tl-rail::before {
+  bottom: 50%;
+}
+
+.tl-entry:first-child .tl-rail::before {
   top: 28px;
-  width: 16px;
-  height: 16px;
+}
+
+.tl-dot {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: #fff;
-  border: 3px solid var(--bl-accent);
+  display: grid;
+  place-items: center;
+  background: var(--bl-bg);
+  color: transparent;
+  font-size: 0;
+  border: 2px solid var(--bl-accent);
+  box-shadow: 0 0 0 4px var(--bl-bg);
   z-index: 1;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.timeline-item.category-activity::before {
-  border-color: var(--bl-green);
+.tl-dot i {
+  display: none;
 }
 
-.timeline-item.category-maintenance::before {
-  border-color: var(--bl-warning);
+.tl-entry:hover .tl-dot {
+  background: var(--bl-accent);
+  transform: translateX(-50%) scale(1.15);
 }
 
-.timeline-item.category-other::before {
-  border-color: var(--bl-purple);
-}
+.tl-entry.category-activity .tl-dot { border-color: var(--bl-green); }
+.tl-entry.category-activity:hover .tl-dot { background: var(--bl-green); }
+
+.tl-entry.category-maintenance .tl-dot { border-color: var(--bl-warning); }
+.tl-entry.category-maintenance:hover .tl-dot { background: var(--bl-warning); }
+
+.tl-entry.category-other .tl-dot { border-color: var(--bl-purple); }
+.tl-entry.category-other:hover .tl-dot { background: var(--bl-purple); }
 
 /* Announcement Card */
 .announcement-card {
@@ -792,6 +884,12 @@ function generateJson() {
   font-weight: 700;
 }
 
+@media (max-width: 1100px) {
+  .timeline {
+    margin-left: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-title {
     font-size: 36px;
@@ -799,6 +897,16 @@ function generateJson() {
 
   .hero-subtitle {
     font-size: 20px;
+  }
+
+  .tl-entry {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .tl-date,
+  .tl-rail {
+    display: none;
   }
 
   .card-summary {

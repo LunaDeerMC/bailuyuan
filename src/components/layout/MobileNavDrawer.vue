@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
+import { prefetchRoute } from '../../router.js';
 
 const props = defineProps({
   open: {
@@ -27,6 +28,19 @@ const expandedGroup = ref(null);
 function toggleGroup(href) {
   expandedGroup.value = expandedGroup.value === href ? null : href;
 }
+
+watch(
+  () => props.open,
+  (open) => {
+    if (!open) return;
+    props.items.forEach((item) => {
+      if (item.external) return;
+      prefetchRoute(item.href);
+      if (item.children) item.children.forEach((c) => prefetchRoute(c.href));
+    });
+    prefetchRoute(props.ctaHref);
+  }
+);
 </script>
 
 <template>

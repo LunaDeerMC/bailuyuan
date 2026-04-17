@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import MobileNavDrawer from './MobileNavDrawer.vue';
+import { prefetchRoute } from '../../router.js';
 
 const props = defineProps({
   items: {
@@ -32,8 +33,29 @@ const props = defineProps({
 
 const mobileOpen = ref(false);
 const openDropdown = ref(null);
+let closeTimer = null;
 
 const isActive = (href) => href === props.activePath;
+
+function handleEnter(item) {
+  if (closeTimer) {
+    clearTimeout(closeTimer);
+    closeTimer = null;
+  }
+  if (item.children) openDropdown.value = item.href;
+  prefetchRoute(item.href);
+}
+
+function handleLeave() {
+  if (closeTimer) clearTimeout(closeTimer);
+  closeTimer = setTimeout(() => {
+    openDropdown.value = null;
+  }, 120);
+}
+
+function prefetch(href) {
+  prefetchRoute(href);
+}
 </script>
 
 <template>
@@ -48,8 +70,9 @@ const isActive = (href) => href === props.activePath;
         <i :class="mobileOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
       </button>
 
-      <RouterLink class="site-navbar__logo" to="/">
+      <RouterLink class="site-navbar__logo" to="/" @pointerenter="prefetch('/')" @focus="prefetch('/')">
         <img :src="logoSrc" :alt="logoAlt">
+        <span class="site-navbar__brand">白鹿原</span>
       </RouterLink>
 
       <nav class="site-navbar__links" aria-label="主导航">
@@ -57,21 +80,28 @@ const isActive = (href) => href === props.activePath;
           <div
             v-if="item.children"
             class="site-navbar__dropdown"
-            @mouseenter="openDropdown = item.href"
-            @mouseleave="openDropdown = null"
+            @pointerenter="handleEnter(item)"
+            @pointerleave="handleLeave"
           >
             <RouterLink
               :to="item.href"
-              :class="['site-navbar__link', { 'is-active': isActive(item.href) }]"
-            >{{ item.label }}</RouterLink>
-            <div v-show="openDropdown === item.href" class="site-navbar__dropdown-menu">
-              <RouterLink
-                v-for="child in item.children"
-                :key="child.href"
-                :to="child.href"
-                class="site-navbar__dropdown-item"
-              >{{ child.label }}</RouterLink>
-            </div>
+              :class="['site-navbar__link', 'site-navbar__link--has-menu', { 'is-active': isActive(item.href) }]"
+              @focus="handleEnter(item)"
+            >
+              {{ item.label }}
+              <i class="fas fa-chevron-down site-navbar__chevron" :class="{ 'is-open': openDropdown === item.href }"></i>
+            </RouterLink>
+            <transition name="dropdown">
+              <div v-show="openDropdown === item.href" class="site-navbar__dropdown-menu">
+                <RouterLink
+                  v-for="child in item.children"
+                  :key="child.href"
+                  :to="child.href"
+                  class="site-navbar__dropdown-item"
+                  @pointerenter="prefetch(child.href)"
+                >{{ child.label }}</RouterLink>
+              </div>
+            </transition>
           </div>
           <a
             v-else-if="item.external"
@@ -84,11 +114,18 @@ const isActive = (href) => href === props.activePath;
             v-else
             :to="item.href"
             :class="['site-navbar__link', { 'is-active': isActive(item.href) }]"
+            @pointerenter="prefetch(item.href)"
+            @focus="prefetch(item.href)"
           >{{ item.label }}</RouterLink>
         </template>
       </nav>
 
-      <RouterLink class="site-navbar__cta" :to="ctaHref">{{ ctaLabel }}</RouterLink>
+      <RouterLink
+        class="site-navbar__cta"
+        :to="ctaHref"
+        @pointerenter="prefetch(ctaHref)"
+        @focus="prefetch(ctaHref)"
+      >{{ ctaLabel }}</RouterLink>
     </div>
   </header>
 
@@ -110,6 +147,7 @@ const isActive = (href) => href === props.activePath;
   background: rgba(255, 255, 255, 0.8);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .site-navbar__inner {
@@ -139,41 +177,79 @@ const isActive = (href) => href === props.activePath;
   background: rgba(0, 0, 0, 0.05);
 }
 
+.site-navbar__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
 .site-navbar__logo img {
   width: auto;
-  height: 32px;
+  height: 34px;
+  display: block;
+}
+
+.site-navbar__brand {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--bl-text);
 }
 
 .site-navbar__links {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 4px;
   margin-left: auto;
-  margin-right: 8px;
+  margin-right: 16px;
 }
 
 .site-navbar__link {
   position: relative;
-  font-size: 0.82rem;
-  color: rgba(29, 29, 31, 0.82);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(29, 29, 31, 0.72);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, background 0.2s ease;
 }
 
-.site-navbar__link:hover,
-.site-navbar__link.is-active {
+.site-navbar__link:hover {
   color: var(--bl-text);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.site-navbar__link.is-active {
+  color: var(--bl-accent);
 }
 
 .site-navbar__link.is-active::after {
   content: '';
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 4px;
+  width: 18px;
   height: 2px;
   border-radius: 999px;
-  background: var(--bl-text);
+  background: var(--bl-accent);
+}
+
+.site-navbar__chevron {
+  font-size: 10px;
+  opacity: 0.5;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.site-navbar__chevron.is-open {
+  transform: rotate(180deg);
+  opacity: 0.9;
 }
 
 .site-navbar__dropdown {
@@ -184,60 +260,79 @@ const isActive = (href) => href === props.activePath;
 
 .site-navbar__dropdown-menu {
   position: absolute;
-  top: calc(100% + 12px);
+  top: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  min-width: 120px;
-  padding: 6px 0;
-  background: rgba(255, 255, 255, 0.95);
+  min-width: 160px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(20px);
-  border-radius: 10px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 12px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .site-navbar__dropdown-menu::before {
   content: '';
   position: absolute;
-  top: -12px;
+  top: -8px;
   left: 0;
   right: 0;
-  height: 12px;
+  height: 8px;
 }
 
 .site-navbar__dropdown-item {
   display: block;
-  padding: 8px 16px;
-  font-size: 0.8rem;
-  color: rgba(29, 29, 31, 0.82);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: rgba(29, 29, 31, 0.78);
   text-decoration: none;
   white-space: nowrap;
   transition: background 0.15s, color 0.15s;
 }
 
 .site-navbar__dropdown-item:hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: var(--bl-text);
+  background: rgba(0, 113, 227, 0.08);
+  color: var(--bl-accent);
+}
+
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: opacity 0.18s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-6px);
+}
+
+.dropdown-enter-to,
+.dropdown-leave-from {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .site-navbar__cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 32px;
-  padding: 0 16px;
+  height: 36px;
+  padding: 0 18px;
   border-radius: 999px;
-  background: var(--bl-accent);
-  color: #fff;
+  background: rgba(0, 113, 227, 0.1);
+  color: var(--bl-accent);
   text-decoration: none;
-  font-size: 0.82rem;
+  font-size: 14px;
   font-weight: 600;
-  transition: var(--bl-transition);
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .site-navbar__cta:hover {
-  background: var(--bl-accent-strong);
-  transform: translateY(-1px);
+  background: var(--bl-accent);
+  color: #fff;
 }
 
 @media (max-width: 860px) {

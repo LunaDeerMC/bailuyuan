@@ -498,17 +498,17 @@ const medals = ['🥇', '🥈', '🥉'];
   justify-content: flex-end;
   align-items: flex-start;
   text-align: left;
-  transition: var(--bl-transition);
+  transition: box-shadow 0.35s ease, background-size 0.6s ease;
   overflow: hidden;
   position: relative;
-  background-size: cover;
+  background-size: 100% 100%;
   background-position: center;
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.02);
 }
 
 .bento-item:hover {
-  transform: scale(1.02);
-  box-shadow: 2px 8px 24px rgba(0, 0, 0, 0.06);
+  background-size: 108% 108%;
+  box-shadow: 2px 12px 28px rgba(0, 0, 0, 0.1);
 }
 
 .size-large { grid-column: span 2; grid-row: span 2; }
