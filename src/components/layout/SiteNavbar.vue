@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import MobileNavDrawer from './MobileNavDrawer.vue';
+import { preloadRouteComponent } from '../../router';
 
 const props = defineProps({
   items: {
@@ -34,6 +35,22 @@ const mobileOpen = ref(false);
 const openDropdown = ref(null);
 
 const isActive = (href) => href === props.activePath;
+
+function prefetchHref(href) {
+  if (!href || href.startsWith('http')) {
+    return;
+  }
+
+  preloadRouteComponent(href);
+}
+
+function prefetchItemTree(item) {
+  prefetchHref(item?.href);
+
+  if (Array.isArray(item?.children)) {
+    item.children.forEach((child) => prefetchHref(child.href));
+  }
+}
 </script>
 
 <template>
@@ -57,12 +74,14 @@ const isActive = (href) => href === props.activePath;
           <div
             v-if="item.children"
             class="site-navbar__dropdown"
-            @mouseenter="openDropdown = item.href"
+            @mouseenter="openDropdown = item.href; prefetchItemTree(item)"
             @mouseleave="openDropdown = null"
           >
             <RouterLink
               :to="item.href"
               :class="['site-navbar__link', { 'is-active': isActive(item.href) }]"
+              @focus="prefetchHref(item.href)"
+              @touchstart.passive="prefetchHref(item.href)"
             >{{ item.label }}</RouterLink>
             <div v-show="openDropdown === item.href" class="site-navbar__dropdown-menu">
               <RouterLink
@@ -70,6 +89,9 @@ const isActive = (href) => href === props.activePath;
                 :key="child.href"
                 :to="child.href"
                 class="site-navbar__dropdown-item"
+                @mouseenter="prefetchHref(child.href)"
+                @focus="prefetchHref(child.href)"
+                @touchstart.passive="prefetchHref(child.href)"
               >{{ child.label }}</RouterLink>
             </div>
           </div>
@@ -84,11 +106,20 @@ const isActive = (href) => href === props.activePath;
             v-else
             :to="item.href"
             :class="['site-navbar__link', { 'is-active': isActive(item.href) }]"
+            @mouseenter="prefetchHref(item.href)"
+            @focus="prefetchHref(item.href)"
+            @touchstart.passive="prefetchHref(item.href)"
           >{{ item.label }}</RouterLink>
         </template>
       </nav>
 
-      <RouterLink class="site-navbar__cta" :to="ctaHref">{{ ctaLabel }}</RouterLink>
+      <RouterLink
+        class="site-navbar__cta"
+        :to="ctaHref"
+        @mouseenter="prefetchHref(ctaHref)"
+        @focus="prefetchHref(ctaHref)"
+        @touchstart.passive="prefetchHref(ctaHref)"
+      >{{ ctaLabel }}</RouterLink>
     </div>
   </header>
 

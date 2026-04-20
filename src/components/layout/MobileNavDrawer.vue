@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
+import { preloadRouteComponent } from '../../router';
 
 const props = defineProps({
   open: {
@@ -27,6 +28,14 @@ const expandedGroup = ref(null);
 function toggleGroup(href) {
   expandedGroup.value = expandedGroup.value === href ? null : href;
 }
+
+function prefetchHref(href) {
+  if (!href || href.startsWith('http')) {
+    return;
+  }
+
+  preloadRouteComponent(href);
+}
 </script>
 
 <template>
@@ -50,6 +59,9 @@ function toggleGroup(href) {
               v-for="child in item.children"
               :key="child.href"
               :to="child.href"
+              @mouseenter="prefetchHref(child.href)"
+              @focus="prefetchHref(child.href)"
+              @touchstart.passive="prefetchHref(child.href)"
               @click="emit('close')"
             >{{ child.label }}</RouterLink>
           </div>
@@ -57,10 +69,19 @@ function toggleGroup(href) {
         <RouterLink
           v-else
           :to="item.href"
+          @mouseenter="prefetchHref(item.href)"
+          @focus="prefetchHref(item.href)"
+          @touchstart.passive="prefetchHref(item.href)"
           @click="emit('close')"
         >{{ item.label }}</RouterLink>
       </template>
-      <RouterLink :to="ctaHref" @click="emit('close')">{{ ctaLabel }}</RouterLink>
+      <RouterLink
+        :to="ctaHref"
+        @mouseenter="prefetchHref(ctaHref)"
+        @focus="prefetchHref(ctaHref)"
+        @touchstart.passive="prefetchHref(ctaHref)"
+        @click="emit('close')"
+      >{{ ctaLabel }}</RouterLink>
     </nav>
   </div>
 </template>

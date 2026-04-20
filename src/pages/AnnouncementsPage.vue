@@ -1,10 +1,8 @@
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
+import { ref, computed, defineAsyncComponent, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import FilterPanel from '../components/shared/FilterPanel.vue';
 import EmptyState from '../components/base/EmptyState.vue';
-import EditorModal from '../components/shared/EditorModal.vue';
-import JsonOutputModal from '../components/shared/JsonOutputModal.vue';
 import { fetchAnnouncementsData } from '../composables/useAnnouncementsData.js';
 import { useSortableList } from '../composables/useEditorHelpers.js';
 import {
@@ -12,6 +10,9 @@ import {
   ANNOUNCEMENT_OPEN_EVENT,
   generateAnnouncementAnchorId,
 } from '../utils/announcements.js';
+
+const EditorModal = defineAsyncComponent(() => import('../components/shared/EditorModal.vue'));
+const JsonOutputModal = defineAsyncComponent(() => import('../components/shared/JsonOutputModal.vue'));
 
 const route = useRoute();
 

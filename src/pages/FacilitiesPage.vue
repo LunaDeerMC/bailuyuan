@@ -1,13 +1,14 @@
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue';
+import { ref, computed, defineAsyncComponent, onMounted, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import FilterPanel from '../components/shared/FilterPanel.vue';
 import BaseModal from '../components/base/BaseModal.vue';
 import ModalSection from '../components/detail/ModalSection.vue';
 import EmptyState from '../components/base/EmptyState.vue';
-import EditorModal from '../components/shared/EditorModal.vue';
-import JsonOutputModal from '../components/shared/JsonOutputModal.vue';
 import { useSortableList, useTagsInput } from '../composables/useEditorHelpers.js';
+
+const EditorModal = defineAsyncComponent(() => import('../components/shared/EditorModal.vue'));
+const JsonOutputModal = defineAsyncComponent(() => import('../components/shared/JsonOutputModal.vue'));
 
 const route = useRoute();
 

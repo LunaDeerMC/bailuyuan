@@ -7,6 +7,7 @@ import SiteFooter from './components/layout/SiteFooter.vue';
 import { fetchAnnouncementsData } from './composables/useAnnouncementsData.js';
 import { getAnnouncementMarqueeHeight, groupAnnouncementMarquees } from './utils/announcements.js';
 import { useRouteSeo } from './utils/seo';
+import { preloadRouteComponents } from './router';
 
 useRouteSeo();
 
@@ -47,6 +48,32 @@ const isIframePage = computed(() =>
   ['/doc', '/map', '/photo'].includes(route.path)
 );
 
+function collectInternalNavHrefs(items) {
+  return items.flatMap((item) => {
+    const current = item.external ? [] : [item.href];
+    const children = Array.isArray(item.children) ? collectInternalNavHrefs(item.children) : [];
+    return [...current, ...children];
+  });
+}
+
+function scheduleRoutePreload() {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const targets = collectInternalNavHrefs(navItems).filter((href) => href && href !== route.path);
+  const runPreload = () => {
+    preloadRouteComponents(targets);
+  };
+
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(runPreload, { timeout: 1200 });
+    return;
+  }
+
+  window.setTimeout(runPreload, 180);
+}
+
 function dismissMarquee() {
   isMarqueeDismissed.value = true;
 }
@@ -59,6 +86,8 @@ watch(
 );
 
 onMounted(() => {
+  scheduleRoutePreload();
+
   fetchAnnouncementsData()
     .then(({ announcements: data }) => {
       announcements.value = data;
