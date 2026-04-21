@@ -434,5 +434,36 @@
                 "content": "无。"
             }
         ]
+    },
+    {
+        "title": "蛙明灯仓库",
+        "intro": "主产出三色蛙明灯（珠光、青翠、赭黄），生存实用的装饰和照明方块。副产物为岩浆膏",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 502000,
+            "y": 120,
+            "z": 499700
+        },
+        "contributors": [
+            "YiiFeng"
+        ],
+        "instructions": [
+            {
+                "type": "text",
+                "content": "仓库内直接拿取就可以"
+            },
+            {
+                "type": "text",
+                "content": "地狱上层挂机点：62751  241  62505"
+            }
+        ],
+        "notes": [
+            {
+                "type": "text",
+                "content": "为了他人的游玩体验，TPS小于18时请不要加载挂机"
+            }
+        ]
     }
 ]
