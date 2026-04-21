@@ -278,7 +278,7 @@ function generateJson() {
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <h1 class="hero-title">全服共享资源</h1>
-      <p class="hero-subtitle">共同建设，共同分享，让生存更轻松。</p>
+      <p class="hero-subtitle">共同建设，共同分享，让生存更轻松</p>
     </div>
   </section>
 

@@ -246,7 +246,7 @@ function generateJson() {
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <h1 class="hero-title">活动公告</h1>
-      <p class="hero-subtitle">了解服务器最新动态、活动安排与维护通知。</p>
+      <p class="hero-subtitle">了解服务器最新动态、活动安排与维护通知</p>
     </div>
   </section>
 
