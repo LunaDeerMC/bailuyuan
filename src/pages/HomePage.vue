@@ -420,14 +420,15 @@ const medals = ['🥇', '🥈', '🥉'];
   left: 50%;
   transform: translateX(-50%);
   margin-top: 10px;
-  background: rgba(255, 255, 255, 0.95);
-  color: #1d1d1f;
+  background: var(--bl-surface-strong);
+  color: var(--bl-text);
   padding: 10px;
   border-radius: 12px;
   width: 200px;
   max-height: 300px;
   overflow-y: auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--bl-shadow-card);
+  border: 1px solid var(--bl-border);
   opacity: 0;
   visibility: hidden;
   transition: all 0.2s ease;
@@ -449,13 +450,13 @@ const medals = ['🥇', '🥈', '🥉'];
   transform: translateX(-50%);
   border-width: 0 6px 6px 6px;
   border-style: solid;
-  border-color: transparent transparent rgba(255, 255, 255, 0.95) transparent;
+  border-color: transparent transparent var(--bl-surface-strong) transparent;
 }
 
 .player-item {
   padding: 6px 8px;
   font-size: 13px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--bl-border);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -463,7 +464,7 @@ const medals = ['🥇', '🥈', '🥉'];
 
 .player-item:last-child { border-bottom: none; }
 .player-item-center { justify-content: center; }
-.player-item-muted { justify-content: center; color: #86868b; }
+.player-item-muted { justify-content: center; color: var(--bl-text-tertiary); }
 
 .player-avatar {
   width: 16px;
@@ -562,7 +563,7 @@ const medals = ['🥇', '🥈', '🥉'];
 /* ====== SPONSORS ====== */
 .sponsors-section {
   padding: 80px 0;
-  background: #fff;
+  background: var(--bl-surface-strong);
   text-align: center;
 }
 
@@ -582,11 +583,12 @@ const medals = ['🥇', '🥈', '🥉'];
 }
 
 .sponsor-card {
-  background: var(--bl-bg);
+  background: var(--bl-surface-strong);
   border-radius: 16px;
   padding: 30px;
   width: 250px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--bl-shadow-soft);
+  border: 1px solid var(--bl-border);
   transition: var(--bl-transition);
   display: flex;
   flex-direction: column;
@@ -595,7 +597,7 @@ const medals = ['🥇', '🥈', '🥉'];
 
 .sponsor-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--bl-shadow-card);
 }
 
 .sponsor-rank { font-size: 48px; margin-bottom: 10px; }
@@ -635,16 +637,17 @@ const medals = ['🥇', '🥈', '🥉'];
 }
 
 .fund-card {
-  background: #fff;
+  background: var(--bl-surface-strong);
   border-radius: 16px;
   padding: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--bl-shadow-soft);
+  border: 1px solid var(--bl-border);
   transition: var(--bl-transition);
 }
 
 .fund-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--bl-shadow-card);
 }
 
 .fund-header {
@@ -661,7 +664,7 @@ const medals = ['🥇', '🥈', '🥉'];
 .progress-bar-bg {
   width: 100%;
   height: 12px;
-  background: #f0f0f0;
+  background: var(--bl-surface-muted);
   border-radius: 6px;
   overflow: hidden;
 }

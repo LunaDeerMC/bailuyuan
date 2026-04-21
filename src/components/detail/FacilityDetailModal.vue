@@ -89,7 +89,8 @@ defineEmits(['update:modelValue']);
 .detail-pills span {
   padding: 6px 12px;
   border-radius: 999px;
-  background: #fff;
+  background: var(--bl-surface-muted);
+  border: 1px solid var(--bl-border);
   font-weight: 600;
 }
 

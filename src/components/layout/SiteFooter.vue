@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router';
+import ThemeToggle from './ThemeToggle.vue';
 
 defineProps({
   brand: {
@@ -38,14 +39,15 @@ const anoutThisSite = [
 
 <template>
   <footer class="site-footer">
-    <div class="bl-shell">
+    <div class="bl-shell site-footer__shell">
       <div class="footer-columns">
-       <div class="footer-col">
+        <div class="footer-col footer-col--brand">
           <div class="footer-logo">{{ brand }}</div>
-          <p>&copy; 2026 {{ brand }} Minecraft 服务器.</p>
+          <p class="footer-brand-copy">白鹿原 Minecraft 服务器站点导览与资料索引。</p>
           <p class="footer-icp">
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">蜀ICP备2025160432号</a>
           </p>
+          <p class="footer-copyright">&copy; 2026 {{ brand }} Minecraft 服务器</p>
         </div>
 
         <div class="footer-col">
@@ -65,15 +67,21 @@ const anoutThisSite = [
             </li>
           </ul>
         </div>
-        <div class="footer-col">
+        <div class="footer-col footer-col--site">
           <div class="footer-col-title">本站信息</div>
           <ul class="footer-link-list">
             <li v-for="item in anoutThisSite" :key="item.href">
               <a :href="item.href" target="_blank" rel="noopener noreferrer">{{ item.label }}</a>
             </li>
           </ul>
+
+          <div class="footer-theme-inline">
+            <div class="footer-subtitle">界面配色</div>
+            <ThemeToggle inline tone="footer" />
+          </div>
         </div>
       </div>
+
     </div>
   </footer>
 </template>
@@ -81,21 +89,34 @@ const anoutThisSite = [
 <style scoped>
 .site-footer {
   background: var(--bl-bg, #f5f5f7);
-  padding: 40px 0 0px;
-  border-top: 1px solid #e5e5e5;
+  padding: 40px 0 24px;
+  border-top: 1px solid var(--bl-border);
   font-size: 12px;
   color: var(--bl-text-secondary, #6e6e73);
 }
 
+.site-footer__shell {
+  display: block;
+}
+
 .footer-columns {
-  display: flex;
-  gap: 60px;
-  padding-bottom: 30px;
-  border-bottom: 1px solid #e5e5e5;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr));
+  gap: 28px 48px;
 }
 
 .footer-col {
   min-width: 0;
+}
+
+.footer-col--brand,
+.footer-col--site {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-col--brand {
+  max-width: 320px;
 }
 
 .footer-col-title {
@@ -103,6 +124,13 @@ const anoutThisSite = [
   font-weight: 600;
   color: var(--bl-text, #1d1d1f);
   margin-bottom: 10px;
+}
+
+.footer-subtitle {
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--bl-text-secondary);
 }
 
 .footer-link-list {
@@ -132,10 +160,6 @@ const anoutThisSite = [
   font-size: 12px;
 }
 
-.footer-bottom {
-  text-align: center;
-}
-
 .footer-logo {
   font-size: 1.1rem;
   font-weight: 700;
@@ -143,12 +167,14 @@ const anoutThisSite = [
   color: var(--bl-text, #1d1d1f);
 }
 
-.footer-bottom p {
+.footer-brand-copy {
   margin: 0;
+  line-height: 1.8;
 }
 
 .footer-icp {
   margin-top: 6px !important;
+  margin-bottom: 0;
 }
 
 .footer-icp a {
@@ -161,10 +187,33 @@ const anoutThisSite = [
   color: var(--bl-text, #1d1d1f);
 }
 
+.footer-copyright {
+  margin: auto 0 0;
+  padding-top: 16px;
+  color: var(--bl-text-secondary);
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+.footer-theme-inline {
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .footer-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 600px) {
   .footer-columns {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 24px;
+  }
+
+  .site-footer {
+    padding-bottom: 20px;
   }
 }
 </style>

@@ -74,24 +74,25 @@ const emit = defineEmits(['update:modelValue']);
   min-height: 34px;
   padding: 0 14px;
   border-radius: 999px;
-  background: #fff;
+  background: var(--bl-control-bg);
   color: var(--bl-text-secondary);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--bl-border);
   cursor: pointer;
   transition: var(--bl-transition);
   font-size: 13px;
 }
 
 .filter-tag:hover {
-  background: #f5f5f7;
+  background: var(--bl-control-hover-bg);
   color: var(--bl-text);
-  border-color: rgba(0, 0, 0, 0.2);
+  border-color: var(--bl-border-strong);
 }
 
 .filter-tag.is-active {
-  background: var(--bl-text);
-  color: #fff;
-  border-color: var(--bl-text);
+  background: var(--bl-control-active-bg);
+  color: var(--bl-control-active-color);
+  border-color: var(--bl-control-active-border);
+  box-shadow: var(--bl-control-active-shadow);
 }
 
 .filter-tag__icon {

@@ -70,7 +70,7 @@ defineEmits(['update:modelValue']);
   justify-content: space-between;
   gap: 12px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--bl-border);
 }
 
 .player-detail__stat-row span {

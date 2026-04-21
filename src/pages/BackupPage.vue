@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import {
   fetchOverview,
   fetchDisasterRecovery,
@@ -9,8 +9,16 @@ import {
   fetchUpcomingTasks,
 } from '../composables/useBackupData.js';
 
+let ChartConstructor = null;
+let themeMutationObserver = null;
+
 const loading = ref(true);
 const error = ref('');
+
+const drChartCanvas = ref(null);
+const backupChartCanvas = ref(null);
+const drChartInstance = ref(null);
+const backupChartInstance = ref(null);
 
 const overview = ref(null);
 const drScore = ref(null);
@@ -49,63 +57,185 @@ const availableBackupCount = computed(() => {
 const backupExecutionCount = computed(() => Number(stats.value?.backup_count) || 0);
 const successfulExecutionCount = computed(() => Number(stats.value?.success_backup_count) || 0);
 const failedExecutionCount = computed(() => Number(stats.value?.failure_backup_count) || 0);
-const backupSuccessRate = computed(() => {
-  if (!backupExecutionCount.value) return 0;
-  return successfulExecutionCount.value / backupExecutionCount.value;
-});
-const backupFailureRate = computed(() => {
-  if (!backupExecutionCount.value) return 0;
-  return failedExecutionCount.value / backupExecutionCount.value;
-});
-const BACKUP_RING_RADIUS = 45;
-const backupSuccessEndAngle = computed(() => backupSuccessRate.value * 360);
-const backupFailureEndAngle = computed(() => (backupSuccessRate.value + backupFailureRate.value) * 360);
 const backupTooltip = ref(null);
 
-const showFullSuccessCircle = computed(() => backupSuccessRate.value >= 0.9999);
-const showFullFailureCircle = computed(() => backupFailureRate.value >= 0.9999);
-
-function polarToCartesian(angle) {
-  const radians = (angle - 90) * Math.PI / 180;
-  return {
-    x: 60 + BACKUP_RING_RADIUS * Math.cos(radians),
-    y: 60 + BACKUP_RING_RADIUS * Math.sin(radians),
-  };
+function clampPercent(value) {
+  if (!Number.isFinite(value)) return 0;
+  return Math.min(Math.max(value, 0), 100);
 }
 
-function describeRingArc(startAngle, endAngle) {
-  if (endAngle <= startAngle) return '';
-  const sweep = endAngle - startAngle;
-  if (sweep >= 359.999) return '';
-
-  const start = polarToCartesian(startAngle);
-  const end = polarToCartesian(endAngle);
-  const largeArcFlag = sweep > 180 ? 1 : 0;
-
-  return `M ${start.x} ${start.y} A ${BACKUP_RING_RADIUS} ${BACKUP_RING_RADIUS} 0 ${largeArcFlag} 1 ${end.x} ${end.y}`;
+function themeToken(name, fallback) {
+  if (typeof window === 'undefined') return fallback;
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 }
 
-const backupSuccessArcPath = computed(() => describeRingArc(0, backupSuccessEndAngle.value));
-const backupFailureArcPath = computed(() => describeRingArc(backupSuccessEndAngle.value, backupFailureEndAngle.value));
+function destroyChart(chartRef) {
+  if (chartRef.value) {
+    chartRef.value.destroy();
+    chartRef.value = null;
+  }
+}
 
-function showBackupTooltip(kind, event) {
-  const svgRect = event.currentTarget.ownerSVGElement?.getBoundingClientRect();
-  if (!svgRect) return;
+async function ensureChartConstructor() {
+  if (ChartConstructor) return ChartConstructor;
+  const module = await import('chart.js/auto');
+  ChartConstructor = module.default || module.Chart;
+  return ChartConstructor;
+}
+
+function updateChartsForTheme() {
+  drChartInstance.value?.update();
+  backupChartInstance.value?.update();
+}
+
+function observeThemeChanges() {
+  if (typeof window === 'undefined' || themeMutationObserver) return;
+  themeMutationObserver = new MutationObserver(() => {
+    updateChartsForTheme();
+  });
+  themeMutationObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme', 'data-theme-mode'],
+  });
+}
+
+function handleBackupChartTooltip({ tooltip }) {
+  if (!tooltip || tooltip.opacity === 0 || !tooltip.dataPoints?.length) {
+    backupTooltip.value = null;
+    return;
+  }
+
+  const point = tooltip.dataPoints[0];
+  if (point.dataIndex > 1 || Number(point.raw) <= 0) {
+    backupTooltip.value = null;
+    return;
+  }
 
   backupTooltip.value = {
-    kind,
-    label: kind === 'success' ? '成功执行' : '失败执行',
-    value: kind === 'success' ? successfulExecutionCount.value : failedExecutionCount.value,
-    left: event.clientX - svgRect.left,
-    top: event.clientY - svgRect.top - 10,
+    kind: point.dataIndex === 0 ? 'success' : 'fail',
+    label: point.label,
+    value: Number(point.raw) || 0,
+    left: tooltip.caretX,
+    top: tooltip.caretY,
   };
 }
 
-function hideBackupTooltip() {
-  backupTooltip.value = null;
+function renderDrChart() {
+  if (!ChartConstructor || !drChartCanvas.value || !drScore.value) {
+    destroyChart(drChartInstance);
+    return;
+  }
+
+  const score = clampPercent(Number(drScore.value.total));
+  const trackColor = themeToken('--bl-surface-muted', '#f0f2f5');
+
+  const dataset = {
+    data: [score, Math.max(100 - score, 0)],
+    backgroundColor: (context) => {
+      if (context.dataIndex === 0) return drLevelColor(drScore.value?.level);
+      return trackColor;
+    },
+    borderWidth: 0,
+    hoverOffset: 0,
+    borderRadius: 0,
+  };
+
+  if (!drChartInstance.value) {
+    drChartInstance.value = new ChartConstructor(drChartCanvas.value, {
+      type: 'doughnut',
+      data: {
+        datasets: [dataset],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '82%',
+        animation: {
+          duration: 520,
+          easing: 'easeOutCubic',
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            enabled: false,
+          },
+        },
+      },
+    });
+    return;
+  }
+
+  drChartInstance.value.data.datasets[0] = dataset;
+  drChartInstance.value.update();
+}
+
+function renderBackupChart() {
+  if (!ChartConstructor || !backupChartCanvas.value || !stats.value) {
+    backupTooltip.value = null;
+    destroyChart(backupChartInstance);
+    return;
+  }
+
+  const success = Math.max(successfulExecutionCount.value, 0);
+  const failed = Math.max(failedExecutionCount.value, 0);
+  const total = Math.max(backupExecutionCount.value, success + failed);
+  const hasExecution = total > 0;
+  const trackColor = themeToken('--bl-surface-muted', '#f0f2f5');
+  const successColor = themeToken('--bl-green', '#34c759');
+  const failColor = themeToken('--bl-danger', '#ef4444');
+
+  const dataset = {
+    data: hasExecution ? [success, failed, Math.max(total - success - failed, 0)] : [0, 0, 1],
+    backgroundColor: (context) => {
+      if (context.dataIndex === 0) return successColor;
+      if (context.dataIndex === 1) return failColor;
+      return trackColor;
+    },
+    borderWidth: 0,
+    spacing: 0,
+    hoverOffset: 0,
+    borderRadius: 0,
+  };
+
+  if (!backupChartInstance.value) {
+    backupChartInstance.value = new ChartConstructor(backupChartCanvas.value, {
+      type: 'doughnut',
+      data: {
+        labels: ['成功执行', '失败执行', '其他状态'],
+        datasets: [dataset],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '78%',
+        animation: {
+          duration: 520,
+          easing: 'easeOutCubic',
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            enabled: false,
+            external: handleBackupChartTooltip,
+          },
+        },
+      },
+    });
+    return;
+  }
+
+  backupChartInstance.value.data.datasets[0] = dataset;
+  backupChartInstance.value.update();
 }
 
 onMounted(async () => {
+  await ensureChartConstructor();
+  observeThemeChanges();
+
   try {
     const [ov, dr, ct, pol, bk, ut] = await Promise.all([
       fetchOverview(),
@@ -127,8 +257,37 @@ onMounted(async () => {
     error.value = e.message || '数据加载失败';
   } finally {
     loading.value = false;
+    await nextTick();
+    renderDrChart();
+    renderBackupChart();
   }
 });
+
+onBeforeUnmount(() => {
+  backupTooltip.value = null;
+  destroyChart(drChartInstance);
+  destroyChart(backupChartInstance);
+  themeMutationObserver?.disconnect();
+  themeMutationObserver = null;
+});
+
+watch(
+  [
+    () => loading.value,
+    () => drScore.value?.total,
+    () => drScore.value?.level,
+    () => backupExecutionCount.value,
+    () => successfulExecutionCount.value,
+    () => failedExecutionCount.value,
+  ],
+  async () => {
+    if (loading.value) return;
+    await nextTick();
+    renderDrChart();
+    renderBackupChart();
+  },
+  { flush: 'post' }
+);
 
 async function loadBackupPage(page) {
   if (page < 1 || page > backupTotalPages.value) return;
@@ -232,8 +391,20 @@ function backupSourceMuted(backup) {
 }
 
 function scheduleLabel(type, value) {
-  if (type === 'cron') return `Cron: ${value}`;
-  if (type === 'interval') return `每 ${value}`;
+  if (type === 'cron') return `cron: ${value}`;
+  if (type === 'interval') {
+    if (parseInt(value) >= 86400) {
+      const d = Math.floor(parseInt(value) / 86400);
+      return `每 ${d} 天`;
+    } else if (parseInt(value) >= 3600) {
+      const h = Math.floor(parseInt(value) / 3600);
+      return `每 ${h} 小时`;
+    } else if (parseInt(value) >= 60) {
+      const m = Math.floor(parseInt(value) / 60);
+      return `每 ${m} 分钟`;
+    }
+    return `每 ${value} 秒`;
+  }
   return `${type}: ${value}`;
 }
 
@@ -243,24 +414,24 @@ function retentionLabel(type, value) {
   return `${type}: ${value}`;
 }
 
+// safe→「安全」, caution→「注意」, risk→「风险」, danger→「危险」
+
 function drLevelLabel(level) {
   const map = {
-    excellent: '优秀',
-    good: '良好',
-    fair: '一般',
-    poor: '较差',
-    critical: '危险',
+    safe: '安全',
+    caution: '注意',
+    risk: '风险',
+    danger: '危险',
   };
   return map[level] || level;
 }
 
 function drLevelColor(level) {
   const map = {
-    excellent: '#34c759',
-    good: '#30d158',
-    fair: '#f59e0b',
-    poor: '#ff9500',
-    critical: '#ef4444',
+    safe: '#34c759',
+    caution: '#30d158',
+    risk: '#f59e0b',
+    danger: '#ef4444',
   };
   return map[level] || '#0071e3';
 }
@@ -302,7 +473,8 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
               </p>
               <p class="ov-powered">
                 <i class="fas fa-server"></i> 备份服务由
-                <a href="https://github.com/LunaDeerTech/RsyncBackupService" target="_blank" rel="noopener">RsyncBackupService</a>
+                <a href="https://github.com/LunaDeerTech/RsyncBackupService" target="_blank"
+                  rel="noopener">RsyncBackupService</a>
                 提供支持
               </p>
             </div>
@@ -335,16 +507,7 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
           <!-- DR score -->
           <div v-if="drScore" class="overview-right">
             <div class="dr-score-ring" :style="{ '--dr-color': drLevelColor(drScore.level) }">
-              <svg viewBox="0 0 120 120" class="ring-svg">
-                <circle cx="60" cy="60" r="52" fill="none" stroke="#f0f0f2" stroke-width="10" />
-                <circle cx="60" cy="60" r="52" fill="none"
-                  :stroke="drLevelColor(drScore.level)" stroke-width="10"
-                  stroke-linecap="round"
-                  :stroke-dasharray="2 * Math.PI * 52"
-                  :stroke-dashoffset="2 * Math.PI * 52 * (1 - drScore.total / 100)"
-                  transform="rotate(-90 60 60)"
-                />
-              </svg>
+              <canvas ref="drChartCanvas" class="dr-score-ring-canvas" aria-label="容灾评分环形图"></canvas>
               <div class="ring-label">
                 <span class="ring-score">{{ Math.round(drScore.total) }}</span>
                 <span class="ring-text">{{ drLevelLabel(drScore.level) }}</span>
@@ -353,22 +516,33 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
             <div class="dr-details">
               <div class="dr-detail-item">
                 <span class="dr-detail-name">备份新鲜度</span>
-                <div class="dr-detail-bar"><div :style="{ width: drScore.freshness + '%', background: scoreBarColor(drScore.freshness) }"></div></div>
+                <div class="dr-detail-bar">
+                  <div :style="{ width: drScore.freshness + '%', background: scoreBarColor(drScore.freshness) }"></div>
+                </div>
                 <span class="dr-detail-val">{{ drScore.freshness }}</span>
               </div>
               <div class="dr-detail-item">
                 <span class="dr-detail-name">恢复点</span>
-                <div class="dr-detail-bar"><div :style="{ width: drScore.recovery_points + '%', background: scoreBarColor(drScore.recovery_points) }"></div></div>
+                <div class="dr-detail-bar">
+                  <div
+                    :style="{ width: drScore.recovery_points + '%', background: scoreBarColor(drScore.recovery_points) }">
+                  </div>
+                </div>
                 <span class="dr-detail-val">{{ drScore.recovery_points }}</span>
               </div>
               <div class="dr-detail-item">
                 <span class="dr-detail-name">冗余性</span>
-                <div class="dr-detail-bar"><div :style="{ width: drScore.redundancy + '%', background: scoreBarColor(drScore.redundancy) }"></div></div>
+                <div class="dr-detail-bar">
+                  <div :style="{ width: drScore.redundancy + '%', background: scoreBarColor(drScore.redundancy) }">
+                  </div>
+                </div>
                 <span class="dr-detail-val">{{ drScore.redundancy }}</span>
               </div>
               <div class="dr-detail-item">
                 <span class="dr-detail-name">稳定性</span>
-                <div class="dr-detail-bar"><div :style="{ width: drScore.stability + '%', background: scoreBarColor(drScore.stability) }"></div></div>
+                <div class="dr-detail-bar">
+                  <div :style="{ width: drScore.stability + '%', background: scoreBarColor(drScore.stability) }"></div>
+                </div>
                 <span class="dr-detail-val">{{ drScore.stability }}</span>
               </div>
             </div>
@@ -386,7 +560,8 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
         <div class="policies-grid">
           <div v-for="policy in policies" :key="policy.id" class="policy-card">
             <div class="policy-card-top">
-              <div class="policy-icon-wrap" :class="[policy.enabled ? 'icon-active' : 'icon-disabled', 'icon-' + (policy.type || 'default')]">
+              <div class="policy-icon-wrap"
+                :class="[policy.enabled ? 'icon-active' : 'icon-disabled', 'icon-' + (policy.type || 'default')]">
                 <i class="fas" :class="typeIcon(policy.type)"></i>
               </div>
               <div class="policy-title-area">
@@ -400,22 +575,31 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
             </div>
             <div class="policy-body">
               <div class="policy-kv-list">
-                <div class="policy-kv"><span class="kv-icon"><i class="fas fa-clock"></i></span><span class="kv-label">执行计划</span><span class="kv-val">{{ scheduleLabel(policy.schedule_type, policy.schedule_value) }}</span></div>
-                <div class="policy-kv"><span class="kv-icon"><i class="fas fa-archive"></i></span><span class="kv-label">保留策略</span><span class="kv-val">{{ retentionLabel(policy.retention_type, policy.retention_value) }}</span></div>
-                <div class="policy-kv"><span class="kv-icon"><i class="fas fa-compress-arrows-alt"></i></span><span class="kv-label">压缩</span><span class="kv-val">{{ policy.compression ? '已启用' : '未启用' }}</span></div>
-                <div class="policy-kv"><span class="kv-icon"><i class="fas fa-lock"></i></span><span class="kv-label">加密</span><span class="kv-val">{{ policy.encryption ? '已启用' : '未启用' }}</span></div>
+                <div class="policy-kv"><span class="kv-icon"><i class="fas fa-clock"></i></span><span
+                    class="kv-label">执行计划</span><span class="kv-val">{{ scheduleLabel(policy.schedule_type,
+                      policy.schedule_value) }}</span></div>
+                <div class="policy-kv"><span class="kv-icon"><i class="fas fa-archive"></i></span><span
+                    class="kv-label">保留策略</span><span class="kv-val">{{ retentionLabel(policy.retention_type,
+                      policy.retention_value) }}</span></div>
+                <div class="policy-kv"><span class="kv-icon"><i class="fas fa-compress-arrows-alt"></i></span><span
+                    class="kv-label">压缩</span><span class="kv-val">{{ policy.compression ? '已启用' : '未启用' }}</span></div>
+                <div class="policy-kv"><span class="kv-icon"><i class="fas fa-lock"></i></span><span
+                    class="kv-label">加密</span><span class="kv-val">{{ policy.encryption ? '已启用' : '未启用' }}</span></div>
               </div>
               <div v-if="policy.last_execution_status" class="policy-last-exec">
                 <span class="last-exec-label">最近执行</span>
-                <span class="status-dot" :class="statusClass(policy.last_execution_status)">{{ statusLabel(policy.last_execution_status) }}</span>
-                <span v-if="policy.last_execution_time" class="last-exec-time">{{ formatDate(policy.last_execution_time) }}</span>
+                <span class="status-dot" :class="statusClass(policy.last_execution_status)">{{
+                  statusLabel(policy.last_execution_status) }}</span>
+                <span v-if="policy.last_execution_time" class="last-exec-time">{{ formatDate(policy.last_execution_time)
+                  }}</span>
               </div>
             </div>
             <div v-if="policyLatestBackup[policy.id]" class="policy-latest">
               <div class="latest-badge"><i class="fas fa-database"></i> 最新备份</div>
               <div class="latest-detail-grid">
                 <div class="latest-detail">
-                  <span class="ld-val">{{ formatDate(policyLatestBackup[policy.id].completed_at || policyLatestBackup[policy.id].created_at) }}</span>
+                  <span class="ld-val">{{ formatDate(policyLatestBackup[policy.id].completed_at ||
+                    policyLatestBackup[policy.id].created_at) }}</span>
                   <span class="ld-label">完成时间</span>
                 </div>
                 <div class="latest-detail">
@@ -427,7 +611,8 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
                   <span class="ld-label">耗时</span>
                 </div>
                 <div class="latest-detail">
-                  <span class="ld-val status-dot" :class="statusClass(policyLatestBackup[policy.id].status)">{{ statusLabel(policyLatestBackup[policy.id].status) }}</span>
+                  <span class="ld-val status-dot" :class="statusClass(policyLatestBackup[policy.id].status)">{{
+                    statusLabel(policyLatestBackup[policy.id].status) }}</span>
                   <span class="ld-label">状态</span>
                 </div>
               </div>
@@ -464,7 +649,8 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
             <div v-for="task in upcomingTasks" :key="task.policy_id + task.next_run_at" class="upcoming-item">
               <div class="upcoming-main">
                 <span class="upcoming-name">{{ task.policy_name }}</span>
-                <span class="upcoming-type-tag" :class="typeClass(task.type)"><i class="fas" :class="typeIcon(task.type)"></i> {{ typeLabel(task.type) }}</span>
+                <span class="upcoming-type-tag" :class="typeClass(task.type)"><i class="fas"
+                    :class="typeIcon(task.type)"></i> {{ typeLabel(task.type) }}</span>
               </div>
               <span class="upcoming-time">{{ formatDate(task.next_run_at) }}</span>
             </div>
@@ -476,68 +662,9 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
           <h3><i class="fas fa-chart-pie"></i> 备份总数</h3>
           <div v-if="stats" class="backup-stats-body">
             <div class="backup-stats-ring">
-              <svg viewBox="0 0 120 120" class="backup-stats-ring-svg" aria-hidden="true">
-                <defs>
-                  <linearGradient id="backupSuccessGradient" x1="15" y1="15" x2="105" y2="105" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#6ee7a8" />
-                    <stop offset="100%" stop-color="#22c55e" />
-                  </linearGradient>
-                  <linearGradient id="backupFailureGradient" x1="20" y1="100" x2="105" y2="20" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#fb7185" />
-                    <stop offset="100%" stop-color="#ef4444" />
-                  </linearGradient>
-                </defs>
-                <circle class="backup-stats-ring-track" cx="60" cy="60" r="45" />
-                <circle v-if="showFullFailureCircle" class="backup-stats-ring-fill fail" cx="60" cy="60" r="45" />
-                <circle v-else-if="showFullSuccessCircle" class="backup-stats-ring-fill success" cx="60" cy="60" r="45" />
-                <template v-else>
-                  <path v-if="backupFailureRate > 0" class="backup-stats-ring-fill fail" :d="backupFailureArcPath" />
-                  <path v-if="backupSuccessRate > 0" class="backup-stats-ring-fill success" :d="backupSuccessArcPath" />
-                </template>
-
-                <circle
-                  v-if="showFullSuccessCircle"
-                  class="backup-stats-ring-hitbox"
-                  cx="60"
-                  cy="60"
-                  r="45"
-                  @mouseenter="showBackupTooltip('success', $event)"
-                  @mousemove="showBackupTooltip('success', $event)"
-                  @mouseleave="hideBackupTooltip"
-                />
-                <circle
-                  v-else-if="showFullFailureCircle"
-                  class="backup-stats-ring-hitbox"
-                  cx="60"
-                  cy="60"
-                  r="45"
-                  @mouseenter="showBackupTooltip('fail', $event)"
-                  @mousemove="showBackupTooltip('fail', $event)"
-                  @mouseleave="hideBackupTooltip"
-                />
-                <path
-                  v-if="!showFullSuccessCircle && backupSuccessRate > 0"
-                  class="backup-stats-ring-hitbox"
-                  :d="backupSuccessArcPath"
-                  @mouseenter="showBackupTooltip('success', $event)"
-                  @mousemove="showBackupTooltip('success', $event)"
-                  @mouseleave="hideBackupTooltip"
-                />
-                <path
-                  v-if="!showFullFailureCircle && backupFailureRate > 0"
-                  class="backup-stats-ring-hitbox"
-                  :d="backupFailureArcPath"
-                  @mouseenter="showBackupTooltip('fail', $event)"
-                  @mousemove="showBackupTooltip('fail', $event)"
-                  @mouseleave="hideBackupTooltip"
-                />
-              </svg>
-              <div
-                v-if="backupTooltip"
-                class="backup-stats-tooltip"
-                :class="`tooltip-${backupTooltip.kind}`"
-                :style="{ left: `${backupTooltip.left}px`, top: `${backupTooltip.top}px` }"
-              >
+              <canvas ref="backupChartCanvas" class="backup-stats-ring-canvas" aria-label="备份执行统计环形图"></canvas>
+              <div v-if="backupTooltip" class="backup-stats-tooltip" :class="`tooltip-${backupTooltip.kind}`"
+                :style="{ left: `${backupTooltip.left}px`, top: `${backupTooltip.top}px` }">
                 <span class="backup-stats-tooltip-label">{{ backupTooltip.label }}</span>
                 <span class="backup-stats-tooltip-value">{{ backupTooltip.value }} 次</span>
               </div>
@@ -584,9 +711,12 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
               <tbody>
                 <tr v-for="b in backups" :key="b.id">
                   <td class="td-id">#{{ b.id }}</td>
-                  <td><span class="type-badge" :class="typeClass(b.type)"><i class="fas" :class="typeIcon(b.type)"></i> {{ typeLabel(b.type) }}</span></td>
+                  <td><span class="type-badge" :class="typeClass(b.type)"><i class="fas" :class="typeIcon(b.type)"></i>
+                      {{
+                      typeLabel(b.type) }}</span></td>
                   <td>
-                    <span class="source-badge" :class="[typeClass(backupSourceType(b)), { 'source-badge-muted': backupSourceMuted(b) }]">
+                    <span class="source-badge"
+                      :class="[typeClass(backupSourceType(b)), { 'source-badge-muted': backupSourceMuted(b) }]">
                       <i class="fas" :class="typeIcon(backupSourceType(b))"></i>
                       <span class="source-badge-label">{{ backupSourceName(b) }}</span>
                     </span>
@@ -626,7 +756,10 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   overflow: hidden;
 }
 
-.hero-content { position: relative; z-index: 2; }
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
 
 .hero-title {
   font-size: 56px;
@@ -698,7 +831,9 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   gap: 8px;
 }
 
-.ov-intro h2 i { color: var(--bl-green); }
+.ov-intro h2 i {
+  color: var(--bl-green);
+}
 
 .ov-intro p {
   font-size: 15px;
@@ -722,10 +857,19 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   font-weight: 600;
 }
 
-.ov-powered a:hover { text-decoration: underline; }
+.ov-powered a:hover {
+  text-decoration: underline;
+}
 
-.ov-intro strong { color: var(--bl-text); }
-.ov-intro em { font-style: normal; color: var(--bl-accent); font-weight: 700; }
+.ov-intro strong {
+  color: var(--bl-text);
+}
+
+.ov-intro em {
+  font-style: normal;
+  color: var(--bl-accent);
+  font-weight: 700;
+}
 
 /* Current task */
 .current-task-bar {
@@ -813,23 +957,40 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
 
 .dr-score-ring {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 128px;
+  height: 128px;
   margin-bottom: 16px;
+  display: grid;
+  place-items: center;
 }
 
-.ring-svg {
-  width: 100%;
-  height: 100%;
+.dr-score-ring::after {
+  content: '';
+  position: absolute;
+  inset: 19px;
+  border-radius: 50%;
+  background: var(--bl-surface-strong);
+  pointer-events: none;
+}
+
+.dr-score-ring-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .ring-label {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .ring-score {
@@ -867,12 +1028,12 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
 .dr-detail-bar {
   flex: 1;
   height: 6px;
-  background: #f0f0f2;
+  background: var(--bl-surface-muted);
   border-radius: 99px;
   overflow: hidden;
 }
 
-.dr-detail-bar > div {
+.dr-detail-bar>div {
   height: 100%;
   border-radius: 99px;
   transition: width 0.6s ease;
@@ -998,8 +1159,15 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   flex-shrink: 0;
 }
 
-.badge-on { background: rgba(52, 199, 89, 0.12); color: #34c759; }
-.badge-off { background: rgba(142, 142, 147, 0.12); color: #8e8e93; }
+.badge-on {
+  background: rgba(52, 199, 89, 0.12);
+  color: #34c759;
+}
+
+.badge-off {
+  background: rgba(142, 142, 147, 0.12);
+  color: #8e8e93;
+}
 
 .policy-body {
   padding: 0 20px 16px;
@@ -1074,7 +1242,9 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   gap: 6px;
 }
 
-.latest-badge i { color: var(--bl-accent); }
+.latest-badge i {
+  color: var(--bl-accent);
+}
 
 .latest-detail-grid {
   display: grid;
@@ -1105,7 +1275,9 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   gap: 20px;
 }
 
-.storage-card, .backup-stats-card, .upcoming-card {
+.storage-card,
+.backup-stats-card,
+.upcoming-card {
   background: var(--bl-surface-strong);
   border-radius: var(--bl-radius-lg);
   box-shadow: var(--bl-shadow-soft);
@@ -1114,12 +1286,16 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.storage-card:hover, .backup-stats-card:hover, .upcoming-card:hover {
+.storage-card:hover,
+.backup-stats-card:hover,
+.upcoming-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--bl-shadow-card);
 }
 
-.storage-card h3, .backup-stats-card h3, .upcoming-card h3 {
+.storage-card h3,
+.backup-stats-card h3,
+.upcoming-card h3 {
   font-size: 18px;
   font-weight: 700;
   margin: 0 0 20px;
@@ -1128,9 +1304,17 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   gap: 8px;
 }
 
-.storage-card h3 i { color: var(--bl-accent); }
-.backup-stats-card h3 i { color: var(--bl-green); }
-.upcoming-card h3 i { color: var(--bl-purple); }
+.storage-card h3 i {
+  color: var(--bl-accent);
+}
+
+.backup-stats-card h3 i {
+  color: var(--bl-green);
+}
+
+.upcoming-card h3 i {
+  color: var(--bl-purple);
+}
 
 .backup-stats-card {
   position: relative;
@@ -1139,14 +1323,7 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
 }
 
 .backup-stats-card::before {
-  content: '';
-  position: absolute;
-  inset: auto -40px -70px auto;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(15, 23, 42, 0.05) 0%, rgba(15, 23, 42, 0) 72%);
-  pointer-events: none;
+  content: none;
 }
 
 .backup-stats-body {
@@ -1159,49 +1336,17 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
 }
 
 .backup-stats-ring {
-  width: 108px;
-  height: 108px;
+  width: 104px;
+  height: 104px;
   position: relative;
   border-radius: 50%;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
 }
 
-.backup-stats-ring-svg {
+.backup-stats-ring-canvas {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.backup-stats-ring-track,
-.backup-stats-ring-fill,
-.backup-stats-ring-hitbox {
-  fill: none;
-  stroke-width: 12;
-}
-
-.backup-stats-ring-track {
-  stroke: rgba(15, 23, 42, 0.08);
-}
-
-.backup-stats-ring-fill {
-  stroke-linecap: butt;
-  filter: drop-shadow(0 2px 6px rgba(15, 23, 42, 0.12));
-}
-
-.backup-stats-ring-fill.success {
-  stroke: url(#backupSuccessGradient);
-}
-
-.backup-stats-ring-fill.fail {
-  stroke: url(#backupFailureGradient);
-}
-
-.backup-stats-ring-hitbox {
-  stroke: transparent;
-  stroke-width: 18;
-  stroke-linecap: round;
+  width: 100% !important;
+  height: 100% !important;
   cursor: pointer;
 }
 
@@ -1211,28 +1356,18 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   display: inline-flex;
   flex-direction: column;
   gap: 2px;
-  padding: 8px 10px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
-  backdrop-filter: blur(12px);
+  padding: 7px 9px;
+  border-radius: 10px;
+  background: var(--bl-surface-strong);
+  border: 1px solid var(--bl-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   transform: translate(-50%, calc(-100% - 8px));
   pointer-events: none;
   white-space: nowrap;
 }
 
 .backup-stats-tooltip::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -6px;
-  width: 10px;
-  height: 10px;
-  background: inherit;
-  border-right: 1px solid rgba(15, 23, 42, 0.08);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  transform: translateX(-50%) rotate(45deg);
+  content: none;
 }
 
 .backup-stats-tooltip-label {
@@ -1248,25 +1383,23 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
 }
 
 .backup-stats-tooltip.tooltip-success {
-  background: rgba(248, 255, 251, 0.94);
+  border-color: rgba(52, 199, 89, 0.24);
 }
 
 .backup-stats-tooltip.tooltip-fail {
-  background: rgba(255, 248, 249, 0.94);
+  border-color: rgba(239, 68, 68, 0.24);
 }
 
 .backup-stats-ring-center {
   position: absolute;
-  inset: 14px;
+  inset: 16px;
   border-radius: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 247, 250, 0.96) 100%);
+  background: var(--bl-surface-strong);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow:
-    inset 0 0 0 1px rgba(0, 0, 0, 0.04),
-    inset 0 8px 20px rgba(255, 255, 255, 0.55);
+  pointer-events: none;
 }
 
 .backup-stats-total {
@@ -1364,7 +1497,9 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   color: #32ade6;
 }
 
-.upcoming-type-tag i { font-size: 10px; }
+.upcoming-type-tag i {
+  font-size: 10px;
+}
 
 .upcoming-time {
   font-size: 13px;
@@ -1412,7 +1547,9 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   flex-wrap: wrap;
 }
 
-.bkh-title i { color: var(--bl-accent); }
+.bkh-title i {
+  color: var(--bl-accent);
+}
 
 .bkh-chips {
   display: inline-flex;
@@ -1437,7 +1574,9 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   white-space: nowrap;
 }
 
-.bkh-chip i { font-size: 10px; }
+.bkh-chip i {
+  font-size: 10px;
+}
 
 .bkh-chip.chip-success {
   background: rgba(52, 199, 89, 0.08);
@@ -1445,7 +1584,9 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   border-color: rgba(52, 199, 89, 0.15);
 }
 
-.bkh-chip.chip-success i { color: #2da44e; }
+.bkh-chip.chip-success i {
+  color: #2da44e;
+}
 
 .bkh-chip.chip-fail {
   background: rgba(239, 68, 68, 0.08);
@@ -1453,7 +1594,9 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   border-color: rgba(239, 68, 68, 0.15);
 }
 
-.bkh-chip.chip-fail i { color: #dc3545; }
+.bkh-chip.chip-fail i {
+  color: #dc3545;
+}
 
 .archive-btn {
   display: inline-flex;
@@ -1461,7 +1604,8 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   gap: 8px;
   padding: 10px 20px;
   background: var(--bl-text);
-  color: white;
+  color: #ffffff;
+  border: 1px solid transparent;
   border-radius: 99px;
   text-decoration: none;
   font-size: 14px;
@@ -1472,6 +1616,28 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
 .archive-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.archive-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--bl-focus-ring);
+}
+
+:global(:root[data-theme='dark'] .archive-btn) {
+  background: #8fc8ff;
+  color: #08131f;
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 10px 22px rgba(9, 16, 27, 0.26);
+}
+
+:global(:root[data-theme='dark'] .archive-btn:hover) {
+  background: #a8d5ff;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 14px 26px rgba(9, 16, 27, 0.3);
+}
+
+:global(:root[data-theme='dark'] .archive-btn:focus-visible) {
+  box-shadow: 0 0 0 4px rgba(169, 212, 255, 0.28), 0 10px 22px rgba(9, 16, 27, 0.26);
 }
 
 .backups-table-wrapper {
@@ -1529,7 +1695,7 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   vertical-align: middle;
   background: var(--bl-surface-muted);
   color: var(--bl-text-secondary);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--bl-border);
 }
 
 .type-badge i,
@@ -1576,10 +1742,25 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
   font-weight: 600;
 }
 
-.status-success { background: rgba(52, 199, 89, 0.12); color: #34c759; }
-.status-danger { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
-.status-running { background: rgba(0, 113, 227, 0.12); color: #0071e3; }
-.status-default { background: rgba(142, 142, 147, 0.12); color: #8e8e93; }
+.status-success {
+  background: rgba(52, 199, 89, 0.12);
+  color: #34c759;
+}
+
+.status-danger {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.status-running {
+  background: rgba(0, 113, 227, 0.12);
+  color: #0071e3;
+}
+
+.status-default {
+  background: rgba(142, 142, 147, 0.12);
+  color: #8e8e93;
+}
 
 /* Pagination */
 .backups-pagination {
@@ -1622,22 +1803,52 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
 
 /* Responsive */
 @media (max-width: 900px) {
-  .overview-card { flex-direction: column; }
-  .overview-right { width: 100%; }
-  .row-two-col { grid-template-columns: 1fr; }
-  .policies-grid { grid-template-columns: 1fr; }
-  .bkh-left { width: 100%; }
+  .overview-card {
+    flex-direction: column;
+  }
+
+  .overview-right {
+    width: 100%;
+  }
+
+  .row-two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .policies-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bkh-left {
+    width: 100%;
+  }
 }
 
 @media (min-width: 901px) and (max-width: 1180px) {
-  .row-two-col { grid-template-columns: 1fr 1fr; }
-  .backup-stats-card { grid-column: 1 / -1; }
+  .row-two-col {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .backup-stats-card {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 600px) {
-  .hero-title { font-size: 36px; }
-  .storage-metrics { flex-direction: column; }
-  .backup-stats-breakdown { grid-template-columns: 1fr; }
-  .latest-detail-grid { grid-template-columns: 1fr; }
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .storage-metrics {
+    flex-direction: column;
+  }
+
+  .backup-stats-breakdown {
+    grid-template-columns: 1fr;
+  }
+
+  .latest-detail-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

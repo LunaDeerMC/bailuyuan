@@ -47,7 +47,7 @@ defineProps({
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--bl-surface-strong);
   border: 3px solid var(--bl-accent);
 }
 </style>

@@ -26,8 +26,8 @@ defineProps({
 .empty-state {
   padding: 34px 24px;
   border-radius: var(--bl-radius-lg);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(250, 250, 252, 0.95));
-  border: 1px dashed rgba(0, 0, 0, 0.1);
+  background: linear-gradient(180deg, var(--bl-empty-start), var(--bl-empty-end));
+  border: 1px dashed var(--bl-border);
   text-align: center;
 }
 

@@ -97,7 +97,7 @@ const emit = defineEmits(['update:searchValue', 'change-filter', 'action']);
   display: grid;
   gap: 16px;
   padding-top: 20px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--bl-border);
 }
 
 @media (max-width: 720px) {

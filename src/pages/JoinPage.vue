@@ -392,7 +392,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
 .join-header {
   padding: calc(var(--bl-topbar-offset) + 48px) 20px 48px;
   text-align: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #66ead8 0%, #4ba276 100%);
   color: #fff;
 }
 
@@ -512,7 +512,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
 /* Convention */
 .convention-box {
   background: var(--bl-surface-strong);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--bl-border);
   border-radius: var(--bl-radius-lg);
   padding: 32px;
   max-height: 400px;
@@ -563,7 +563,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
   align-items: center;
   gap: 10px;
   padding: 28px 36px;
-  border: 2px solid rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--bl-border);
   border-radius: var(--bl-radius-lg);
   cursor: pointer;
   transition: var(--bl-transition);
@@ -583,7 +583,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
 
 .device-card.selected {
   border-color: var(--bl-accent);
-  background: rgba(99, 102, 241, 0.05);
+  background: var(--bl-accent-soft-muted);
 }
 
 .device-card.selected i {
@@ -600,7 +600,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
 .edition-btn {
   padding: 8px 20px;
   border-radius: 20px;
-  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border: 1.5px solid var(--bl-border-strong);
   background: transparent;
   font-size: 14px;
   font-weight: 600;
@@ -621,7 +621,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
   background: var(--bl-surface-strong);
   border-radius: var(--bl-radius-lg);
   padding: 24px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--bl-border);
 }
 
 .recommendation-header h3 {
@@ -648,16 +648,16 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
   gap: 16px;
   padding: 16px 20px;
   border-radius: 14px;
-  border: 1.5px solid rgba(0, 0, 0, 0.06);
+  border: 1.5px solid var(--bl-border);
   text-decoration: none;
   color: var(--bl-text);
   transition: var(--bl-transition);
-  background: #fff;
+  background: var(--bl-surface-strong);
 }
 
 .launcher-card.primary {
   border-color: var(--bl-accent);
-  background: rgba(99, 102, 241, 0.03);
+  background: var(--bl-accent-soft-muted);
 }
 
 .launcher-card:hover {
@@ -669,7 +669,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: #f5f5f7;
+  background: var(--bl-surface-muted);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -765,7 +765,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #f5f5f7;
+  background: var(--bl-surface-muted);
   padding: 10px 16px;
   border-radius: 10px;
   margin-bottom: 8px;
@@ -817,7 +817,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
 .playstyle-card {
   text-align: center;
   padding: 28px 16px;
-  border: 2px solid rgba(0, 0, 0, 0.06);
+  border: 2px solid var(--bl-border);
   border-radius: var(--bl-radius-lg);
   cursor: pointer;
   transition: var(--bl-transition);
@@ -830,7 +830,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
 
 .playstyle-card.selected {
   border-color: var(--bl-accent);
-  background: rgba(99, 102, 241, 0.05);
+  background: var(--bl-accent-soft-muted);
 }
 
 .playstyle-card i {
@@ -855,7 +855,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
   background: var(--bl-surface-strong);
   border-radius: var(--bl-radius-lg);
   padding: 28px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--bl-border);
   animation: fadeIn 0.3s ease;
 }
 
@@ -916,7 +916,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
   align-items: center;
   margin-top: 40px;
   padding-top: 20px;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-top: 1px solid var(--bl-border);
 }
 
 .wizard-btn {
@@ -947,7 +947,7 @@ const stepLabels = ['阅读公约', '选择设备', '加入教程', '游戏风�
 .wizard-btn.secondary {
   background: transparent;
   color: var(--bl-text-secondary);
-  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  border: 1.5px solid var(--bl-border-strong);
 }
 
 .wizard-btn.secondary:hover:not(:disabled) {

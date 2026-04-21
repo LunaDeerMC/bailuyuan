@@ -65,8 +65,8 @@ const toneMap = {
 }
 
 .announcement-card.is-expanded .announcement-card__summary {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  background: linear-gradient(to bottom, #fff, #fafafa);
+  border-bottom: 1px solid var(--bl-border);
+  background: linear-gradient(to bottom, var(--bl-surface-hover), var(--bl-surface-subtle));
 }
 
 .announcement-card__main {
@@ -119,7 +119,7 @@ const toneMap = {
 .announcement-card__block {
   padding: 14px 16px;
   border-radius: var(--bl-radius-md);
-  background: rgba(245, 245, 247, 0.72);
+  background: var(--bl-surface-frost);
 }
 
 .announcement-card__block h4 {

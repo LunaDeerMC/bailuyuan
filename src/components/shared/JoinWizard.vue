@@ -125,8 +125,8 @@ const canNext = computed(() => {
 .join-wizard__sidebar {
   width: 280px;
   padding: 54px 38px;
-  background: #f5f5f7;
-  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  background: var(--bl-surface-muted);
+  border-right: 1px solid var(--bl-border);
 }
 
 .join-wizard__steps {
@@ -152,7 +152,7 @@ const canNext = computed(() => {
   width: 4px;
   height: 4px;
   border-radius: 999px;
-  background: #d2d2d7;
+  background: var(--bl-border-strong);
 }
 
 .join-wizard__step.is-active,
@@ -208,7 +208,7 @@ const canNext = computed(() => {
   gap: 14px;
   padding: 28px;
   border-radius: 24px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(247, 248, 250, 1));
+  background: linear-gradient(180deg, var(--bl-surface-hover), var(--bl-surface-subtle));
   box-shadow: var(--bl-shadow-soft);
 }
 
@@ -225,7 +225,7 @@ const canNext = computed(() => {
   gap: 16px;
   padding-top: 32px;
   margin-top: auto;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--bl-border);
 }
 
 .join-wizard__footer-actions {
@@ -242,7 +242,7 @@ const canNext = computed(() => {
     width: auto;
     padding: 28px 24px 12px;
     border-right: 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid var(--bl-border);
   }
 
   .join-wizard__steps {

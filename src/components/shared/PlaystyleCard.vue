@@ -27,8 +27,8 @@ defineProps({
   gap: 14px;
   padding: 20px;
   border-radius: 18px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: #fff;
+  border: 1px solid var(--bl-border);
+  background: var(--bl-surface-strong);
   cursor: pointer;
   transition: var(--bl-transition);
   text-align: left;
@@ -37,8 +37,12 @@ defineProps({
 .playstyle-card:hover,
 .playstyle-card.is-selected {
   transform: translateY(-2px);
-  border-color: rgba(0, 113, 227, 0.35);
+  border-color: var(--bl-accent);
   box-shadow: var(--bl-shadow-soft);
+}
+
+.playstyle-card.is-selected {
+  background: var(--bl-accent-soft-muted);
 }
 
 .playstyle-card__header {
@@ -53,7 +57,7 @@ defineProps({
   border-radius: 14px;
   display: grid;
   place-items: center;
-  background: rgba(0, 113, 227, 0.08);
+  background: var(--bl-accent-soft);
   color: var(--bl-accent);
 }
 

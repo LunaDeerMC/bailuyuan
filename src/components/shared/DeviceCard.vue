@@ -28,8 +28,8 @@ defineProps({
   min-height: 180px;
   padding: 26px 18px;
   border-radius: 18px;
-  border: 2px solid #f5f5f7;
-  background: #fff;
+  border: 2px solid var(--bl-border);
+  background: var(--bl-surface-strong);
   cursor: pointer;
   transition: var(--bl-transition);
   text-align: center;
@@ -42,7 +42,7 @@ defineProps({
 }
 
 .device-card.is-selected {
-  background: rgba(0, 113, 227, 0.03);
+  background: var(--bl-accent-soft-muted);
 }
 
 .device-card__icon {
@@ -51,7 +51,7 @@ defineProps({
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #f5f5f7;
+  background: var(--bl-surface-muted);
   font-size: 1.4rem;
 }
 

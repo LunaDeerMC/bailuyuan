@@ -52,7 +52,7 @@ function copyJson() {
   position: fixed;
   inset: 0;
   z-index: 2100;
-  background: rgba(0,0,0,0.5);
+  background: var(--bl-overlay);
   backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
@@ -60,13 +60,14 @@ function copyJson() {
 }
 
 .json-output-content {
-  background: #fff;
+  background: var(--bl-surface-strong);
   margin: 60px auto;
   border-radius: 24px;
   max-width: 640px;
   width: 90%;
   padding: 36px;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+  box-shadow: var(--bl-shadow-modal);
+  border: 1px solid var(--bl-border);
   position: relative;
 }
 
@@ -79,7 +80,7 @@ function copyJson() {
   cursor: pointer;
   transition: 0.2s;
   z-index: 10;
-  background: rgba(255,255,255,0.9);
+  background: var(--bl-surface-frost-strong);
   width: 36px;
   height: 36px;
   display: flex;
@@ -91,7 +92,7 @@ function copyJson() {
 }
 
 .close-json-modal:hover {
-  background: #f0f0f0;
+  background: var(--bl-surface-muted);
   color: var(--bl-text);
 }
 
@@ -115,11 +116,11 @@ function copyJson() {
   width: 100%;
   height: 300px;
   padding: 16px;
-  border: 1.5px solid rgba(0,0,0,0.1);
+  border: 1.5px solid var(--bl-border-strong);
   border-radius: 12px;
   font-family: 'Courier New', Courier, monospace;
   font-size: 12px;
-  background: #f5f5f7;
+  background: var(--bl-surface-muted);
   color: var(--bl-text);
   resize: vertical;
   margin-bottom: 16px;

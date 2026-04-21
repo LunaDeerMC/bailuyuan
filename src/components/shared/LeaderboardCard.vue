@@ -76,7 +76,7 @@ defineProps({
   gap: 4px;
   padding-bottom: 18px;
   margin-bottom: 18px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--bl-border);
 }
 
 .leaderboard-card__champion strong {
@@ -103,14 +103,14 @@ defineProps({
   gap: 10px;
   align-items: center;
   padding-bottom: 10px;
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+  border-bottom: 1px dashed var(--bl-border);
 }
 
 .leaderboard-card__rank {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #eee;
+  background: var(--bl-surface-muted);
   display: grid;
   place-items: center;
   font-size: 0.78rem;

@@ -420,8 +420,8 @@ function setProject(p) {
   height: 48px;
   padding: 0 20px 0 44px;
   border-radius: 99px;
-  border: 1px solid rgba(0,0,0,0.1);
-  background: white;
+  border: 1px solid var(--bl-border-strong);
+  background: var(--bl-surface-strong);
   font-size: 15px;
   outline: none;
   transition: all 0.2s;
@@ -432,7 +432,7 @@ function setProject(p) {
 
 .search-box input:focus {
   border-color: var(--bl-accent);
-  box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+  box-shadow: 0 0 0 3px var(--bl-focus-ring);
 }
 
 .cta-button {
@@ -461,14 +461,15 @@ function setProject(p) {
 }
 
 .cta-button.outline {
-  background-color: transparent;
+  background-color: var(--bl-surface-frost);
   color: var(--bl-text);
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid var(--bl-border-strong);
 }
 
 .cta-button.outline:hover {
-  border-color: var(--bl-text);
-  background-color: white;
+  border-color: var(--bl-accent);
+  background-color: var(--bl-accent-soft);
+  color: var(--bl-accent-strong);
 }
 
 .filter-tags {
@@ -481,8 +482,8 @@ function setProject(p) {
 .filter-tag {
   padding: 8px 16px;
   border-radius: 99px;
-  border: none;
-  background: white;
+  border: 1px solid var(--bl-border);
+  background: var(--bl-control-bg);
   color: var(--bl-text-secondary);
   font-size: 14px;
   font-weight: 500;
@@ -494,13 +495,15 @@ function setProject(p) {
 
 .filter-tag:hover {
   transform: translateY(-1px);
-  background: #fafafa;
+  background: var(--bl-control-hover-bg);
+  border-color: var(--bl-border-strong);
 }
 
 .filter-tag.active {
-  background: var(--bl-text);
-  color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background: var(--bl-control-active-bg);
+  color: var(--bl-control-active-color);
+  border-color: var(--bl-control-active-border);
+  box-shadow: var(--bl-control-active-shadow);
 }
 
 /* Donation Grid */
@@ -511,7 +514,7 @@ function setProject(p) {
 }
 
 .donation-card {
-  background: white;
+  background: var(--bl-surface-strong);
   padding: 24px;
   border-radius: var(--bl-radius-lg);
   transition: var(--bl-transition);
@@ -520,7 +523,7 @@ function setProject(p) {
   justify-content: space-between;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--bl-border);
   animation: fadeInUp 0.5s ease both;
 }
 
@@ -558,7 +561,7 @@ function setProject(p) {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #f0f0f0;
+  background: var(--bl-surface-muted);
 }
 
 .donor-name {
@@ -595,10 +598,10 @@ function setProject(p) {
 
 .donation-date {
   font-size: 12px;
-  color: #999;
+  color: var(--bl-text-tertiary);
   text-align: right;
   margin-top: auto;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--bl-border);
   padding-top: 12px;
 }
 
@@ -717,9 +720,9 @@ function setProject(p) {
 .qr-placeholder {
   display: inline-block;
   padding: 16px;
-  background: #fff;
+  background: var(--bl-surface-strong);
   border-radius: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--bl-border);
   min-width: 232px;
   min-height: 232px;
 }

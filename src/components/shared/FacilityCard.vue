@@ -65,13 +65,13 @@ const toneMap = {
   flex-wrap: wrap;
   gap: 8px;
   padding-top: 16px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--bl-border);
 }
 
 .facility-card__tag {
   padding: 4px 10px;
   border-radius: 999px;
-  background: #f5f5f7;
+  background: var(--bl-surface-muted);
   color: var(--bl-text-secondary);
   font-size: 0.76rem;
   font-weight: 600;

@@ -777,7 +777,7 @@ function generateJson() {
   box-shadow: var(--bl-shadow-soft);
   cursor: pointer;
   transition: var(--bl-transition);
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--bl-border);
 }
 
 .town-card:hover {
@@ -793,7 +793,7 @@ function generateJson() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e8ecf1;
+  background-color: var(--bl-surface-muted);
 }
 
 .town-card-bg::after {
@@ -832,7 +832,7 @@ function generateJson() {
   color: #fff;
   font-size: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  border: 2px solid #fff;
+  border: 2px solid var(--bl-surface-strong);
 }
 
 .icon-scale-small { background: #60a5fa; }
@@ -863,12 +863,12 @@ function generateJson() {
   gap: 8px;
   margin-top: auto;
   padding-top: 12px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--bl-border);
 }
 
 .town-meta-tag {
   font-size: 11px;
-  background: #f5f5f7;
+  background: var(--bl-surface-muted);
   padding: 4px 10px;
   border-radius: 6px;
   color: var(--bl-text-secondary);
@@ -944,17 +944,17 @@ function generateJson() {
   font-size: 12px;
 }
 
-.badge-scale-small { background: #dbeafe; color: #1d4ed8; }
-.badge-scale-medium { background: #fef3c7; color: #b45309; }
-.badge-scale-large { background: #fee2e2; color: #b91c1c; }
+.badge-scale-small { background: var(--bl-badge-info-bg); color: var(--bl-badge-info-text); }
+.badge-scale-medium { background: var(--bl-badge-warning-bg); color: var(--bl-badge-warning-text); }
+.badge-scale-large { background: var(--bl-badge-danger-bg); color: var(--bl-badge-danger-text); }
 
-.badge-type-building { background: #ede9fe; color: #6d28d9; }
-.badge-type-adventure { background: #d1fae5; color: #047857; }
-.badge-type-industry { background: #ffedd5; color: #c2410c; }
+.badge-type-building { background: var(--bl-badge-purple-bg); color: var(--bl-badge-purple-text); }
+.badge-type-adventure { background: var(--bl-badge-success-bg); color: var(--bl-badge-success-text); }
+.badge-type-industry { background: var(--bl-badge-warning-bg); color: var(--bl-badge-warning-text); }
 
-.badge-recruit-welcome { background: #e8fceb; color: #15803d; }
-.badge-recruit-closed { background: #feebeb; color: #b91c1c; }
-.badge-recruit-maybe { background: #fef9c3; color: #a16207; }
+.badge-recruit-welcome { background: var(--bl-badge-success-bg); color: var(--bl-badge-success-text); }
+.badge-recruit-closed { background: var(--bl-badge-danger-bg); color: var(--bl-badge-danger-text); }
+.badge-recruit-maybe { background: var(--bl-badge-warning-bg); color: var(--bl-badge-warning-text); }
 
 .btn-share {
   display: inline-flex;
@@ -963,7 +963,7 @@ function generateJson() {
   padding: 6px 16px;
   background: transparent;
   color: var(--bl-text-secondary);
-  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border: 1.5px solid var(--bl-border-strong);
   border-radius: 18px;
   font-size: 13px;
   font-weight: 600;
@@ -977,9 +977,9 @@ function generateJson() {
 }
 
 .btn-share.shared {
-  color: #15803d;
+  color: var(--bl-badge-success-text);
   border-color: var(--bl-green);
-  background: #e8fceb;
+  background: var(--bl-badge-success-bg);
 }
 
 .btn-edit {
@@ -1031,13 +1031,13 @@ function generateJson() {
 .contributor-tag {
   display: flex;
   align-items: center;
-  background: #fff;
-  border: 1px solid #eee;
+  background: var(--bl-surface-strong);
+  border: 1px solid var(--bl-border);
   padding: 6px 14px;
   border-radius: 30px;
   font-size: 14px;
   color: var(--bl-text);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  box-shadow: var(--bl-shadow-soft);
 }
 
 .contributor-tag img {
@@ -1045,7 +1045,7 @@ function generateJson() {
   height: 24px;
   border-radius: 50%;
   margin-right: 10px;
-  background: #eee;
+  background: var(--bl-surface-muted);
 }
 
 .text-secondary {
@@ -1054,10 +1054,10 @@ function generateJson() {
 }
 
 .content-blocks {
-  background: #f9f9fa;
+  background: var(--bl-surface-subtle);
   padding: 24px;
   border-radius: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--bl-border);
 }
 
 .content-blocks p {
@@ -1074,7 +1074,7 @@ function generateJson() {
   max-width: 100%;
   border-radius: 12px;
   margin: 12px 0 20px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--bl-border);
 }
 
 .video-embed-wrapper {
@@ -1128,9 +1128,9 @@ function generateJson() {
   width: 100%;
   height: 44px;
   padding: 4px;
-  border: 1.5px solid rgba(0,0,0,0.1);
+  border: 1.5px solid var(--bl-border-strong);
   border-radius: 12px;
-  background: #f9f9fa;
+  background: var(--bl-surface-subtle);
   cursor: pointer;
   box-sizing: border-box;
 }
@@ -1165,7 +1165,7 @@ function generateJson() {
 .toggle-slider {
   position: absolute;
   inset: 0;
-  background: #ccc;
+  background: var(--bl-toggle-off-bg);
   border-radius: 24px;
   transition: 0.25s;
   cursor: pointer;
@@ -1178,7 +1178,7 @@ function generateJson() {
   height: 18px;
   left: 3px;
   bottom: 3px;
-  background: #fff;
+  background: var(--bl-toggle-knob-bg);
   border-radius: 50%;
   transition: 0.25s;
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);

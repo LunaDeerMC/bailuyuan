@@ -60,16 +60,17 @@ const emit = defineEmits(['update:modelValue']);
   width: 100%;
   min-height: 46px;
   padding: 0 16px 0 46px;
-  border: 1px solid rgba(0, 0, 0, 0.09);
+  border: 1px solid var(--bl-border);
   border-radius: 14px;
-  background: #f5f5f7;
+  background: var(--bl-input-bg);
+  color: var(--bl-text);
   transition: var(--bl-transition);
 }
 
 .search-box input:focus {
   outline: none;
-  background: #fff;
+  background: var(--bl-input-focus-bg);
   border-color: var(--bl-accent);
-  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.08);
+  box-shadow: 0 0 0 4px var(--bl-focus-ring);
 }
 </style>

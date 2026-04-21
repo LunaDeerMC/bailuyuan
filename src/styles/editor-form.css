@@ -20,11 +20,11 @@
 .form-group textarea {
   width: 100%;
   padding: 12px 16px;
-  border: 1.5px solid rgba(0,0,0,0.1);
+  border: 1.5px solid var(--bl-border-strong);
   border-radius: 12px;
   font-size: 14px;
   font-family: inherit;
-  background-color: #f9f9fa;
+  background-color: var(--bl-surface-subtle);
   transition: all 0.2s ease;
   color: var(--bl-text);
   box-sizing: border-box;
@@ -34,8 +34,8 @@
 .form-group textarea:focus {
   outline: none;
   border-color: var(--bl-accent);
-  background-color: #fff;
-  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+  background-color: var(--bl-surface-strong);
+  box-shadow: 0 0 0 4px var(--bl-focus-ring);
 }
 
 .form-group textarea {
@@ -66,9 +66,9 @@
   align-items: center;
   width: 100%;
   padding: 12px 16px;
-  border: 1.5px solid rgba(0,0,0,0.1);
+  border: 1.5px solid var(--bl-border-strong);
   border-radius: 12px;
-  background: #f9f9fa;
+  background: var(--bl-surface-subtle);
   color: var(--bl-text);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -82,14 +82,14 @@
 }
 
 .custom-select:hover .custom-select-trigger {
-  background: #fff;
-  border-color: rgba(0,0,0,0.2);
+  background: var(--bl-surface-strong);
+  border-color: var(--bl-border-strong);
 }
 
 .custom-select.open .custom-select-trigger {
   border-color: var(--bl-accent);
-  background: #fff;
-  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+  background: var(--bl-surface-strong);
+  box-shadow: 0 0 0 4px var(--bl-focus-ring);
 }
 
 .custom-select.open .custom-select-trigger i {
@@ -101,10 +101,10 @@
   top: calc(100% + 8px);
   left: 0;
   right: 0;
-  background: #fff;
+  background: var(--bl-surface-strong);
   border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: var(--bl-shadow-card);
+  border: 1px solid var(--bl-border);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
@@ -133,12 +133,12 @@
 }
 
 .custom-option:hover {
-  background: #f5f5f7;
+  background: var(--bl-surface-muted);
 }
 
 .custom-option.selected {
-  background: #e0f2fe;
-  color: #0369a1;
+  background: var(--bl-badge-info-bg);
+  color: var(--bl-badge-info-text);
   font-weight: 600;
 }
 
@@ -149,17 +149,17 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  border: 1.5px solid rgba(0,0,0,0.1);
+  border: 1.5px solid var(--bl-border-strong);
   border-radius: 12px;
-  background: #f9f9fa;
+  background: var(--bl-surface-subtle);
   transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
   cursor: text;
 }
 
 .tags-input-wrapper:focus-within {
   border-color: var(--bl-accent);
-  background: #fff;
-  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+  background: var(--bl-surface-strong);
+  box-shadow: 0 0 0 4px var(--bl-focus-ring);
 }
 
 .tags-list {
@@ -217,8 +217,8 @@
   gap: 10px;
   padding: 10px 12px;
   margin-bottom: 8px;
-  background: #fff;
-  border: 1.5px solid rgba(0,0,0,0.08);
+  background: var(--bl-surface-strong);
+  border: 1.5px solid var(--bl-border);
   border-radius: 12px;
   transition: box-shadow 0.2s, border-color 0.2s, opacity 0.2s;
 }
@@ -228,8 +228,8 @@
 }
 
 .sortable-item:hover {
-  border-color: rgba(0,0,0,0.15);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border-color: var(--bl-border-strong);
+  box-shadow: var(--bl-shadow-soft);
 }
 
 .sortable-item.dragging {
@@ -239,7 +239,7 @@
 
 .sortable-item.drag-over {
   border-color: var(--bl-accent);
-  box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.15);
+  box-shadow: 0 0 0 2px var(--bl-accent-soft);
 }
 
 .drag-handle {
@@ -273,27 +273,27 @@
 }
 
 .badge-text {
-  background: #e8f5e9;
-  color: #2e7d32;
+  background: var(--bl-badge-success-bg);
+  color: var(--bl-badge-success-text);
 }
 
 .badge-image {
-  background: #e3f2fd;
-  color: #1565c0;
+  background: var(--bl-badge-info-bg);
+  color: var(--bl-badge-info-text);
 }
 
 .badge-video {
-  background: #fce4ec;
-  color: #c62828;
+  background: var(--bl-badge-danger-bg);
+  color: var(--bl-badge-danger-text);
 }
 
 .sortable-item .item-content {
   flex: 1;
-  border: 1px solid rgba(0,0,0,0.06) !important;
+  border: 1px solid var(--bl-border) !important;
   border-radius: 8px !important;
   padding: 8px 10px !important;
   font-size: 13px !important;
-  background: #fafafa !important;
+  background: var(--bl-surface-subtle) !important;
   min-height: unset;
   font-family: inherit;
   resize: vertical;
@@ -303,7 +303,7 @@
 
 .sortable-item .item-content:focus {
   border-color: var(--bl-accent) !important;
-  background: #fff !important;
+  background: var(--bl-surface-strong) !important;
   box-shadow: none !important;
   outline: none;
 }
@@ -311,7 +311,7 @@
 .remove-item-btn {
   background: none;
   border: none;
-  color: #ccc;
+  color: var(--bl-text-tertiary);
   cursor: pointer;
   padding: 6px;
   border-radius: 8px;
@@ -322,8 +322,8 @@
 }
 
 .remove-item-btn:hover {
-  color: #ef4444;
-  background: #fef2f2;
+  color: var(--bl-danger-soft-text);
+  background: var(--bl-danger-soft-bg);
 }
 
 .add-item-row {
@@ -337,8 +337,8 @@
   align-items: center;
   gap: 6px;
   padding: 8px 14px;
-  background: #f5f5f7;
-  border: 1.5px dashed rgba(0,0,0,0.12);
+  background: var(--bl-surface-muted);
+  border: 1.5px dashed var(--bl-border-strong);
   border-radius: 10px;
   font-size: 12px;
   font-weight: 600;
@@ -351,14 +351,14 @@
 .add-item-btn:hover {
   border-color: var(--bl-accent);
   color: var(--bl-accent);
-  background: #f0f7ff;
+  background: var(--bl-accent-soft-muted);
 }
 
 /* Editor Actions */
 .editor-actions {
   margin-top: 28px;
   padding-top: 20px;
-  border-top: 1px solid rgba(0,0,0,0.08);
+  border-top: 1px solid var(--bl-border);
   display: flex;
   justify-content: flex-end;
 }
@@ -387,16 +387,16 @@
 
 /* Preview styles */
 .preview-card {
-  background: #fff;
+  background: var(--bl-surface-strong);
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  box-shadow: var(--bl-shadow-soft);
   overflow: hidden;
 }
 
 .preview-header {
   padding: 24px 24px 16px;
-  background: linear-gradient(to bottom, #fff, #fafafa);
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+  background: linear-gradient(to bottom, var(--bl-surface-hover), var(--bl-surface-subtle));
+  border-bottom: 1px solid var(--bl-border);
 }
 
 .preview-title {

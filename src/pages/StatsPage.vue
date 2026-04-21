@@ -504,7 +504,7 @@ function filteredItems(catKey) {
   border-radius: var(--bl-radius-lg);
   overflow: hidden;
   box-shadow: var(--bl-shadow-soft);
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--bl-border);
 }
 
 .lb-card-header {
@@ -534,7 +534,7 @@ function filteredItems(catKey) {
   height: 56px;
   border-radius: 12%;
   margin-bottom: 10px;
-  background: #eee;
+  background: var(--bl-surface-muted);
 }
 
 .lb-top-name {
@@ -558,7 +558,7 @@ function filteredItems(catKey) {
   justify-content: space-between;
   align-items: center;
   padding: 12px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--bl-border);
   font-size: 14px;
   cursor: pointer;
 }
@@ -577,7 +577,7 @@ function filteredItems(catKey) {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #f0f0f2;
+  background: var(--bl-rank-neutral-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -601,7 +601,7 @@ function filteredItems(catKey) {
   align-items: center;
   gap: 10px;
   background: var(--bl-surface-strong);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--bl-border);
   border-radius: 12px;
   padding: 10px 16px;
   width: 100%;
@@ -640,7 +640,7 @@ function filteredItems(catKey) {
   cursor: pointer;
   transition: var(--bl-transition);
   box-shadow: var(--bl-shadow-soft);
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--bl-border);
 }
 
 .player-card:hover {
@@ -653,7 +653,7 @@ function filteredItems(catKey) {
   height: 56px;
   border-radius: 12%;
   margin-bottom: 10px;
-  background: #eee;
+  background: var(--bl-surface-muted);
 }
 
 .player-card h3 {
@@ -672,7 +672,7 @@ function filteredItems(catKey) {
 .load-more-btn {
   padding: 10px 32px;
   border-radius: 12px;
-  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border: 1.5px solid var(--bl-border-strong);
   background: transparent;
   color: var(--bl-text);
   font-size: 15px;
@@ -699,7 +699,7 @@ function filteredItems(catKey) {
   width: 56px;
   height: 56px;
   border-radius: 12%;
-  background: #eee;
+  background: var(--bl-surface-muted);
 }
 
 .modal-player-header h3 {
@@ -723,7 +723,7 @@ function filteredItems(catKey) {
 }
 
 .summary-stat-item {
-  background: #f9f9fa;
+  background: var(--bl-surface-subtle);
   border-radius: 12px;
   padding: 16px;
   text-align: center;
@@ -762,7 +762,7 @@ function filteredItems(catKey) {
   justify-content: space-between;
   align-items: center;
   padding: 14px 18px;
-  background: #f5f5f7;
+  background: var(--bl-surface-muted);
   border-radius: 12px;
   cursor: pointer;
   font-size: 15px;
@@ -772,7 +772,7 @@ function filteredItems(catKey) {
 }
 
 .accordion-header:hover {
-  background: #ebebed;
+  background: var(--bl-surface-hover);
 }
 
 .accordion-header .arrow {
@@ -791,7 +791,7 @@ function filteredItems(catKey) {
   justify-content: center;
   min-width: 22px;
   height: 20px;
-  background: rgba(0, 0, 0, 0.08);
+  background: var(--bl-hover-fill);
   border-radius: 10px;
   font-size: 11px;
   font-weight: 600;
@@ -807,8 +807,8 @@ function filteredItems(catKey) {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--bl-surface-strong);
+  border: 1px solid var(--bl-border);
   border-radius: 10px;
   padding: 8px 14px;
   margin-bottom: 16px;
@@ -836,16 +836,16 @@ function filteredItems(catKey) {
 }
 
 .detail-stat-item {
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: var(--bl-surface-strong);
+  border: 1px solid var(--bl-border);
   border-radius: 10px;
   padding: 12px;
   text-align: center;
 }
 
-.detail-stat-item.rank-1 { border-color: #ffd700; background: #fffef5; }
-.detail-stat-item.rank-2 { border-color: #c0c0c0; background: #fafafa; }
-.detail-stat-item.rank-3 { border-color: #cd7f32; background: #fefaf5; }
+.detail-stat-item.rank-1 { border-color: var(--bl-rank-gold-border); background: var(--bl-rank-gold-bg); }
+.detail-stat-item.rank-2 { border-color: var(--bl-rank-silver-border); background: var(--bl-rank-silver-bg); }
+.detail-stat-item.rank-3 { border-color: var(--bl-rank-bronze-border); background: var(--bl-rank-bronze-bg); }
 
 .detail-stat-value {
   display: block;

@@ -29,7 +29,7 @@ defineProps({
 .base-card {
   border-radius: var(--bl-radius-lg);
   background: var(--bl-surface);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--bl-border);
   box-shadow: var(--bl-shadow-soft);
   backdrop-filter: blur(18px);
 }
@@ -57,6 +57,6 @@ defineProps({
 }
 
 .base-card.is-muted {
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--bl-surface-frost);
 }
 </style>

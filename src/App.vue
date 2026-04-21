@@ -5,6 +5,7 @@ import SiteNavbar from './components/layout/SiteNavbar.vue';
 import AnnouncementMarquee from './components/layout/AnnouncementMarquee.vue';
 import SiteFooter from './components/layout/SiteFooter.vue';
 import { fetchAnnouncementsData } from './composables/useAnnouncementsData.js';
+import { initializeTheme } from './composables/useTheme.js';
 import { getAnnouncementMarqueeHeight, groupAnnouncementMarquees } from './utils/announcements.js';
 import { useRouteSeo } from './utils/seo';
 import { preloadRouteComponents } from './router';
@@ -86,6 +87,7 @@ watch(
 );
 
 onMounted(() => {
+  initializeTheme();
   scheduleRoutePreload();
 
   fetchAnnouncementsData()

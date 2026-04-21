@@ -503,7 +503,7 @@ function generateJson() {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--bl-surface-strong);
   border: 3px solid var(--bl-accent);
   z-index: 1;
 }
@@ -525,22 +525,22 @@ function generateJson() {
   background: var(--bl-surface-strong);
   border-radius: var(--bl-radius-lg);
   box-shadow: var(--bl-shadow-soft);
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--bl-border);
   overflow: hidden;
   transition: var(--bl-transition);
   cursor: pointer;
 }
 
 .announcement-card:hover {
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--bl-shadow-card);
   transform: translateY(-2px);
 }
 
 .announcement-card.expanded {
   cursor: default;
   transform: none;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border-color: rgba(0, 0, 0, 0.06);
+  box-shadow: var(--bl-shadow-card);
+  border-color: var(--bl-border-strong);
 }
 
 .card-summary {
@@ -557,8 +557,8 @@ function generateJson() {
 }
 
 .announcement-card.expanded .card-summary {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  background: linear-gradient(to bottom, #fff, #fafafa);
+  border-bottom: 1px solid var(--bl-border);
+  background: linear-gradient(to bottom, var(--bl-surface-hover), var(--bl-surface-subtle));
 }
 
 .card-summary-main {
@@ -627,18 +627,18 @@ function generateJson() {
 }
 
 .badge-activity {
-  background: #e8fceb;
-  color: #15803d;
+  background: var(--bl-badge-success-bg);
+  color: var(--bl-badge-success-text);
 }
 
 .badge-maintenance {
-  background: #fff8d6;
-  color: #b45309;
+  background: var(--bl-badge-warning-bg);
+  color: var(--bl-badge-warning-text);
 }
 
 .badge-other {
-  background: #f3e8ff;
-  color: #7c3aed;
+  background: var(--bl-badge-purple-bg);
+  color: var(--bl-badge-purple-text);
 }
 
 .expand-icon {
@@ -685,8 +685,8 @@ function generateJson() {
   max-width: 100%;
   border-radius: 12px;
   margin: 12px 0 16px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--bl-border);
+  box-shadow: var(--bl-shadow-soft);
 }
 
 .video-embed-wrapper {
@@ -711,7 +711,7 @@ function generateJson() {
 .detail-action-btn-row {
   margin-top: 20px;
   padding-top: 16px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--bl-border);
   display: flex;
   justify-content: flex-end;
   gap: 10px;
@@ -724,7 +724,7 @@ function generateJson() {
   padding: 6px 16px;
   background: transparent;
   color: var(--bl-text-secondary);
-  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border: 1.5px solid var(--bl-border-strong);
   border-radius: 18px;
   font-size: 13px;
   font-weight: 600;
@@ -735,13 +735,13 @@ function generateJson() {
 .btn-share:hover {
   color: var(--bl-accent);
   border-color: var(--bl-accent);
-  background: rgba(0, 113, 227, 0.04);
+  background: var(--bl-accent-soft-muted);
 }
 
 .btn-share.shared {
-  color: #15803d;
+  color: var(--bl-badge-success-text);
   border-color: #34c759;
-  background: #e8fceb;
+  background: var(--bl-badge-success-bg);
 }
 
 .btn-edit {
@@ -840,10 +840,10 @@ function generateJson() {
 }
 
 .content-blocks {
-  background: #f9f9fa;
+  background: var(--bl-surface-subtle);
   padding: 20px;
   border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.03);
+  border: 1px solid var(--bl-border);
 }
 
 .content-blocks p {
@@ -860,6 +860,6 @@ function generateJson() {
   max-width: 100%;
   border-radius: 12px;
   margin: 12px 0 16px;
-  border: 1px solid rgba(0,0,0,0.05);
+  border: 1px solid var(--bl-border);
 }
 </style>

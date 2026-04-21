@@ -40,32 +40,32 @@ defineProps({
 }
 
 .base-badge--neutral {
-  background: #f1f2f4;
+  background: var(--bl-badge-neutral-bg);
   color: var(--bl-text-secondary);
 }
 
 .base-badge--accent {
-  background: rgba(0, 113, 227, 0.12);
-  color: var(--bl-accent-strong);
+  background: var(--bl-badge-accent-bg);
+  color: var(--bl-badge-accent-text);
 }
 
 .base-badge--success {
-  background: #e8fceb;
-  color: #15803d;
+  background: var(--bl-badge-success-bg);
+  color: var(--bl-badge-success-text);
 }
 
 .base-badge--warning {
-  background: #fff7db;
-  color: #b45309;
+  background: var(--bl-badge-warning-bg);
+  color: var(--bl-badge-warning-text);
 }
 
 .base-badge--danger {
-  background: #feebeb;
-  color: #b91c1c;
+  background: var(--bl-badge-danger-bg);
+  color: var(--bl-badge-danger-text);
 }
 
 .base-badge--purple {
-  background: #f3f0ff;
-  color: #6d28d9;
+  background: var(--bl-badge-purple-bg);
+  color: var(--bl-badge-purple-text);
 }
 </style>

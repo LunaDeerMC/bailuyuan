@@ -113,13 +113,15 @@ function prefetchItemTree(item) {
         </template>
       </nav>
 
-      <RouterLink
-        class="site-navbar__cta"
-        :to="ctaHref"
-        @mouseenter="prefetchHref(ctaHref)"
-        @focus="prefetchHref(ctaHref)"
-        @touchstart.passive="prefetchHref(ctaHref)"
-      >{{ ctaLabel }}</RouterLink>
+      <div class="site-navbar__actions">
+        <RouterLink
+          class="site-navbar__cta"
+          :to="ctaHref"
+          @mouseenter="prefetchHref(ctaHref)"
+          @focus="prefetchHref(ctaHref)"
+          @touchstart.passive="prefetchHref(ctaHref)"
+        >{{ ctaLabel }}</RouterLink>
+      </div>
     </div>
   </header>
 
@@ -138,8 +140,8 @@ function prefetchItemTree(item) {
   inset: 0 0 auto;
   z-index: 1100;
   height: var(--bl-header-height);
-  background: rgba(255, 255, 255, 0.8);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background: var(--bl-navbar-bg);
+  border-bottom: 1px solid var(--bl-border);
   backdrop-filter: blur(20px);
 }
 
@@ -167,7 +169,7 @@ function prefetchItemTree(item) {
 }
 
 .site-navbar__toggle:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--bl-hover-fill);
 }
 
 .site-navbar__logo img {
@@ -180,13 +182,12 @@ function prefetchItemTree(item) {
   align-items: center;
   gap: 22px;
   margin-left: auto;
-  margin-right: 8px;
 }
 
 .site-navbar__link {
   position: relative;
   font-size: 0.82rem;
-  color: rgba(29, 29, 31, 0.82);
+  color: var(--bl-text-secondary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -220,11 +221,11 @@ function prefetchItemTree(item) {
   transform: translateX(-50%);
   min-width: 120px;
   padding: 6px 0;
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--bl-dropdown-bg);
   backdrop-filter: blur(20px);
   border-radius: 10px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: var(--bl-shadow-soft);
+  border: 1px solid var(--bl-border);
 }
 
 .site-navbar__dropdown-menu::before {
@@ -240,15 +241,21 @@ function prefetchItemTree(item) {
   display: block;
   padding: 8px 16px;
   font-size: 0.8rem;
-  color: rgba(29, 29, 31, 0.82);
+  color: var(--bl-text-secondary);
   text-decoration: none;
   white-space: nowrap;
   transition: background 0.15s, color 0.15s;
 }
 
 .site-navbar__dropdown-item:hover {
-  background: rgba(0, 0, 0, 0.04);
+  background: var(--bl-hover-fill);
   color: var(--bl-text);
+}
+
+.site-navbar__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .site-navbar__cta {
@@ -289,8 +296,16 @@ function prefetchItemTree(item) {
     margin: 0;
   }
 
-  .site-navbar__cta {
+  .site-navbar__theme {
+    display: none;
+  }
+
+  .site-navbar__actions {
     order: 3;
+    gap: 0;
+  }
+
+  .site-navbar__cta {
     margin: 0;
     padding: 0 12px;
     font-size: 11px;

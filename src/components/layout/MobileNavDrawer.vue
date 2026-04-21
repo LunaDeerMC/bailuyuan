@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
+import ThemeToggle from './ThemeToggle.vue';
 import { preloadRouteComponent } from '../../router';
 
 const props = defineProps({
@@ -41,6 +42,10 @@ function prefetchHref(href) {
 <template>
   <div :class="['mobile-menu', { active: open }]">
     <nav class="mobile-menu-links" aria-label="移动端导航">
+      <div class="mobile-menu__theme">
+        <ThemeToggle inline />
+      </div>
+
       <template v-for="item in items" :key="item.href">
         <a
           v-if="item.external"
@@ -93,7 +98,7 @@ function prefetchHref(href) {
   left: 0;
   width: 100%;
   height: 0;
-  background: rgba(255, 255, 255, 0.98);
+  background: var(--bl-dropdown-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   overflow: hidden;
@@ -118,6 +123,21 @@ function prefetchHref(href) {
   margin: 0 auto;
 }
 
+.mobile-menu__theme {
+  padding: 0 0 18px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--bl-border);
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.4s ease;
+}
+
+.mobile-menu.active .mobile-menu__theme {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.08s;
+}
+
 .mobile-menu-links a {
   display: block;
   font-size: 24px;
@@ -125,7 +145,7 @@ function prefetchHref(href) {
   text-decoration: none;
   color: var(--bl-text);
   padding: 16px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--bl-border);
   opacity: 0;
   transform: translateY(-20px);
   transition: all 0.4s ease;
@@ -167,7 +187,7 @@ function prefetchHref(href) {
   font-weight: 600;
   color: var(--bl-text);
   padding: 16px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--bl-border);
   cursor: pointer;
 }
 
@@ -186,9 +206,9 @@ function prefetchHref(href) {
   font-size: 20px;
   font-weight: 500;
   text-decoration: none;
-  color: rgba(29, 29, 31, 0.7);
+  color: var(--bl-text-secondary);
   padding: 12px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid var(--bl-border);
 }
 
 .mobile-menu-group__items a:hover {

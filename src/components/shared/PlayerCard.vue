@@ -54,7 +54,7 @@ defineProps({
   gap: 10px;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--bl-border);
 }
 
 .player-card__stats span {

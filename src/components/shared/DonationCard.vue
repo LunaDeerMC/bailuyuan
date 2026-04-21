@@ -56,7 +56,7 @@ defineProps({
   justify-content: space-between;
   align-items: baseline;
   padding-top: 14px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--bl-border);
 }
 
 .donation-card__footer strong {

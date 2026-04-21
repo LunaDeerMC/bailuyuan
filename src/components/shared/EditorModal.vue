@@ -54,7 +54,7 @@ function onOverlayClick(e) {
   position: fixed;
   inset: 0;
   z-index: 2000;
-  background: rgba(0,0,0,0.5);
+  background: var(--bl-overlay);
   backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
@@ -62,13 +62,14 @@ function onOverlayClick(e) {
 }
 
 .editor-modal-content {
-  background: #fff;
+  background: var(--bl-surface-strong);
   margin: 20px auto;
   border-radius: 18px;
   max-width: 1280px;
   width: 95%;
   padding: 0;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+  box-shadow: var(--bl-shadow-modal);
+  border: 1px solid var(--bl-border);
   position: relative;
   max-height: calc(100vh - 40px);
   overflow: hidden;
@@ -85,7 +86,7 @@ function onOverlayClick(e) {
   cursor: pointer;
   transition: 0.2s;
   z-index: 10;
-  background: rgba(255,255,255,0.9);
+  background: var(--bl-surface-frost-strong);
   width: 36px;
   height: 36px;
   display: flex;
@@ -97,14 +98,14 @@ function onOverlayClick(e) {
 }
 
 .close-editor-modal:hover {
-  background: #f0f0f0;
+  background: var(--bl-surface-muted);
   color: var(--bl-text);
 }
 
 .editor-modal-header {
   padding: 20px 28px;
-  border-bottom: 1px solid rgba(0,0,0,0.08);
-  background: linear-gradient(to bottom, #fff, #fafafa);
+  border-bottom: 1px solid var(--bl-border);
+  background: linear-gradient(to bottom, var(--bl-surface-hover), var(--bl-surface-subtle));
   border-radius: 18px 18px 0 0;
   flex-shrink: 0;
 }
@@ -129,8 +130,8 @@ function onOverlayClick(e) {
   flex: 0 0 45%;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgba(0,0,0,0.08);
-  background: #f5f5f7;
+  border-right: 1px solid var(--bl-border);
+  background: var(--bl-surface-muted);
 }
 
 .editor-panel-title {
@@ -138,14 +139,14 @@ function onOverlayClick(e) {
   font-weight: 700;
   color: var(--bl-text-secondary);
   padding: 14px 24px;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+  border-bottom: 1px solid var(--bl-border);
   display: flex;
   align-items: center;
   gap: 8px;
   text-transform: uppercase;
   letter-spacing: 0.6px;
   flex-shrink: 0;
-  background: rgba(255,255,255,0.6);
+  background: var(--bl-surface-frost);
 }
 
 .editor-preview-content {
@@ -179,7 +180,7 @@ function onOverlayClick(e) {
 
 .editor-preview-content::-webkit-scrollbar-thumb,
 .editor-form-scroll::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.12);
+  background: var(--bl-scroll-thumb);
   border-radius: 10px;
 }
 
@@ -221,7 +222,7 @@ function onOverlayClick(e) {
     flex: none;
     max-height: 35vh;
     border-right: none;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
+    border-bottom: 1px solid var(--bl-border);
   }
 
   .editor-form {

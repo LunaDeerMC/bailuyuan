@@ -6,6 +6,36 @@
     <meta name="theme-color" content="#0f3d2e" />
     <meta name="format-detection" content="telephone=no" />
 
+    <script>
+      (function () {
+        var storageKey = 'bl-theme-mode';
+        var validModes = { system: true, light: true, dark: true };
+        var root = document.documentElement;
+        var meta = document.querySelector('meta[name="theme-color"]');
+        var themeMode = 'light';
+
+        try {
+          var storedThemeMode = window.localStorage.getItem(storageKey);
+          if (storedThemeMode && validModes[storedThemeMode]) {
+            themeMode = storedThemeMode;
+          }
+        } catch (error) {
+          // Ignore storage failures and keep the default theme mode.
+        }
+
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var resolvedTheme = themeMode === 'system' ? (prefersDark ? 'dark' : 'light') : themeMode;
+
+        root.dataset.themeMode = themeMode;
+        root.dataset.theme = resolvedTheme;
+        root.style.colorScheme = resolvedTheme;
+
+        if (meta) {
+          meta.setAttribute('content', resolvedTheme === 'dark' ? '#0b1117' : '#f3f4f7');
+        }
+      }());
+    </script>
+
     <!-- Google Site Verification -->
     <meta name="google-site-verification" content="ZMGHsJuJU3soEw09Xa0lfKTxhxEBKN-h-goxg5lhCRw" />
     <!-- Bing Site Verification -->

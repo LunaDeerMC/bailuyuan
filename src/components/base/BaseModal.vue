@@ -96,7 +96,7 @@ onBeforeUnmount(() => {
   padding: 40px 16px;
   display: grid;
   place-items: center;
-  background: rgba(15, 23, 42, 0.38);
+  background: var(--bl-overlay);
   backdrop-filter: blur(10px);
 }
 
@@ -107,7 +107,8 @@ onBeforeUnmount(() => {
   overflow-y: auto;
   overflow-x: hidden;
   border-radius: var(--bl-radius-xl);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 250, 252, 0.98));
+  background: linear-gradient(180deg, var(--bl-surface-hover), var(--bl-surface-strong));
+  border: 1px solid var(--bl-border);
   box-shadow: var(--bl-shadow-modal);
 }
 
@@ -121,12 +122,12 @@ onBeforeUnmount(() => {
 }
 
 .base-modal__dialog::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+  background: var(--bl-scroll-thumb);
   border-radius: 10px;
 }
 
 .base-modal__dialog::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+  background: var(--bl-scroll-thumb-hover);
 }
 
 .base-modal__close {
@@ -136,7 +137,7 @@ onBeforeUnmount(() => {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--bl-surface-frost-strong);
   color: var(--bl-text-secondary);
   font-size: 1.3rem;
   cursor: pointer;
@@ -148,7 +149,7 @@ onBeforeUnmount(() => {
 }
 
 .base-modal__close:hover {
-  background: #f0f0f0;
+  background: var(--bl-surface-muted);
   color: var(--bl-text);
 }
 

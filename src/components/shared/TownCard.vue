@@ -67,7 +67,7 @@ defineProps({
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--bl-surface-frost-strong);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.14);
   font-size: 0.72rem;
   font-weight: 700;
@@ -100,13 +100,13 @@ defineProps({
   gap: 8px;
   margin-top: 6px;
   padding-top: 14px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--bl-border);
 }
 
 .town-card__meta span {
   padding: 4px 10px;
   border-radius: 999px;
-  background: #f5f5f7;
+  background: var(--bl-surface-muted);
   font-size: 0.75rem;
   color: var(--bl-text-secondary);
 }

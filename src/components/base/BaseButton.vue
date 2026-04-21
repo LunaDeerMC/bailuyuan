@@ -93,13 +93,13 @@ defineProps({
 
 .base-button--ghost:hover:not(:disabled) {
   border-color: var(--bl-border-strong);
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--bl-surface-frost);
 }
 
 .base-button--soft {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--bl-surface-frost);
   color: var(--bl-text);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--bl-border);
   backdrop-filter: blur(12px);
 }
 
