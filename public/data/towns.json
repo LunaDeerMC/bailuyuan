@@ -228,5 +228,64 @@
             "y": 0,
             "z": -505651
         }
+    },
+    {
+        "title": "桦池坞",
+        "logo": "https://mcphoto.lunadeer.cn/uploads/9d856465-4d73-4a98-a613-27d17b5ef8e9.png",
+        "gradient": {
+            "from": "#667eea",
+            "to": "#764ba2"
+        },
+        "dimension": "overworld",
+        "coordinatesSecret": false,
+        "scale": "small",
+        "townType": "building",
+        "recruitment": "closed",
+        "founders": [
+            "BE.DoraaaaMany"
+        ],
+        "members": [
+            "HarpiShark",
+            "BE.BananaBzz5608"
+        ],
+        "introduction": [
+            {
+                "type": "text",
+                "content": "桦池坞于2025年5月13号成立。欢迎在我们在线时来参观！我们会带来很多小细节的参观游览😋。非常舒适美丽的田园风建筑群，在稀树草原新区也有罗马/希腊风城镇正在发展中！"
+            },
+            {
+                "type": "image",
+                "content": "https://mcphoto.lunadeer.cn/uploads/5be3d322-9f08-41c9-81ff-758da1f2ec24.png"
+            },
+            {
+                "type": "image",
+                "content": "https://mcphoto.lunadeer.cn/uploads/5a588dd6-03c2-4fc9-b12d-3ee4a7d162ef.png"
+            },
+            {
+                "type": "image",
+                "content": "https://mcphoto.lunadeer.cn/uploads/da726658-8bed-4119-8935-8469be16534c.png"
+            },
+            {
+                "type": "image",
+                "content": "https://mcphoto.lunadeer.cn/uploads/569f0c87-4053-4dc4-a6b1-337bfa4e51cb.png"
+            },
+            {
+                "type": "image",
+                "content": "https://mcphoto.lunadeer.cn/uploads/5a855479-0970-4c69-be38-a355447c7cbf.png"
+            },
+            {
+                "type": "image",
+                "content": "https://mcphoto.lunadeer.cn/uploads/f8fcb760-d785-4efa-a279-c00ca4a53cee.png"
+            },
+            {
+                "type": "image",
+                "content": "https://mcphoto.lunadeer.cn/uploads/30186949-2f5e-4678-88b5-b32eeeaa8d86.png"
+            }
+        ],
+        "coordinates": {
+            "x": -3450,
+            "y": 63,
+            "z": 5786
+        }
     }
 ]
