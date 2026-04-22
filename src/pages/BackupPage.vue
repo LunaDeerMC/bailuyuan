@@ -659,7 +659,7 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
         </div>
 
         <div class="backup-stats-card">
-          <h3><i class="fas fa-chart-pie"></i> 备份总数</h3>
+          <h3><i class="fas fa-chart-pie"></i> 备份次数</h3>
           <div v-if="stats" class="backup-stats-body">
             <div class="backup-stats-ring">
               <canvas ref="backupChartCanvas" class="backup-stats-ring-canvas" aria-label="备份执行统计环形图"></canvas>
