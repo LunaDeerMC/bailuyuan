@@ -482,5 +482,22 @@
         ],
         "instructions": [],
         "notes": []
+    },
+    {
+        "title": "沼泽刷怪塔",
+        "intro": "产出红石，火药，骨头，线，萤石粉，糖，粘液球，蜘蛛眼，传送指南针可以在新出生点旁边的指南针箱子里拿到",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": -12672,
+            "y": 62,
+            "z": 14167
+        },
+        "contributors": [
+            "Virgoly"
+        ],
+        "instructions": [],
+        "notes": []
     }
 ]
