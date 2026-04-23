@@ -465,5 +465,22 @@
                 "content": "为了他人的游玩体验，TPS小于18时请不要加载挂机"
             }
         ]
+    },
+    {
+        "title": "不详之瓶农场",
+        "intro": "在脚手架上挂机，最好爬高个三十层就够了，不用太高，物品放在活板门下的箱子里",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": -12277,
+            "y": 101,
+            "z": 8265
+        },
+        "contributors": [
+            "Virgoly"
+        ],
+        "instructions": [],
+        "notes": []
     }
 ]
