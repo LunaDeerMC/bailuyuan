@@ -330,7 +330,7 @@ function generateJson() {
 
 <template>
   <!-- Hero -->
-  <section class="page-hero towns-hero">
+  <section class="page-hero towns-hero bl-default-page-hero">
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <h1 class="hero-title">聚落与城镇</h1>
@@ -715,47 +715,6 @@ function generateJson() {
 
 <style scoped>
 @import '../styles/editor-form.css';
-
-.towns-hero {
-  height: 35vh;
-  min-height: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding-top: var(--bl-topbar-offset);
-  background: url('https://img.lunadeer.cn/i/2025/11/26/69267755e14e3.png') center/cover no-repeat;
-  position: relative;
-  color: #fff;
-}
-
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 1;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-}
-
-.hero-title {
-  font-size: 56px;
-  font-weight: 700;
-  margin: 0 0 10px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-.hero-subtitle {
-  font-size: 28px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0;
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
 
 .towns-container {
   padding: 40px 20px;

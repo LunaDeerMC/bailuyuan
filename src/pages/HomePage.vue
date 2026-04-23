@@ -271,7 +271,7 @@ const medals = ['🥇', '🥈', '🥉'];
   align-items: center;
   text-align: center;
   padding-top: var(--bl-topbar-offset);
-  background: #000 url('https://img.lunadeer.cn/i/2025/11/26/69267755e14e3.png') center/cover;
+  background: #000 var(--bl-default-hero-image) center/cover no-repeat;
   position: relative;
   color: #fff;
 }
