@@ -581,10 +581,6 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
                 <div class="policy-kv"><span class="kv-icon"><i class="fas fa-archive"></i></span><span
                     class="kv-label">保留策略</span><span class="kv-val">{{ retentionLabel(policy.retention_type,
                       policy.retention_value) }}</span></div>
-                <div class="policy-kv"><span class="kv-icon"><i class="fas fa-compress-arrows-alt"></i></span><span
-                    class="kv-label">压缩</span><span class="kv-val">{{ policy.compression ? '已启用' : '未启用' }}</span></div>
-                <div class="policy-kv"><span class="kv-icon"><i class="fas fa-lock"></i></span><span
-                    class="kv-label">加密</span><span class="kv-val">{{ policy.encryption ? '已启用' : '未启用' }}</span></div>
               </div>
               <div v-if="policy.last_execution_status" class="policy-last-exec">
                 <span class="last-exec-label">最近执行</span>
@@ -1473,6 +1469,11 @@ const ARCHIVE_URL = 'https://pan.baidu.com/s/1-0Ixkjty-oI5IcLzx8h9nw';
 .upcoming-name {
   font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70px;
+  min-width: 70px;
 }
 
 .upcoming-type-tag {
