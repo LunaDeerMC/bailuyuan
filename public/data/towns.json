@@ -287,5 +287,37 @@
             "y": 63,
             "z": 5786
         }
+    },
+    {
+        "title": "旷野之息",
+        "logo": "https://mcphoto.lunadeer.cn/uploads/f8706987-e128-46bc-8012-c78700cef1a7.png",
+        "gradient": {
+            "from": "#667eea",
+            "to": "#764ba2"
+        },
+        "dimension": "overworld",
+        "coordinatesSecret": false,
+        "scale": "medium",
+        "townType": "building",
+        "recruitment": "welcome",
+        "founders": [
+            "LFShu"
+        ],
+        "members": [],
+        "introduction": [
+            {
+                "type": "text",
+                "content": "开心就好。未来致力于打造史诗景观与城邦，欢迎加入！"
+            },
+            {
+                "type": "image",
+                "content": "https://mcphoto.lunadeer.cn/uploads/7e0d048e-0510-406e-8402-552c2fe659d2.png"
+            }
+        ],
+        "coordinates": {
+            "x": 500371,
+            "y": 0,
+            "z": 500867
+        }
     }
 ]
