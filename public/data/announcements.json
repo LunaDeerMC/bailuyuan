@@ -155,6 +155,10 @@
         "marquee": true,
         "content": [
             {
+                "type": "image",
+                "content": "https://i.ytimg.com/vi/CEMo5DlzY9o/maxresdefault.jpg"
+            },
+            {
                 "type": "text",
                 "content": "▸ ▸ 更新计划"
             },
