@@ -516,5 +516,35 @@
         ],
         "instructions": [],
         "notes": []
+    },
+    {
+        "title": "烈焰棒仓库",
+        "intro": "结构简单的堆门烈焰人农场，产出用不完的烈焰棒棒。用来炼药和合成末地烛。",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 501540,
+            "y": 168,
+            "z": 518560
+        },
+        "contributors": [
+            "YiiFeng"
+        ],
+        "instructions": [
+            {
+                "type": "text",
+                "content": "仓库内按需拿取"
+            },
+            {
+                "type": "text",
+                "content": "下届传送门位置 62690 64820"
+            },
+            {
+                "type": "text",
+                "content": "通过基岩上层地狱交通快速到达"
+            }
+        ],
+        "notes": []
     }
 ]
