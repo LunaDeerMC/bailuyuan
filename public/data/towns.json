@@ -323,7 +323,7 @@
     },
     {
         "title": "希冀市",
-        "logo": "",
+        "logo": "https://mcphoto.lunadeer.cn/uploads/69759862-c8df-493d-ae01-0cf8823770f1.png",
         "gradient": {
             "from": "#ea66ba",
             "to": "#a1504a"
@@ -356,6 +356,22 @@
             {
                 "type": "text",
                 "content": "希冀市最初成立于2022年4月16日，是坦克市、雍城、桥佳后的又一新城市，截止于2025年4月希冀市已拥有9大自治区（主城区、南诏古城区、旧约城区、云梦泽区、云梦西区、静海、云溪开发区及2块未命名的区域），核心总面积约为3836450格，常驻居民14名，已入驻扶贫组人员5名，并于2022年开通主世界高速铁路连接东部地区城市，希冀市目前拥有19套工业设备（包括8核刷铁机、全自动树场、大型刷石机、粘土机、刷沙机、沼泽刷怪塔等）并已对各自治区和对外个人申请后开放使用。希冀市贯彻以共产互补为发展思想，树立正确的发展观，坚持高质量发展，促进各自治区域互联互通、互信和共建共享，让希冀市建设为共同繁荣、开放包容、清洁美丽的城市而继续前进"
+            },
+            {
+                "type": "image",
+                "content": "https://mcphoto.lunadeer.cn/uploads/80d49e62-01f9-4b87-9b06-2848638a214a.jpg"
+            },
+            {
+                "type": "image",
+                "content": "https://mcphoto.lunadeer.cn/uploads/a1b3a621-ffb4-43d4-8fb8-c19586eaa33d.png"
+            },
+            {
+                "type": "image",
+                "content": "https://mcphoto.lunadeer.cn/uploads/dc357854-1f7f-48cd-ba98-ddbd85c993cd.png"
+            },
+            {
+                "type": "image",
+                "content": "https://mcphoto.lunadeer.cn/uploads/6065759f-10b5-4dc0-856d-edebfbf39e68.png"
             }
         ],
         "coordinates": {
