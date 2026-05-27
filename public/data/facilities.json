@@ -546,5 +546,27 @@
             }
         ],
         "notes": []
+    },
+    {
+        "title": "墨囊农场",
+        "intro": "产出用不完的墨囊",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 499310,
+            "y": 20,
+            "z": 500705
+        },
+        "contributors": [
+            "Forever_Qi"
+        ],
+        "instructions": [
+            {
+                "type": "text",
+                "content": "内有空潜影盒可供打包，没鞘翅的玩家可通过领地内指南针传送回地表（自己有其他指南针则是更好）"
+            }
+        ],
+        "notes": []
     }
 ]
