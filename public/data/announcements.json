@@ -152,7 +152,7 @@
         "intro": "服务器预计于 2026年6月18日（周四）上午10:00开始维护，本次维护将更新至26.1.2版本，由于本次属于大版本更新故作如下通知、安排。",
         "time": "2026-05-04",
         "category": "maintenance",
-        "marquee": true,
+        "marquee": false,
         "content": [
             {
                 "type": "image",
@@ -205,6 +205,31 @@
             {
                 "type": "video",
                 "content": "BV1ifP7z6Eog"
+            }
+        ]
+    },
+    {
+        "title": "服务器 26.1.2 更新完毕",
+        "intro": "服务器 26.1.2 更新完毕，新增功能、注意事项等内容如下",
+        "time": "2026-06-18",
+        "category": "other",
+        "marquee": false,
+        "content": [
+            {
+                "type": "text",
+                "content": "▊▶ 注意事项"
+            },
+            {
+                "type": "text",
+                "content": "请上线后检查自己的领地、建筑、设备等资产，确保没有被误删。如果发现存在误删除，请立即私聊服主提供相应的坐标区域。"
+            },
+            {
+                "type": "text",
+                "content": "▊▶ 新增功能"
+            },
+            {
+                "type": "text",
+                "content": "除了快捷末影箱外，服务器现支持使用指令打开更多工作方块，便于快捷操作。支持的有：末影箱（/enderchest）、合成台（/craftingtable）、切石机（/stonecutter）、织布机（/loom）、砂轮（/grindstone）、铁砧（/anvil）、制图台（/cartographytable）、锻造台（/smithingtable）"
             }
         ]
     }
