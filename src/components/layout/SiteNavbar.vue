@@ -15,7 +15,7 @@ const props = defineProps({
   },
   logoSrc: {
     type: String,
-    default: 'https://img.lunadeer.cn/i/2024/04/22/6625ce6c8ddc1.png',
+    default: '/images/home/logo.webp',
   },
   logoAlt: {
     type: String,

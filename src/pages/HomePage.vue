@@ -5,8 +5,11 @@ import { ref, onMounted, onUnmounted } from 'vue';
 const SUBTITLES = ['纯净', '原版', '生存', '养老', '休闲'];
 const subtitleText = ref(SUBTITLES[0]);
 const subtitleFading = ref(false);
+const loadedBentoKeys = ref(new Set());
 let subtitleIdx = 0;
 let subtitleTimer = null;
+let bentoObserver = null;
+const bentoCardElements = new Map();
 
 onMounted(() => {
   subtitleTimer = setInterval(() => {
@@ -19,6 +22,7 @@ onMounted(() => {
   }, 4000);
 
   startRuntime();
+  observeBentoCards();
   fetchServerStatus();
   fetchSponsors();
   fetchCrowdfunding();
@@ -27,6 +31,7 @@ onMounted(() => {
 onUnmounted(() => {
   clearInterval(subtitleTimer);
   clearInterval(runtimeTimer);
+  bentoObserver?.disconnect();
 });
 
 // --- Runtime timer ---
@@ -134,9 +139,9 @@ async function fetchCrowdfunding() {
 
 // --- Bento features ---
 const bentoItems = [
-  { key: 'pure', size: 'large', icon: 'fas fa-leaf', title: '纯净原版', desc: '无纷繁复杂的 Mod，无破坏平衡的插件。一切简单的就像是单机模式的共享一般', bg: 'https://img.lunadeer.cn/i/2024/02/21/65d592eb4afad.jpg' },
-  { key: 'dev', size: 'medium', icon: 'fas fa-code', title: '深度自研', desc: '全栈自研核心，拒绝卡脖子，保证可持续发展', bg: 'https://img.lunadeer.cn/i/2025/11/26/6926982718ba8.png' },
-  { key: 'params', size: 'medium', icon: 'fas fa-sliders-h', title: '原汁原味', desc: '生物生成、红石参数与单机高度一致', bg: 'https://img.lunadeer.cn/i/2025/11/26/6926775006dea.jpg' },
+  { key: 'pure', size: 'large', icon: 'fas fa-leaf', title: '纯净原版', desc: '无纷繁复杂的 Mod，无破坏平衡的插件。一切简单的就像是单机模式的共享一般', bg: '/images/home/bento-pure.webp' },
+  { key: 'dev', size: 'medium', icon: 'fas fa-code', title: '深度自研', desc: '全栈自研核心，拒绝卡脖子，保证可持续发展', bg: '/images/home/bento-dev.webp' },
+  { key: 'params', size: 'medium', icon: 'fas fa-sliders-h', title: '原汁原味', desc: '生物生成、红石参数与单机高度一致', bg: '/images/home/bento-params.webp' },
   { key: 'land', size: 'small', icon: 'fas fa-home', title: '免费圈地', desc: '2048*2048 超大领地', bg: 'https://img.lunadeer.cn/i/2024/02/21/65d592ea6faa1.jpg' },
   { key: 'bedrock', size: 'small', icon: 'fas fa-mobile-alt', title: '基岩互通', desc: '手机电脑随时畅玩', bg: 'https://img.lunadeer.cn/i/2025/11/26/692677560db46.png' },
   { key: 'hardware', size: 'small', icon: 'fas fa-server', title: '自有硬件', desc: '物理工作站，永不跑路', bg: 'https://img.lunadeer.cn/i/2024/02/21/65d592e248066.jpg' },
@@ -146,6 +151,60 @@ const bentoItems = [
 ];
 
 const medals = ['🥇', '🥈', '🥉'];
+
+function loadBentoImage(key) {
+  if (loadedBentoKeys.value.has(key)) {
+    return;
+  }
+
+  const nextKeys = new Set(loadedBentoKeys.value);
+  nextKeys.add(key);
+  loadedBentoKeys.value = nextKeys;
+}
+
+function observeBentoCards() {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    loadedBentoKeys.value = new Set(bentoItems.map((item) => item.key));
+    return;
+  }
+
+  bentoObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        return;
+      }
+
+      const key = entry.target.dataset.bentoKey;
+      if (key) {
+        loadBentoImage(key);
+      }
+      bentoObserver.unobserve(entry.target);
+    });
+  }, { rootMargin: '400px 0px' });
+
+  bentoCardElements.forEach((element) => bentoObserver.observe(element));
+}
+
+function setBentoCardRef(element, key) {
+  if (!element || bentoCardElements.get(key) === element) {
+    return;
+  }
+
+  bentoCardElements.set(key, element);
+  bentoObserver?.observe(element);
+}
+
+function getBentoStyle(item) {
+  if (!loadedBentoKeys.value.has(item.key)) {
+    return null;
+  }
+
+  return { backgroundImage: `url(${item.bg})` };
+}
 </script>
 
 <template>
@@ -207,8 +266,10 @@ const medals = ['🥇', '🥈', '🥉'];
           <div
             v-for="item in bentoItems"
             :key="item.key"
+            :ref="(element) => setBentoCardRef(element, item.key)"
             :class="['bento-item', `size-${item.size}`]"
-            :style="{ backgroundImage: `url(${item.bg})` }"
+            :data-bento-key="item.key"
+            :style="getBentoStyle(item)"
           >
             <div class="bento-overlay"></div>
             <div class="bento-content">
@@ -502,6 +563,7 @@ const medals = ['🥇', '🥈', '🥉'];
   transition: var(--bl-transition);
   overflow: hidden;
   position: relative;
+  background-color: #243127;
   background-size: cover;
   background-position: center;
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.02);
