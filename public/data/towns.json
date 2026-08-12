@@ -145,15 +145,15 @@
         }
     },
     {
-        "title": "浣熊市—经济开发区",
-        "logo": "https://mcphoto.lunadeer.cn/uploads/0940c4b0-8a36-48f2-b33a-5e9d1e409b9c.png",
+        "title": "伦斯卡湾",
+        "logo": "https://mcphoto.lunadeer.cn/uploads/29889557-84b9-4e61-a294-8c3c48c09942.jpg",
         "gradient": {
             "from": "#667eea",
             "to": "#764ba2"
         },
         "dimension": "overworld",
         "coordinatesSecret": false,
-        "scale": "medium",
+        "scale": "large",
         "townType": "building",
         "recruitment": "welcome",
         "founders": [
@@ -165,12 +165,15 @@
             "BE.Zhou_Guanyu8",
             "LiuGanYi",
             "KMME25",
-            "MrZhengde"
+            "MrZhengde",
+            "BE.Harusaki2698",
+            "laolaogao",
+            "gangyi1695"
         ],
         "introduction": [
             {
                 "type": "text",
-                "content": "一个休闲为主的小镇 想干啥就干啥"
+                "content": "欢迎来到伦斯卡湾^O^"
             }
         ],
         "coordinates": {
