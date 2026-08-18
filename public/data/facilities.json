@@ -568,5 +568,29 @@
             }
         ],
         "notes": []
+    },
+    {
+        "title": "伦斯卡湾大型综合公共设施基站",
+        "intro": "",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 499923,
+            "y": 63,
+            "z": 499850
+        },
+        "contributors": [
+            "Reyna_Krowitz",
+            "KMME25",
+            "LFShu"
+        ],
+        "instructions": [
+            {
+                "type": "text",
+                "content": "简易的大型设施基站\n内有铁轨机，甘蔗机，地毯机，刷石机组，烟花机，后续设施还在增加中"
+            }
+        ],
+        "notes": []
     }
 ]
