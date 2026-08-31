@@ -592,5 +592,27 @@
             }
         ],
         "notes": []
+    },
+    {
+        "title": "【旷野之息】80W堆门猪人塔收集站",
+        "intro": "产出盒装金块，麻麻再也不用担心我的金子不够啦",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 494069,
+            "y": 123,
+            "z": 498304
+        },
+        "contributors": [
+            "LFShu"
+        ],
+        "instructions": [
+            {
+                "type": "text",
+                "content": "直接取用，缺货@LFshu"
+            }
+        ],
+        "notes": []
     }
 ]
