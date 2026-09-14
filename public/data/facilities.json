@@ -644,5 +644,71 @@
             }
         ],
         "notes": []
+    },
+    {
+        "title": "🧊抗卸载72K刷冰机🧊",
+        "intro": "抗卸载、抗崩服、自复位、低卡顿，简易缝合收集。 三种产物自动合成[冰、浮冰、蓝冰]，冰道交通供货处。",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 502000,
+            "y": 287,
+            "z": 499800
+        },
+        "contributors": [
+            "YiiFeng"
+        ],
+        "instructions": [
+            {
+                "type": "text",
+                "content": "盒装产物直接取用"
+            },
+            {
+                "type": "text",
+                "content": "双人(假人)挂机，蠹虫经验补充修复稿子，已连续稳定运行200h。"
+            },
+            {
+                "type": "text",
+                "content": "再也不用担心修飞行器修到昏迷了"
+            }
+        ],
+        "notes": [
+            {
+                "type": "text",
+                "content": "？！🧊🧊！？"
+            }
+        ]
+    },
+    {
+        "title": "末地小黑经验塔",
+        "intro": "一个简单的小黑塔，击杀末影人获得经验，用来修补装备。",
+        "type": "xp",
+        "dimension": "end",
+        "status": "online",
+        "coordinates": {
+            "x": 180,
+            "y": 2,
+            "z": 280
+        },
+        "contributors": [
+            "YiiFeng"
+        ],
+        "instructions": [
+            {
+                "type": "text",
+                "content": "末地主岛正东南方向，通过冰道指引到达，或指南针传送。"
+            },
+            {
+                "type": "text",
+                "content": "用剑横扫盔甲架或者直接砍向末影人"
+            }
+        ],
+        "notes": [
+            {
+                "type": "text",
+                "content": "剑不要附魔火焰附加或击退"
+            }
+        ]
     }
 ]
