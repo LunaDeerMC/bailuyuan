@@ -710,5 +710,39 @@
                 "content": "剑不要附魔火焰附加或击退"
             }
         ]
+    },
+    {
+        "title": "【伦斯卡湾】刷竹子-铁轨-毛毯简易机器",
+        "intro": "包含竹子，铁轨和毛毯三项的简易机器",
+        "type": "infrastructure",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 500158,
+            "y": 64,
+            "z": 499951
+        },
+        "contributors": [
+            "KMME25"
+        ],
+        "instructions": [],
+        "notes": []
+    },
+    {
+        "title": "简易刷石机",
+        "intro": "仅能进行原石的刷石机",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 500160,
+            "y": 64,
+            "z": 499863
+        },
+        "contributors": [
+            "KMME25"
+        ],
+        "instructions": [],
+        "notes": []
     }
 ]
