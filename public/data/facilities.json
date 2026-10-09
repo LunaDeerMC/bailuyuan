@@ -744,5 +744,22 @@
         ],
         "instructions": [],
         "notes": []
+    },
+    {
+        "title": "【旷野之息】16核刷铁机",
+        "intro": "盒装铁块/散装白色燃料产出",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 500133,
+            "y": 63,
+            "z": 500958
+        },
+        "contributors": [
+            "LFshu"
+        ],
+        "instructions": [],
+        "notes": []
     }
 ]
