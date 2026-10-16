@@ -761,5 +761,31 @@
         ],
         "instructions": [],
         "notes": []
+    },
+    {
+        "title": "🍿紫颂工厂🍿",
+        "intro": "厂内有大型紫颂果农场，紫颂果经预处理自动烧制成爆裂紫颂果，再用于合成产物。工厂仅产出三种成品：[紫颂花]、[紫珀砖]、[末地烛]，仓库内自取",
+        "type": "resource",
+        "dimension": "overworld",
+        "status": "online",
+        "coordinates": {
+            "x": 501700,
+            "y": 70,
+            "z": 502700
+        },
+        "contributors": [
+            "YiiFeng"
+        ],
+        "instructions": [
+            {
+                "type": "text",
+                "content": "单人(假人)挂机种植，自动收获，自动烧制，自动合成打包，结构简单稳定"
+            },
+            {
+                "type": "text",
+                "content": "可选双模式合成(紫珀砖、末地烛)，末地烛模式需要持续补充盒装烈焰棒(烈焰棒农场拿取)"
+            }
+        ],
+        "notes": []
     }
 ]
