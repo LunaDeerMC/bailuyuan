@@ -22,8 +22,8 @@ const navItems = [
     label: '地图',
     href: '/map',
     children: [
-      { label: '旧出生点', href: '/#27132ef1-18a9-4876-b5ee-aa41eb1fdee5:642:-877:-1.65:100:surface' },
-      { label: '新出生点', href: '/#27132ef1-18a9-4876-b5ee-aa41eb1fdee5:500048:500079:-0.93:100:surface' },
+      { label: '旧出生点', href: '/map#27132ef1-18a9-4876-b5ee-aa41eb1fdee5:642:-877:-1.65:100:surface' },
+      { label: '新出生点', href: '/map#27132ef1-18a9-4876-b5ee-aa41eb1fdee5:500048:500079:-0.93:100:surface' },
     ],
   },
   { label: '设施', href: '/facilities' },
